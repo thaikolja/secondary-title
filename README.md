@@ -1,2 +1,0 @@
-# secondary-title
-Secondary Title

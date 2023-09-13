@@ -1,0 +1,193 @@
+/*!
+ * (C) Copyright 2021 by Kolja Nolte
+ * kolja.nolte@gmail.com
+ * https://www.kolja-nolte.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @see https://wordpress.org/plugins/secondary-title/
+ * @author Kolja Nolte <kolja.nolte@gmail.com>
+*/
+
+$icon_color: #82878b;
+
+.secondary-title-input,
+#secondary-title-input {
+	margin:  5px 0;
+	padding: 5px 10px;
+	width:   100%;
+}
+
+#secondary-title-settings {
+	width: 80%;
+
+	.clear {
+		clear: both;
+	}
+
+	.form-table {
+		th {
+			padding-top: 14px;
+		}
+	}
+
+	.page-title {
+		margin-bottom: 20px;
+	}
+
+	code.pointer {
+		cursor: pointer;
+	}
+
+	.fa {
+		margin-right: 5px;
+	}
+
+	.updated {
+		margin-top: 30px !important;
+	}
+
+	.buttons {
+		.button {
+			margin-right: 10px;
+		}
+	}
+
+	.left {
+		float: left;
+	}
+
+	.right {
+		float: right;
+	}
+
+	#buttons-top {
+		position: relative;
+		top:      10px;
+	}
+
+	.postboxes {
+		margin-top: 30px;
+	}
+
+	.postboxes .postbox {
+		.intro {
+			margin-bottom: 20px;
+			text-align:    justify;
+		}
+
+		.postbox-title {
+			cursor:    default;
+			font-size: 16px;
+
+			i {
+				color: #444444;
+			}
+		}
+
+		.inside {
+			i {
+				color: $icon_color;
+			}
+
+			.fa-info-circle {
+				font-size:  14px;
+				color:      lighten($icon_color, 10%);
+				text-align: center;
+				transition: 0.3s;
+			}
+
+			.info-circle:hover {
+				i {
+					color: lighten($icon_color, 25%);
+				}
+			}
+
+			table tr td .radios label:first-of-type {
+				margin-right: 20px;
+			}
+
+			.list {
+				.list-item {
+					display:       inline-block !important;
+					margin-bottom: 7px;
+					overflow:      hidden;
+					width:         30%;
+				}
+
+				.list-item.hidden {
+					display: none;
+				}
+
+				.list-actions {
+					margin: 20px 0 10px 0;
+				}
+			}
+		}
+	}
+
+	#row-post-types {
+		th {
+			padding-top: 20px;
+		}
+	}
+
+	#row-title-format {
+		input {
+			width:       100%;
+			padding:     10px;
+			font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
+			font-size:   13px;
+		}
+
+		#reset-title-format {
+			float: right;
+		}
+
+		#title-format-preview-container {
+			h4 {
+				margin-bottom: 5px;
+			}
+
+			#title-format-preview {
+				background:    #f6f6f6;
+				padding:       15px;
+				border:        2px dashed #cccccc;
+				margin-bottom: 20px;
+			}
+		}
+
+		.note {
+			font-size:   12px;
+			line-height: 1.8em;
+			font-style:  normal;
+		}
+	}
+
+	#report-bug {
+		font-size:  12px;
+		margin-top: 30px;
+		opacity:    0.6;
+	}
+
+	#donation-notice {
+		p {
+			line-height: 1.8em;
+		}
+	}
+
+	#tools {
+		.loading-icon {
+			width:        24px;
+			position:     relative;
+			margin-right: 10px;
+		}
+	}
+}
+
+#post-ids {
+	padding: 10px 8px;
+}
