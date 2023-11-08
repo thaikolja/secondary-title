@@ -118,11 +118,15 @@ function secondary_title_edit_post( $post_id ) {
 		return false;
 	}
 
+	$secondary_post_title = filter_input( INPUT_POST, 'secondary_post_title' );
+	if (secondary_title_get_setting('strip_html') == 'on') {
+		$secondary_post_title = wp_strip_all_tags($secondary_post_title);	
+	}
 
 	return update_post_meta(
 		$post_id,
 		"_secondary_title",
-		esc_html( $antiXss->xss_clean( wp_strip_all_tags( filter_input( INPUT_POST, 'secondary_post_title' ) ) ) )
+		esc_html( $antiXss->xss_clean( $secondary_post_title ) )
 	);
 }
 

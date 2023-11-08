@@ -405,6 +405,36 @@ function secondary_title_settings_page() {
 								<?php if ( version_compare( $wp_version, "5.0", ">=" ) && class_exists( "Classic_Editor" ) ) { ?>
 									<tr>
 										<th>
+											<label for="strip-html-on">
+												<i class="fa fa-filter"></i>
+									<?php _e( "Strip HTML", "secondary-title" ); ?>:
+											</label>
+										</th>
+										<td>
+											<?php secondary_title_print_html_info_circle( "strip_html" ); ?>
+											<div class="radios">
+												<input type="radio"
+													name="strip_html"
+													id="strip-html-on"
+													value="on" <?php checked( $settings["strip_html"], "on" ); ?>>
+												<label for="strip-html-on">
+										<?php _e( "On", "secondary-title" ); ?>
+												</label>
+												<input type="radio"
+													name="strip_html"
+													id="strip-html-off"
+													value="off" <?php checked( $settings["strip_html"], "off" ); ?>>
+												<label for="strip-html-off">
+										<?php _e( "Off", "secondary-title" ); ?>
+												</label>
+											</div>
+											<p class="description">
+												<?php _e( "Strips all HTML from your secondary title. Removes a possible attack vector.", "secondary-title" ); ?>
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th>
 											 <label for="input-field-position-top">
 												 <i class="fa fa-arrow-up"></i>
 									  <?php _e( "Input field", "secondary-title" ); ?>:
