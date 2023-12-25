@@ -94,7 +94,8 @@ function secondary_title_get_default_settings(): array {
 		"secondary_title_feed_auto_show"         => "off",
 		"secondary_title_feed_title_format"      => "%title%",
 		"secondary_title_include_in_search"      => "on",
-		"secondary_title_show_donation_notice"   => "on"
+		"secondary_title_show_donation_notice"   => "on",
+		"secondary_title_strip_html"             => "on"
 	];
 
 	$default_settings = apply_filters( "secondary_title_get_default_settings", $default_settings );
