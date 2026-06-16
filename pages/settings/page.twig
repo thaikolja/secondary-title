@@ -1,37 +1,35 @@
-{# Settings page — single flat layout with section headings. #}
+{# Settings page — full-width card grid, no sidebar. #}
 <div class="st-settings">
+
 	<div class="wrap">
 		<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
 		<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
 	</div>
 
+	<nav class="st-tabs" aria-label="{{ __('Settings sections', 'secondary-title') }}">
+		<button type="button" class="st-tab st-tab--active" data-tab="general" aria-selected="true">
+			{% include 'components/icon.twig' with { name: 'gear', size: 18 } only %}
+			<span>{{ labels.general|e }}</span>
+		</button>
+		<button type="button" class="st-tab" data-tab="display-rules" aria-selected="false">
+			{% include 'components/icon.twig' with { name: 'sliders', size: 18 } only %}
+			<span>{{ labels.display_rules|e }}</span>
+		</button>
+	</nav>
+
 	<form method="post" action="options.php" class="st-form" novalidate>
 		{{ settings_fields(page.option_group)|raw }}
 
-		<div class="st-section-heading">
-			{% include 'components/icon.twig' with { name: 'gear', size: 20 } only %}
-			<h2>{{ __('General', 'secondary-title') }}</h2>
+		<div class="st-panels" data-st-panels>
+			<section class="st-panel st-panel--active" data-panel="general">
+				{% include 'settings/sections/general.twig' %}
+				{% include 'settings/sections/info-row.twig' %}
+			</section>
+			<section class="st-panel" data-panel="display-rules" hidden>
+				{% include 'settings/sections/display-rules.twig' %}
+			</section>
 		</div>
-		{% include 'settings/sections/general.twig' %}
 
-		<div class="st-section-heading">
-			{% include 'components/icon.twig' with { name: 'sliders', size: 20 } only %}
-			<h2>{{ __('Display rules', 'secondary-title') }}</h2>
-		</div>
-		{% include 'settings/sections/display-rules.twig' %}
-
-		<div class="st-section-heading">
-			{% include 'components/icon.twig' with { name: 'question', size: 20 } only %}
-			<h2>{{ __('Help', 'secondary-title') }}</h2>
-		</div>
-		{% include 'settings/sections/help.twig' %}
-
-		<div class="st-section-heading">
-			{% include 'components/icon.twig' with { name: 'heart', size: 20 } only %}
-			<h2>{{ __('Donation', 'secondary-title') }}</h2>
-		</div>
-		{% include 'settings/sections/donation.twig' %}
-
-		{% include 'partials/save-bar.twig' with { labels, page } only %}
+		{% include 'partials/save-bar.twig' with { labels } only %}
 	</form>
 </div>

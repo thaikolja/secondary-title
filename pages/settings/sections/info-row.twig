@@ -1,0 +1,54 @@
+{# Info row — 3 compact cards: Quick start, Shortcode, Support/Donate. #}
+
+<div class="st-info-row">
+
+	{# Quick Start #}
+	<div class="st-info-card">
+		<div class="st-info-card__head">
+			{% include 'components/icon.twig' with { name: 'question', size: 16 } only %}
+			<span>{{ __('Quick start', 'secondary-title') }}</span>
+		</div>
+		<div class="st-info-card__body">
+			<ol class="st-info-list">
+				<li>{{ __('Add a secondary title via the sidebar panel in the block editor or the meta box in the Classic Editor.', 'secondary-title') }}</li>
+				<li>{{ __('Use the shortcode <code>[secondary_title]</code> or insert the Gutenberg block.', 'secondary-title')|raw }}</li>
+				<li>{{ __('Or call <code>the_secondary_title()</code> from your theme.', 'secondary-title')|raw }}</li>
+			</ol>
+		</div>
+	</div>
+
+	{# Shortcode #}
+	<div class="st-info-card">
+		<div class="st-info-card__head">
+			{% include 'components/icon.twig' with { name: 'code', size: 16 } only %}
+			<span>{{ __('Shortcode', 'secondary-title') }}</span>
+		</div>
+		<div class="st-info-card__body">
+			<pre class="st-code-block"><code>[secondary_title]</code></pre>
+			<p class="st-info-desc">
+				<code>post_id</code> — {{ __('ID of the post. Default: current.', 'secondary-title') }}<br>
+				<code>allow_html</code> — {{ __('Render HTML. Default: false.', 'secondary-title') }}
+			</p>
+		</div>
+	</div>
+
+	{# Support / Donate #}
+	<div class="st-info-card st-info-card--donate">
+		<div class="st-info-card__head">
+			{% include 'components/icon.twig' with { name: 'heart', size: 16 } only %}
+			<span>{{ __('Support', 'secondary-title') }}</span>
+		</div>
+		<div class="st-info-card__body">
+			<p class="st-info-desc">
+				{{ __('Secondary Title is developed by one person — without AI-generated code. Every line is written, reviewed, and tested by hand. This takes significant time.', 'secondary-title') }}
+			</p>
+			<a href="https://www.paypal.me/thaikolja/10"
+			   class="st-button st-button--donate"
+			   target="_blank"
+			   rel="noopener noreferrer">
+				<span>{{ __('Donate via PayPal', 'secondary-title') }}</span>
+			</a>
+		</div>
+	</div>
+
+</div>

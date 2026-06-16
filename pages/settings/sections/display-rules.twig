@@ -1,20 +1,29 @@
-{% embed 'components/card.twig' with { title: __('Post types', 'secondary-title'), icon: 'files' } %}
-	{% block card_body %}
-		{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types] } %}
-		<p class="st-field-desc">{{ __('Choose the post types. Leave empty to show on all.', 'secondary-title') }}</p>
-	{% endblock %}
-{% endembed %}
+{# Display rules — post types + categories (2-col), post IDs (full-width). #}
 
-{% embed 'components/card.twig' with { title: __('Categories', 'secondary-title'), icon: 'folders' } %}
-	{% block card_body %}
-		{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories] } %}
-		<p class="st-field-desc">{{ __('Choose the categories. Leave empty to show on all.', 'secondary-title') }}</p>
-	{% endblock %}
-{% endembed %}
+<div class="st-grid">
 
-{% embed 'components/card.twig' with { title: __('Specific post IDs', 'secondary-title'), icon: 'list-numbers' } %}
-	{% block card_body %}
-		{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: '13, 71, 33', class: 'widefat' } %}
-		<p class="st-field-desc">{{ __('Comma-separated list of post IDs. Leave empty to show on all posts.', 'secondary-title') }}</p>
-	{% endblock %}
-{% endembed %}
+	{# Post Types #}
+	{% embed 'components/card.twig' with { title: __('Post types', 'secondary-title'), icon: 'files', id: 'st-card-post-types' } %}
+		{% block card_body %}
+			{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types] } %}
+			<p class="st-field-desc">{{ __('Choose the post types. Leave empty to show on all.', 'secondary-title') }}</p>
+		{% endblock %}
+	{% endembed %}
+
+	{# Categories #}
+	{% embed 'components/card.twig' with { title: __('Categories', 'secondary-title'), icon: 'folders', id: 'st-card-categories' } %}
+		{% block card_body %}
+			{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories] } %}
+			<p class="st-field-desc">{{ __('Choose the categories. Leave empty to show on all.', 'secondary-title') }}</p>
+		{% endblock %}
+	{% endembed %}
+
+	{# Post IDs — full width #}
+	{% embed 'components/card.twig' with { title: __('Specific post IDs', 'secondary-title'), icon: 'list-numbers', id: 'st-card-post-ids' } %}
+		{% block card_body %}
+			{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: '13, 71, 33', class: 'st-input--code' } %}
+			<p class="st-field-desc">{{ __('Comma-separated list of post IDs. Leave empty to show on all posts.', 'secondary-title') }}</p>
+		{% endblock %}
+	{% endembed %}
+
+</div>
