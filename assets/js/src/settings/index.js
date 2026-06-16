@@ -7,6 +7,7 @@ import { initLiveFormatPreview } from './live-preview.js';
 import { initSearchableSelects } from './searchable-select.js';
 import { initSaveBar } from './save-bar.js';
 import { initSidebar } from './sidebar.js';
+import { initAutomergeWarning } from './automerge-warning.js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	initTabs( document );
@@ -14,4 +15,5 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initSearchableSelects( document );
 	initSaveBar( document );
 	initSidebar( document );
+	initAutomergeWarning( document );
 } );

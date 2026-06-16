@@ -1,12 +1,10 @@
 {#
-   Sidebar — taxonomy switcher dropdown + search + term list.
-   Taxonomy data is passed from PHP (categories_options, post_types_options).
-   The JS in sidebar.js handles swapping the list when the taxonomy changes.
+   Sidebar — plugin info (compact, 3 rows), term browser, quick links.
 #}
 
 <div class="st-sidebar-inner" data-st-sidebar>
 
-	{# ── Plugin Info ─── #}
+	{# ── Plugin Info (3 rows) ─── #}
 	<div class="st-sidebar-card">
 		<div class="st-sidebar-card__head">
 			{% include 'components/icon.twig' with { name: 'gear', size: 14 } only %}
@@ -18,22 +16,18 @@
 				<span class="st-info-row__value">3.0</span>
 			</div>
 			<div class="st-info-row">
-				<span class="st-info-row__label">{{ __('Format', 'secondary-title') }}</span>
-				<code class="st-info-row__code">{{ settings[keys.title_format]|default('%secondary_title%: %title%')|e }}</code>
-			</div>
-			<div class="st-info-row">
 				<span class="st-info-row__label">{{ __('Auto-merge', 'secondary-title') }}</span>
 				<span class="st-info-row__value st-info-row__value--{{ settings[keys.auto_show] == 'on' ? 'on' : 'off' }}">
 					{{ settings[keys.auto_show] == 'on' ? __('Enabled', 'secondary-title') : __('Disabled', 'secondary-title') }}
 				</span>
 			</div>
 			<div class="st-info-row">
-				<span class="st-info-row__label">{{ __('Post types', 'secondary-title') }}</span>
+				<span class="st-info-row__label">{{ __('Enabled for', 'secondary-title') }}</span>
 				<span class="st-info-row__value">
 					{% if settings[keys.post_types] is not empty %}
 						{{ settings[keys.post_types]|join(', ') }}
 					{% else %}
-						{{ __('All', 'secondary-title') }}
+						{{ __('All types', 'secondary-title') }}
 					{% endif %}
 				</span>
 			</div>
@@ -48,14 +42,12 @@
 		</div>
 		<div class="st-sidebar-card__body">
 
-			{# Taxonomy switcher dropdown #}
 			<select class="st-sidebar-taxonomy" id="st-sidebar-taxonomy-select" data-st-taxonomy-select>
 				<option value="category">{{ __('Categories', 'secondary-title') }}</option>
 				<option value="post_tag">{{ __('Tags', 'secondary-title') }}</option>
 				<option value="post_type">{{ __('Post Types', 'secondary-title') }}</option>
 			</select>
 
-			{# Search field #}
 			<div class="st-sidebar-search">
 				{% include 'components/icon.twig' with { name: 'magnifying-glass', size: 14 } only %}
 				<input type="search"
@@ -65,7 +57,6 @@
 				       data-st-sidebar-search>
 			</div>
 
-			{# Terms list — categories (default) #}
 			<ul class="st-term-list" id="st-term-list-category" data-st-term-list="category" role="listbox">
 				{% for opt in categories_options %}
 					<li class="st-term-list__item" data-label="{{ opt.label|lower|e }}">
@@ -77,7 +68,6 @@
 				{% endfor %}
 			</ul>
 
-			{# Terms list — post types (hidden by default) #}
 			<ul class="st-term-list" id="st-term-list-post_type" data-st-term-list="post_type" role="listbox" hidden>
 				{% for opt in post_types_options %}
 					<li class="st-term-list__item" data-label="{{ opt.label|lower|e }}">
@@ -89,7 +79,6 @@
 				{% endfor %}
 			</ul>
 
-			{# Tags — mock data (no live PHP data for tags yet) #}
 			<ul class="st-term-list" id="st-term-list-post_tag" data-st-term-list="post_tag" role="listbox" hidden>
 				<li class="st-term-list__item" data-label="news"><span class="st-term-list__name">News</span><span class="st-term-list__count">14</span></li>
 				<li class="st-term-list__item" data-label="featured"><span class="st-term-list__name">Featured</span><span class="st-term-list__count">7</span></li>
