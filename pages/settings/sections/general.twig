@@ -1,28 +1,53 @@
-{# General — bento grid: title format full-width, toggles asymmetric. #}
+{# Hero: prominent title format + micro cards below. #}
 
-<div class="st-bento">
+<div class="st-format-hero">
+	<div class="st-format-hero__inner">
+		<div class="st-format-hero__head">
+			{% include 'components/icon.twig' with { name: 'paint-brush', size: 18 } only %}
+			<span>{{ __('Title format', 'secondary-title') }}</span>
+			<span class="st-format-hero__badge">{{ __('Heart of the plugin', 'secondary-title') }}</span>
+		</div>
+		<div class="st-format-hero__body">
+			{% include 'fields/format-with-preview.twig' with { name: keys.title_format, id: 'st-field-title-format', preview_id: 'st-format-preview' } %}
+			<div class="st-format-examples">
+				<code>%secondary_title%: %title%</code>
+				<code>&lt;span style="color:#f00"&gt;%secondary_title%&lt;/span&gt; — %title%</code>
+				<code>&lt;strong&gt;%secondary_title%&lt;/strong&gt;</code>
+			</div>
+		</div>
+	</div>
+</div>
 
-	{# Title Format — full width, prominent #}
-	{% embed 'components/card.twig' with { title: __('Title format', 'secondary-title'), icon: 'paint-brush', id: 'st-card-format' } %}
-		{% block card_body %}
-			{% include 'fields/format-with-preview.twig' with { name: keys.title_format, id: 'st-field-title-format', value: settings[keys.title_format], preview_id: 'st-format-preview' } %}
-		{% endblock %}
-	{% endembed %}
-
-	{# Auto Merge — wider #}
+<div class="st-micro-grid">
 	{% embed 'components/card.twig' with { title: __('Auto merge', 'secondary-title'), icon: 'wand', id: 'st-card-auto-merge' } %}
 		{% block card_body %}
 			{% include 'components/toggle.twig' with { name: keys.auto_show, id: 'st-toggle-auto-show', value: settings[keys.auto_show] } %}
-			<p class="st-field-desc">{{ __('When on, the secondary title is merged into the post title automatically on the front end using the title format above. When off, use the shortcode, the Gutenberg block, or call <code>the_secondary_title()</code> from your theme.', 'secondary-title')|raw }}</p>
+			<p class="st-card-desc">{{ __('Merges the secondary title into the post title on the front end.', 'secondary-title') }}</p>
 		{% endblock %}
 	{% endembed %}
 
-	{# Only Show in Main Post — narrower #}
-	{% embed 'components/card.twig' with { title: __('Only show in main post', 'secondary-title'), icon: 'article', id: 'st-card-only-main' } %}
+	{% embed 'components/card.twig' with { title: __('Only in main post', 'secondary-title'), icon: 'article', id: 'st-card-only-main' } %}
 		{% block card_body %}
 			{% include 'components/toggle.twig' with { name: keys.only_show_in_main_post, id: 'st-toggle-only-main', value: settings[keys.only_show_in_main_post] } %}
-			<p class="st-field-desc">{{ __('Limit the secondary title to the main post (loop) only.', 'secondary-title') }}</p>
+			<p class="st-card-desc">{{ __('Shows the secondary title only inside the main post loop.', 'secondary-title') }}</p>
 		{% endblock %}
 	{% endembed %}
 
+	{% embed 'components/card.twig' with { title: __('Post types', 'secondary-title'), icon: 'files', id: 'st-card-post-types' } %}
+		{% block card_body %}
+			{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types] } %}
+		{% endblock %}
+	{% endembed %}
+
+	{% embed 'components/card.twig' with { title: __('Categories', 'secondary-title'), icon: 'folders', id: 'st-card-categories' } %}
+		{% block card_body %}
+			{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories] } %}
+		{% endblock %}
+	{% endembed %}
+
+	{% embed 'components/card.twig' with { title: __('Post IDs', 'secondary-title'), icon: 'list-numbers', id: 'st-card-post-ids' } %}
+		{% block card_body %}
+			{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: '13, 71, 33' } %}
+		{% endblock %}
+	{% endembed %}
 </div>

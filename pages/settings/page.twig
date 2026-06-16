@@ -1,4 +1,4 @@
-{# Settings page — bento grid layout. Creative, asymmetric, modern. #}
+{# Settings page — hero title format + micro card grid. #}
 <div class="st-settings">
 
 	<div class="st-hero">
@@ -6,47 +6,21 @@
 			<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
 			<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
 		</div>
-		<div class="st-hero__stats">
-			<a href="https://docs.kolja-nolte.com/secondary-title/"
-			   class="st-hero__stat"
-			   target="_blank"
-			   rel="noopener noreferrer">
-				{% include 'components/icon.twig' with { name: 'book-open', size: 20 } only %}
-				<span class="st-hero__stat-value">{{ __('Docs', 'secondary-title') }}</span>
-			</a>
-			<a href="https://wordpress.org/support/plugin/secondary-title/"
-			   class="st-hero__stat"
-			   target="_blank"
-			   rel="noopener noreferrer">
-				{% include 'components/icon.twig' with { name: 'question', size: 20 } only %}
-				<span class="st-hero__stat-value">{{ __('Support', 'secondary-title') }}</span>
-			</a>
-		</div>
+		<a href="https://docs.kolja-nolte.com/secondary-title/"
+		   class="st-hero__link"
+		   target="_blank"
+		   rel="noopener noreferrer">
+			{% include 'components/icon.twig' with { name: 'book-open', size: 16 } only %}
+			<span>{{ __('Documentation', 'secondary-title') }}</span>
+		</a>
 	</div>
-
-	<nav class="st-tabs" aria-label="{{ __('Settings sections', 'secondary-title') }}">
-		<button type="button" class="st-tab st-tab--active" data-tab="general" aria-selected="true">
-			{% include 'components/icon.twig' with { name: 'gear', size: 18 } only %}
-			<span>{{ labels.general|e }}</span>
-		</button>
-		<button type="button" class="st-tab" data-tab="display-rules" aria-selected="false">
-			{% include 'components/icon.twig' with { name: 'sliders', size: 18 } only %}
-			<span>{{ labels.display_rules|e }}</span>
-		</button>
-	</nav>
 
 	<form method="post" action="options.php" novalidate>
 		{{ settings_fields(page.option_group)|raw }}
 
-		<div class="st-panels" data-st-panels>
-			<section class="st-panel st-panel--active" data-panel="general">
-				{% include 'settings/sections/general.twig' %}
-				{% include 'settings/sections/info-row.twig' %}
-			</section>
-			<section class="st-panel" data-panel="display-rules" hidden>
-				{% include 'settings/sections/display-rules.twig' %}
-			</section>
-		</div>
+		{% include 'settings/sections/general.twig' %}
+
+		{% include 'settings/sections/info-row.twig' %}
 
 		{% include 'partials/save-bar.twig' with { labels } only %}
 	</form>
