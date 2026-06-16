@@ -1,10 +1,42 @@
 /**
- * Settings page — full-width card grid, no sidebar.
- * Tabs at top, cards flow into columns, info row at bottom.
+ * Settings page — bento grid layout.
+ * Asymmetric card sizes, soft shadows, rounded corners, hero header.
  */
 
-.st-settings { /* no max-width — fills 100% */ }
-.st-tagline { color: #646970; font-size: 14px; margin: -4px 0 0 0; }
+/* ============================================================
+   Reset & base
+   ============================================================ */
+.st-settings { /* full width */ }
+.st-form { margin: 0; }
+.st-tagline { color: #646970; font-size: 14px; margin: -2px 0 0 0; }
+
+/* ============================================================
+   Hero header
+   ============================================================ */
+.st-hero {
+	display: flex; align-items: center; justify-content: space-between;
+	padding: 20px 0 0;
+}
+.st-hero__text { }
+.st-hero__stats {
+	display: flex; gap: 16px;
+}
+.st-hero__stat {
+	display: flex; flex-direction: column; align-items: center; gap: 6px;
+	padding: 12px 20px;
+	background: #fff;
+	border: 1px solid #dcdcde; border-radius: 10px;
+	text-decoration: none; color: #50575e;
+	font-size: 13px; font-weight: 500;
+	transition: all .15s;
+	min-width: 80px;
+}
+.st-hero__stat:hover { border-color: #2271b1; color: #2271b1; box-shadow: 0 2px 8px rgba(34,113,177,.08); }
+.st-hero__stat .dashicons,
+.st-hero__stat .st-icon { color: #8c8f94; }
+.st-hero__stat:hover .dashicons,
+.st-hero__stat:hover .st-icon { color: #2271b1; fill: #2271b1; }
+.st-hero__stat-value { font-size: 14px; font-weight: 600; }
 
 /* ============================================================
    Tab bar
@@ -13,95 +45,117 @@
 	display: flex; gap: 0;
 	margin: 24px 0 0;
 	padding: 0 2px;
-	border-bottom: 2px solid #dcdcde;
+	border-bottom: 2px solid #e8eaeb;
 }
 .st-tab {
 	display: inline-flex; align-items: center; gap: 8px;
-	padding: 12px 22px;
+	padding: 12px 24px;
 	margin-bottom: -2px;
 	border: none; border-bottom: 2px solid transparent;
-	background: none; color: #50575e;
+	background: none; color: #787c82;
 	font-size: 14px; font-weight: 600;
 	cursor: pointer;
 	transition: all .15s;
+	border-radius: 6px 6px 0 0;
 }
-.st-tab:hover { color: #2271b1; background: rgba(34,113,177,.04); }
-.st-tab--active { color: #2271b1; border-bottom-color: #2271b1; }
+.st-tab:hover { color: #2271b1; background: rgba(34,113,177,.03); }
+.st-tab--active { color: #2271b1; border-bottom-color: #2271b1; background: rgba(34,113,177,.04); }
 .st-tab .dashicons, .st-tab .st-icon { fill: currentColor; }
 
 /* ============================================================
-   Card grid — auto-flow into columns
+   Bento grid — 9 columns, asymmetric
    ============================================================ */
-.st-grid {
+.st-bento {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-	gap: 20px;
-	margin-top: 24px;
+	grid-template-columns: repeat(9, 1fr);
+	gap: 18px;
+	margin-top: 22px;
 }
 
-/* Title format always spans full width */
+/* Title Format — full width (columns 1-9) */
 #st-card-format {
 	grid-column: 1 / -1;
 }
 
-/* Post IDs always spans full width */
-#st-card-post-ids {
-	grid-column: 1 / -1;
+/* Auto Merge — 2/3 width (columns 1-6) */
+#st-card-auto-merge {
+	grid-column: 1 / 7;
 }
+
+/* Only Show in Main Post — 1/3 width (columns 7-9) */
+#st-card-only-main {
+	grid-column: 7 / -1;
+}
+
+/* Display Rules — three equal columns */
+#st-card-post-types  { grid-column: 1 / 4; }
+#st-card-categories  { grid-column: 4 / 7; }
+#st-card-post-ids    { grid-column: 7 / -1; }
 
 /* ============================================================
    Cards
    ============================================================ */
 .st-card {
-	background: #fff; border: 1px solid #c3c4c7; border-left: 3px solid #2271b1;
-	border-radius: 4px;
-	box-shadow: 0 1px 3px rgba(0,0,0,.04);
+	background: #fff;
+	border: 1px solid #e8eaeb;
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.03);
 	display: flex; flex-direction: column;
+	transition: box-shadow .2s;
 }
-.st-card__head { border-bottom: 1px solid #f0f0f1; padding: 14px 20px; }
-.st-card__title { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; font-weight: 600; color: #1d2327; }
-.st-card__body { padding: 20px; flex: 1; }
+.st-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+.st-card__head {
+	border-bottom: 1px solid #f0f0f1;
+	padding: 16px 22px;
+}
+.st-card__title {
+	display: flex; align-items: center; gap: 8px;
+	margin: 0; font-size: 14px; font-weight: 600; color: #1d2327;
+}
+.st-card__title .dashicons,
+.st-card__title .st-icon { color: #2271b1; fill: #2271b1; }
+.st-card__body { padding: 20px 22px; flex: 1; }
 
 /* ============================================================
-   Row (label + control) — used inside cards
+   Row
    ============================================================ */
-.st-row { display: flex; flex-wrap: wrap; margin-bottom: 16px; }
+.st-row { display: flex; flex-wrap: wrap; margin-bottom: 14px; }
 .st-row:last-child { margin-bottom: 0; }
 .st-row__label { flex: 0 0 180px; padding-top: 8px; padding-right: 16px; }
 .st-row__label label { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #1d2327; cursor: pointer; font-size: 14px; }
 .st-row__control { flex: 1; min-width: 200px; }
-.st-row__description, .st-field-desc { color: #646970; font-size: 13px; font-style: italic; margin-top: 6px; margin-bottom: 0; line-height: 1.5; }
-.st-row__description code, .st-field-desc code { font-style: normal; background: rgba(0,0,0,.05); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+.st-row__description, .st-field-desc { color: #646970; font-size: 13px; font-style: italic; margin-top: 4px; margin-bottom: 0; line-height: 1.5; }
+.st-row__description code, .st-field-desc code { font-style: normal; background: rgba(0,0,0,.04); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
 
 /* ============================================================
    Inputs
    ============================================================ */
-.st-input { width: 100%; font-size: 14px; padding: 8px 12px; border: 1px solid #8c8f94; border-radius: 3px; color: #1d2327; transition: border-color .15s, box-shadow .15s; }
-.st-input:focus { border-color: #2271b1; box-shadow: 0 0 0 1px #2271b1; outline: none; }
-.st-input--code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 15px; padding: 14px 16px; min-height: 56px; background: #fcfcfc; line-height: 1.6; }
+.st-input { width: 100%; font-size: 14px; padding: 9px 12px; border: 1px solid #8c8f94; border-radius: 4px; color: #1d2327; transition: border-color .15s, box-shadow .15s; }
+.st-input:focus { border-color: #2271b1; box-shadow: 0 0 0 1.5px rgba(34,113,177,.25); outline: none; }
+.st-input--code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 15px; padding: 14px 16px; min-height: 56px; background: #fafafa; line-height: 1.6; border-radius: 6px; }
 
 /* ============================================================
    Format field
    ============================================================ */
 .st-format-field__input { margin-bottom: 10px; }
 .st-format-field__placeholders { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-.st-chip { display: inline-flex; align-items: center; padding: 6px 14px; background: #f0f0f1; border: 1px solid #c3c4c7; border-radius: 4px; font-size: 13px; cursor: pointer; transition: all .15s; }
+.st-chip { display: inline-flex; align-items: center; padding: 7px 16px; background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all .15s; }
 .st-chip:hover { background: #2271b1; color: #fff; border-color: #2271b1; }
 .st-chip code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 13px; background: none; padding: 0; }
-.st-format-field__preview { border: 1px solid #c3c4c7; border-radius: 4px; padding: 18px 20px; min-height: 56px; background: #fff; }
-.st-format-field__preview-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; color: #8c8f94; text-transform: uppercase; letter-spacing: .6px; }
-.st-format-field__preview-body { font-size: 20px; color: #1d2327; line-height: 1.5; word-break: break-word; }
+.st-format-field__preview { border: 2px solid #e8eaeb; border-radius: 8px; padding: 20px 24px; min-height: 56px; background: #fff; }
+.st-format-field__preview-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; color: #8c8f94; text-transform: uppercase; letter-spacing: .6px; font-weight: 600; }
+.st-format-field__preview-body { font-size: 22px; color: #1d2327; line-height: 1.5; word-break: break-word; }
 
 /* ============================================================
    Toggle
    ============================================================ */
-.st-toggle { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 8px; }
+.st-toggle { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 6px; }
 .st-toggle input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
-.st-toggle__track { position: relative; width: 44px; height: 24px; background: #c3c4c7; border-radius: 12px; transition: background .2s; flex-shrink: 0; }
+.st-toggle__track { position: relative; width: 48px; height: 26px; background: #c3c4c7; border-radius: 13px; transition: background .2s; flex-shrink: 0; }
 .st-toggle input:checked + .st-toggle__track { background: #2271b1; }
-.st-toggle__thumb { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
-.st-toggle input:checked + .st-toggle__track .st-toggle__thumb { transform: translateX(20px); }
-.st-toggle__labels { display: flex; gap: 6px; font-size: 14px; color: #50575e; }
+.st-toggle__thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.st-toggle input:checked + .st-toggle__track .st-toggle__thumb { transform: translateX(22px); }
+.st-toggle__labels { display: flex; gap: 6px; font-size: 14px; color: #50575e; font-weight: 500; }
 
 /* ============================================================
    Multi-select
@@ -109,40 +163,41 @@
 .st-multi-select__search { position: relative; margin-bottom: 10px; }
 .st-multi-select__search input { width: 100%; padding: 8px 12px 8px 34px; font-size: 14px; }
 .st-multi-select__search .dashicons, .st-multi-select__search .st-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #8c8f94; }
-.st-multi-select__list { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow-y: auto; border: 1px solid #dcdcde; border-radius: 3px; }
-.st-multi-select__item { padding: 7px 12px; background: #fff; border-bottom: 1px solid #f0f0f1; }
+.st-multi-select__list { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow-y: auto; border: 1px solid #e8eaeb; border-radius: 4px; }
+.st-multi-select__item { padding: 8px 14px; background: #fff; border-bottom: 1px solid #f0f0f1; }
 .st-multi-select__item:last-child { border-bottom: none; }
-.st-multi-select__item:nth-child(even) { background: #f9f9f6; }
+.st-multi-select__item:nth-child(even) { background: #fafafa; }
 .st-multi-select__item label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; }
-.st-multi-select__item input[type=checkbox] { margin: 0; }
+.st-multi-select__item input[type=checkbox] { margin: 0; accent-color: #2271b1; }
 .st-multi-select__count { color: #8c8f94; font-size: 12px; }
-.st-multi-select__toggle { margin-top: 8px; font-size: 12px; color: #2271b1; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; }
+.st-multi-select__toggle { margin-top: 8px; font-size: 12px; color: #2271b1; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; font-weight: 500; }
 .st-multi-select__empty { color: #8c8f94; font-style: italic; margin-top: 6px; }
 
 /* ============================================================
-   Info row — 3 compact cards at the bottom
+   Info row — 3 compact cards
    ============================================================ */
 .st-info-row {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: 16px;
-	margin-top: 32px;
+	margin-top: 28px;
 	padding-top: 24px;
-	border-top: 2px solid #dcdcde;
+	border-top: 2px solid #e8eaeb;
 }
 
 .st-info-card {
 	background: #fff;
-	border: 1px solid #dcdcde;
-	border-radius: 6px;
+	border: 1px solid #e8eaeb;
+	border-radius: 10px;
 	overflow: hidden;
-	display: flex;
-	flex-direction: column;
+	display: flex; flex-direction: column;
+	transition: box-shadow .15s;
 }
+.st-info-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 
 .st-info-card__head {
 	display: flex; align-items: center; gap: 8px;
-	padding: 11px 14px;
+	padding: 12px 16px;
 	background: #f9f9f6;
 	border-bottom: 1px solid #f0f0f1;
 	font-size: 13px; font-weight: 600; color: #1d2327;
@@ -150,73 +205,80 @@
 .st-info-card__head .dashicons,
 .st-info-card__head .st-icon { color: #50575e; fill: #50575e; }
 
-.st-info-card__body { padding: 14px; flex: 1; }
+.st-info-card__body { padding: 16px; flex: 1; }
 
 .st-info-card--donate {
-	border-left: 3px solid #d63638;
+	border-left: none;
+	background: linear-gradient(135deg, #fef2f2, #fff);
 }
 .st-info-card--donate .st-info-card__head {
 	background: #fef2f2;
 	border-bottom-color: #fecaca;
 }
 .st-info-card--donate .st-info-card__head .dashicons,
-.st-info-card--donate .st-info-card__head .st-icon {
-	color: #d63638; fill: #d63638;
-}
+.st-info-card--donate .st-info-card__head .st-icon { color: #d63638; fill: #d63638; }
 
 .st-info-desc { font-size: 13px; color: #50575e; line-height: 1.6; margin: 0 0 10px; }
-.st-info-desc code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 12px; background: rgba(0,0,0,.05); padding: 1px 5px; border-radius: 3px; }
+.st-info-desc code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 12px; background: rgba(0,0,0,.04); padding: 1px 5px; border-radius: 3px; }
 
 .st-info-list { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.7; color: #3c434a; }
 .st-info-list li { margin-bottom: 4px; }
-.st-info-list code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 11px; background: rgba(0,0,0,.05); padding: 1px 4px; border-radius: 3px; }
+.st-info-list code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 11px; background: rgba(0,0,0,.04); padding: 1px 4px; border-radius: 3px; }
 
-.st-code-block { margin: 0 0 8px; }
-.st-code-block code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 13px; background: #f0f0f1; padding: 6px 10px; border-radius: 3px; color: #1d2327; display: block; }
+.st-code-block { margin: 0 0 10px; }
+.st-code-block code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 14px; background: #f6f7f7; padding: 8px 12px; border-radius: 6px; color: #1d2327; display: block; }
 
 /* ============================================================
    Buttons
    ============================================================ */
-.st-button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; font-size: 14px; font-weight: 500; border-radius: 4px; cursor: pointer; text-decoration: none; transition: all .15s; }
+.st-button { display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; font-size: 14px; font-weight: 500; border-radius: 6px; cursor: pointer; text-decoration: none; transition: all .15s; }
 .st-button--primary { background: #2271b1; color: #fff; border: 1px solid #2271b1; }
 .st-button--primary:hover { background: #135e96; border-color: #135e96; }
-.st-button--danger { background: #fff; color: #b32d2e; border: 1px solid #c3c4c7; }
+.st-button--danger { background: #fff; color: #b32d2e; border: 1px solid #dcdcde; }
 .st-button--danger:hover { background: #fef0f0; border-color: #b32d2e; }
-.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate) { background: #fff; color: #1d2327; border: 1px solid #c3c4c7; }
-.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate):hover { background: #f0f0f1; }
-.st-button--donate { background: #ffc439; color: #1d2327; border: 1px solid #e6a800; font-weight: 600; font-size: 13px; padding: 6px 14px; }
+.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate) { background: #fff; color: #1d2327; border: 1px solid #dcdcde; }
+.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate):hover { background: #f6f7f7; }
+.st-button--donate { background: #ffc439; color: #1d2327; border: 1px solid #e6a800; font-weight: 600; font-size: 13px; padding: 7px 16px; border-radius: 6px; }
 .st-button--donate:hover { background: #ffb830; }
 
 /* ============================================================
-   Save bar — full width at bottom
+   Save bar
    ============================================================ */
 .st-save-bar {
 	display: flex; align-items: center; gap: 12px;
-	padding: 14px 20px; background: #fff;
-	border: 1px solid #c3c4c7; border-radius: 4px;
-	margin: 28px 0 0;
+	padding: 16px 22px; background: #fff;
+	border: 1px solid #e8eaeb; border-radius: 10px;
+	margin-top: 28px;
 }
 .st-save-bar .dashicons, .st-save-bar .st-icon { flex-shrink: 0; }
 
 /* ============================================================
-   Meta box (Classic Editor)
+   Meta box
    ============================================================ */
 .st-meta-box { padding: 6px 0; }
 .st-meta-box .st-input { font-size: 14px; padding: 10px 12px; }
 .st-meta-box__preview-label { margin: 12px 0 6px; font-size: 12px; color: #646970; text-transform: uppercase; letter-spacing: .5px; }
-.st-meta-box__preview { padding: 12px; border: 1px dashed #c3c4c7; border-radius: 4px; background: #fff; font-size: 15px; min-height: 32px; line-height: 1.5; }
+.st-meta-box__preview { padding: 14px; border: 1px dashed #c3c4c7; border-radius: 6px; background: #fff; font-size: 15px; min-height: 32px; line-height: 1.5; }
 
 /* ============================================================
    Block
    ============================================================ */
-.st-block-empty { color: #8c8f94; font-style: italic; padding: 8px 12px; border: 1px dashed #c3c4c7; border-radius: 4px; }
+.st-block-empty { color: #8c8f94; font-style: italic; padding: 8px 12px; border: 1px dashed #c3c4c7; border-radius: 6px; }
 
 /* ============================================================
-   Responsive
+   Responsive — collapse to single column
    ============================================================ */
 @media (max-width: 900px) {
-	.st-grid { grid-template-columns: 1fr; }
+	.st-bento { grid-template-columns: 1fr !important; }
+	#st-card-auto-merge,
+	#st-card-only-main,
+	#st-card-post-types,
+	#st-card-categories,
+	#st-card-post-ids { grid-column: 1 / -1 !important; }
 	.st-info-row { grid-template-columns: 1fr; }
+	.st-hero { flex-direction: column; align-items: flex-start; gap: 12px; }
+	.st-hero__stats { width: 100%; }
+	.st-hero__stat { flex: 1; }
 }
 @media (max-width: 782px) {
 	.st-row { flex-direction: column; }

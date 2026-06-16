@@ -1,9 +1,27 @@
-{# Settings page — full-width card grid, no sidebar. #}
+{# Settings page — bento grid layout. Creative, asymmetric, modern. #}
 <div class="st-settings">
 
-	<div class="wrap">
-		<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
-		<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
+	<div class="st-hero">
+		<div class="st-hero__text">
+			<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
+			<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
+		</div>
+		<div class="st-hero__stats">
+			<a href="https://docs.kolja-nolte.com/secondary-title/"
+			   class="st-hero__stat"
+			   target="_blank"
+			   rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'book-open', size: 20 } only %}
+				<span class="st-hero__stat-value">{{ __('Docs', 'secondary-title') }}</span>
+			</a>
+			<a href="https://wordpress.org/support/plugin/secondary-title/"
+			   class="st-hero__stat"
+			   target="_blank"
+			   rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'question', size: 20 } only %}
+				<span class="st-hero__stat-value">{{ __('Support', 'secondary-title') }}</span>
+			</a>
+		</div>
 	</div>
 
 	<nav class="st-tabs" aria-label="{{ __('Settings sections', 'secondary-title') }}">
@@ -17,7 +35,7 @@
 		</button>
 	</nav>
 
-	<form method="post" action="options.php" class="st-form" novalidate>
+	<form method="post" action="options.php" novalidate>
 		{{ settings_fields(page.option_group)|raw }}
 
 		<div class="st-panels" data-st-panels>
