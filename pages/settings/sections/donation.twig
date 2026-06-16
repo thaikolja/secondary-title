@@ -1,13 +1,12 @@
-{# Donation sidebar card — compact, sidebar-friendly. #}
-<div class="st-sidebar-card st-sidebar-card--donation">
-	<div class="st-sidebar-card__head">
-		{% include 'components/icon.twig' with { name: 'heart', size: 16 } only %}
+{# Compact donation card for the preview panel. #}
+<div class="st-preview-block">
+	<div class="st-preview-block__head">
+		{% include 'components/icon.twig' with { name: 'heart', size: 14 } only %}
 		<span>{{ __('Support', 'secondary-title') }}</span>
 	</div>
-	<div class="st-sidebar-card__body">
-		<p class="st-sidebar-desc">
-			{{ __('Secondary Title is developed by one person — without AI-generated code. Every line is written, reviewed, and tested by hand. This takes significant time.', 'secondary-title') }}
-		</p>
+	<div class="st-preview-block__body">
+		<p class="st-donation__lead">{{ __('Secondary Title is developed by one person — without AI-generated code. Every line is written, reviewed, and tested by hand. This takes significant time.', 'secondary-title') }}</p>
+		<p>{{ __('If this plugin helps your site, please consider a small donation to support ongoing development.', 'secondary-title') }}</p>
 		<a href="https://www.paypal.me/thaikolja/10"
 		   class="st-button st-button--donate"
 		   target="_blank"

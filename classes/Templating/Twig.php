@@ -58,9 +58,9 @@ final class Twig {
 		$twig = new Environment(
 			$loader,
 			[
-				'cache'            => $this->cache_path(),
+				'cache'            => $this->resolve_cache(),
 				'auto_reload'      => $this->should_auto_reload(),
-				'strict_variables' => false,
+				'strict_variables' => defined( 'WP_DEBUG' ) && WP_DEBUG,
 				'autoescape'       => 'html',
 			]
 		);
@@ -78,6 +78,23 @@ final class Twig {
 		do_action( 'secondary_title_twig_init', $twig );
 
 		return $twig;
+	}
+
+	/**
+	 * Resolves the Twig cache setting.
+	 *
+	 * When WP_DEBUG is true, cache is disabled entirely so template
+	 * changes are immediately visible. In production, compiled
+	 * templates are written to the filesystem and reused.
+	 *
+	 * @return string|false
+	 */
+	private function resolve_cache(): string|false {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return false;
+		}
+
+		return $this->cache_path();
 	}
 
 	/**

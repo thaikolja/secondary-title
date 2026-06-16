@@ -1,0 +1,60 @@
+{# Decorative preview panel — lives on the right side of the split layout. #}
+<div class="st-preview-panel">
+
+	{# Live preview block #}
+	<div class="st-preview-block">
+		<div class="st-preview-block__head">
+			{% include 'components/icon.twig' with { name: 'eye', size: 16 } only %}
+			<span>{{ __('Live Preview', 'secondary-title') }}</span>
+		</div>
+		<div class="st-preview-block__body">
+			<div class="st-preview-output" id="st-sidebar-preview" data-st-preview
+			     data-st-sample-title="{{ preview.sample_title|e }}"
+			     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}">
+				<span class="st-preview-placeholder">{{ __('Enter a title format to see preview', 'secondary-title') }}</span>
+			</div>
+			<div class="st-preview-inputs">
+				<div class="st-preview-field">
+					<label>{{ __('Title:', 'secondary-title') }}</label>
+					<span class="st-preview-value" data-st-preview-title>{{ preview.sample_title|e }}</span>
+				</div>
+				<div class="st-preview-field">
+					<label>{{ __('Secondary:', 'secondary-title') }}</label>
+					<span class="st-preview-value" data-st-preview-secondary>{{ preview.sample_secondary_title|e }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{# Quick actions #}
+	<div class="st-preview-block st-preview-block--compact">
+		<div class="st-preview-block__head">
+			{% include 'components/icon.twig' with { name: 'book-open', size: 16 } only %}
+			<span>{{ __('Quick links', 'secondary-title') }}</span>
+		</div>
+		<div class="st-preview-block__body">
+			<a href="https://docs.kolja-nolte.com/secondary-title/"
+			   class="st-preview-link"
+			   target="_blank"
+			   rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'arrow-square-out', size: 14 } only %}
+				<span>{{ __('Read documentation', 'secondary-title') }}</span>
+			</a>
+			<a href="https://wordpress.org/support/plugin/secondary-title/"
+			   class="st-preview-link"
+			   target="_blank"
+			   rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'question', size: 14 } only %}
+				<span>{{ __('Get support', 'secondary-title') }}</span>
+			</a>
+		</div>
+	</div>
+
+	{# Decorative element — shows the rendered format as a subtle background text #}
+	<div class="st-preview-decoration" aria-hidden="true">
+		<span>%secondary_title%</span>
+		<span class="st-preview-decoration__sep">:</span>
+		<span>%title%</span>
+	</div>
+
+</div>

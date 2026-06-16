@@ -1,220 +1,275 @@
 /**
- * Settings page — hero title format + 4-column micro card grid.
+ * Settings page — vertical split layout.
+ * Left: settings cards. Right: decorative preview panel.
  */
 
 .st-settings { margin: 0 auto; }
 
 /* ============================================================
-   Hero
+   Header
    ============================================================ */
-.st-hero {
-	display: flex; align-items: center; justify-content: space-between;
-	padding: 20px 0 0;
-}
+.st-header { padding: 20px 0 0; }
 .st-tagline { color: #646970; font-size: 14px; margin: -2px 0 0 0; }
 
-.st-hero__link {
-	display: inline-flex; align-items: center; gap: 6px;
-	padding: 8px 16px;
-	background: #fff; border: 1px solid #dcdcde; border-radius: 6px;
-	text-decoration: none; color: #50575e; font-size: 13px; font-weight: 500;
-	transition: all .15s;
+/* ============================================================
+   Split layout
+   ============================================================ */
+.st-split {
+	display: flex; gap: 24px;
+	margin-top: 22px;
+	align-items: flex-start;
 }
-.st-hero__link:hover { border-color: #2271b1; color: #2271b1; }
+.st-main { flex: 1; min-width: 0; }
+.st-panel { flex: 0 0 320px; position: sticky; top: 52px; }
 
 /* ============================================================
-   Title format — prominent hero card
+   Title format hero
    ============================================================ */
 .st-format-hero {
-	margin-top: 22px;
-	display: flex; justify-content: center;
-}
-.st-format-hero__inner {
-	width: 100%;
-	max-width: 720px;
 	background: #fff;
 	border: 1.5px solid #c3c4c7;
 	border-radius: 10px;
 	overflow: hidden;
-	box-shadow: 0 2px 8px rgba(0,0,0,.04);
+	box-shadow: 0 1px 3px rgba(0,0,0,.04);
+	margin-bottom: 20px;
 }
 .st-format-hero__head {
 	display: flex; align-items: center; gap: 8px;
 	padding: 12px 20px;
-	background: #1d2327;
-	color: #fff;
+	background: #1d2327; color: #fff;
 	font-size: 14px; font-weight: 600;
 }
 .st-format-hero__head .dashicons,
 .st-format-hero__head .st-icon { color: #72aee6; fill: #72aee6; }
-.st-format-hero__badge {
-	margin-left: auto;
-	font-size: 10px; font-weight: 500;
-	text-transform: uppercase; letter-spacing: .6px;
-	padding: 3px 10px;
-	background: rgba(255,255,255,.1);
-	border-radius: 10px;
-	color: #72aee6;
-}
 .st-format-hero__body { padding: 20px 22px; }
+
+.st-format-intro {
+	color: #3c434a; font-size: 13.5px; line-height: 1.6; margin: 0 0 18px;
+}
+.st-format-intro code {
+	font-family: "SF Mono", Menlo, Consolas, Monaco, monospace;
+	font-size: 12px; background: #f0f0f1; padding: 2px 6px; border-radius: 3px;
+}
 
 .st-format-hero .st-format-field__input { margin-bottom: 10px; }
 .st-format-hero .st-format-field__input .st-input--code {
 	min-height: 48px; padding: 12px 16px; font-size: 15px;
 }
-.st-format-hero .st-format-field__placeholders { display: flex; gap: 8px; margin-bottom: 14px; }
+.st-format-hero .st-format-field__placeholders { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
 .st-format-hero .st-chip {
 	display: inline-flex; align-items: center; padding: 5px 12px;
 	background: #f0f0f1; border: 1px solid #dcdcde; border-radius: 5px;
 	font-size: 13px; cursor: pointer; transition: all .15s;
 }
-.st-format-hero .st-chip:hover { background: #2271b1; color: #fff; border-color: #2271b1; }
+.st-format-hero .st-chip:hover { background: #3f56e0; color: #fff; border-color: #3f56e0; }
+.st-format-hero .st-chip:hover code { color: #fff; }
 .st-format-hero .st-chip code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 13px; background: none; padding: 0; }
 
 .st-format-hero .st-format-field__preview {
 	border: 1.5px solid #e8eaeb; border-radius: 8px;
-	padding: 16px 20px; min-height: 44px; background: #fafafa;
+	padding: 14px 18px; min-height: 40px; background: #fafafa;
 }
 .st-format-hero .st-format-field__preview-head {
-	display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+	display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
 	font-size: 11px; color: #8c8f94; text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
 }
-.st-format-hero .st-format-field__preview-body { font-size: 18px; color: #1d2327; line-height: 1.5; word-break: break-word; }
+.st-format-hero .st-format-field__preview-body { font-size: 17px; color: #1d2327; line-height: 1.5; }
 
-/* format examples inline */
 .st-format-examples {
 	display: flex; flex-wrap: wrap; gap: 6px;
-	margin-top: 14px; padding-top: 14px;
+	margin-top: 14px; padding-top: 12px;
 	border-top: 1px solid #f0f0f1;
 }
 .st-format-examples code {
 	font-family: "SF Mono", Menlo, Consolas, Monaco, monospace;
-	font-size: 11px; background: #f0f0f1; padding: 3px 8px;
-	border-radius: 3px; color: #1d2327; cursor: pointer;
-	transition: all .15s;
+	font-size: 11px; background: #f0f0f1; padding: 3px 8px; border-radius: 3px;
+	color: #1d2327; cursor: pointer; transition: all .15s;
 }
-.st-format-examples code:hover { background: #2271b1; color: #fff; }
+.st-format-examples code:hover { background: #3f56e0; color: #fff; }
 
 /* ============================================================
-   Micro cards — 4-column grid
+   2-col and 3-col grids
    ============================================================ */
-.st-micro-grid {
+.st-grid-2 {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: 1fr 1fr;
 	gap: 16px;
-	margin-top: 22px;
+	margin-bottom: 16px;
 }
-/* Post IDs spans wider */
-#st-card-post-ids { grid-column: span 2; }
+.st-grid-3 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+#st-card-post-ids { grid-column: span 1; }
 
+/* ============================================================
+   Cards — #3f56e0 with decorative dot pattern
+   ============================================================ */
 .st-card {
-	background: #fff;
-	border: 1px solid #dcdcde;
-	border-radius: 8px;
-	box-shadow: 0 1px 2px rgba(0,0,0,.03);
+	background-color: #3f56e0;
+	background-image:
+		radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);
+	background-size: 20px 20px;
+	border: none; border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(63,86,224,.15);
 	display: flex; flex-direction: column;
+	transition: box-shadow .15s;
 }
+.st-card:hover { box-shadow: 0 4px 14px rgba(63,86,224,.25); }
+
 .st-card__head {
-	padding: 11px 16px;
-	border-bottom: 1px solid #f0f0f1;
+	padding: 10px 14px;
+	border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .st-card__title {
 	display: flex; align-items: center; gap: 6px;
-	margin: 0; font-size: 12px; font-weight: 600; color: #1d2327;
+	margin: 0; font-size: 12px; font-weight: 600; color: #fff;
 }
 .st-card__title .dashicons,
-.st-card__title .st-icon { color: #2271b1; fill: #2271b1; }
-.st-card__body { padding: 14px 16px; flex: 1; }
-.st-card-desc { color: #646970; font-size: 12px; font-style: italic; margin: 6px 0 0; line-height: 1.5; }
+.st-card__title .st-icon { color: rgba(255,255,255,.5); fill: rgba(255,255,255,.5); }
+
+.st-card__body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; }
+.st-card-desc { color: rgba(255,255,255,.6); font-size: 11px; font-style: normal; margin: 6px 0 0; line-height: 1.6; }
 
 /* ============================================================
-   Inputs inside micro cards
+   Toggle on colored bg
    ============================================================ */
-.st-input { width: 100%; font-size: 13px; padding: 7px 10px; border: 1px solid #8c8f94; border-radius: 3px; color: #1d2327; transition: border-color .15s; }
-.st-input:focus { border-color: #2271b1; box-shadow: 0 0 0 1px #2271b1; outline: none; }
-
-/* ============================================================
-   Toggle inside micro cards
-   ============================================================ */
-.st-toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.st-toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .st-toggle input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
-.st-toggle__track { position: relative; width: 40px; height: 22px; background: #c3c4c7; border-radius: 11px; transition: background .2s; flex-shrink: 0; }
-.st-toggle input:checked + .st-toggle__track { background: #2271b1; }
-.st-toggle__thumb { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
-.st-toggle input:checked + .st-toggle__track .st-toggle__thumb { transform: translateX(18px); }
-.st-toggle__labels { display: flex; gap: 4px; font-size: 13px; color: #50575e; }
+.st-toggle__track {
+	position: relative; width: 38px; height: 20px;
+	background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.25);
+	border-radius: 10px; transition: all .2s; flex-shrink: 0;
+}
+.st-toggle input:checked + .st-toggle__track {
+	background: rgba(255,255,255,.9); border-color: rgba(255,255,255,.9);
+}
+.st-toggle__thumb {
+	position: absolute; top: 0; left: 0; width: 18px; height: 18px;
+	background: #fff; border-radius: 50%;
+	transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.st-toggle input:checked + .st-toggle__track .st-toggle__thumb {
+	transform: translateX(17px);
+	background: #3f56e0;
+}
+.st-toggle__labels { display: flex; gap: 4px; font-size: 12px; color: #fff; font-weight: 500; }
 
 /* ============================================================
-   Multi-select
+   Inputs
    ============================================================ */
+.st-input { width: 100%; font-size: 13px; padding: 7px 10px; border: 1px solid rgba(255,255,255,.2); border-radius: 4px; color: #1d2327; background: #fff; transition: border-color .15s; }
+.st-input:focus { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,.3); outline: none; }
+.st-input::placeholder { color: #a7aab0; }
+
 .st-multi-select__search { position: relative; margin-bottom: 8px; }
 .st-multi-select__search input { width: 100%; padding: 6px 10px 6px 30px; font-size: 13px; }
+.st-multi-select__search input:focus { box-shadow: 0 0 0 2px rgba(255,255,255,.3); }
 .st-multi-select__search .dashicons, .st-multi-select__search .st-icon { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: #8c8f94; }
-.st-multi-select__list { list-style: none; margin: 0; padding: 0; max-height: 180px; overflow-y: auto; border: 1px solid #dcdcde; border-radius: 3px; }
+.st-multi-select__list { list-style: none; margin: 0; padding: 0; max-height: 140px; overflow-y: auto; border: 1px solid rgba(255,255,255,.2); border-radius: 4px; background: #fff; }
 .st-multi-select__item { padding: 5px 10px; background: #fff; border-bottom: 1px solid #f0f0f1; font-size: 12px; }
 .st-multi-select__item:last-child { border-bottom: none; }
-.st-multi-select__item:nth-child(even) { background: #fafafa; }
+.st-multi-select__item:nth-child(even) { background: #f8f9ff; }
 .st-multi-select__item label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.st-multi-select__item input[type=checkbox] { margin: 0; accent-color: #2271b1; }
+.st-multi-select__item input[type=checkbox] { margin: 0; accent-color: #3f56e0; }
 .st-multi-select__count { color: #8c8f94; font-size: 11px; }
-.st-multi-select__toggle { margin-top: 6px; font-size: 11px; color: #2271b1; background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; }
+.st-multi-select__toggle { margin-top: 6px; font-size: 11px; color: rgba(255,255,255,.6); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; }
+.st-multi-select__toggle:hover { color: #fff; }
 
 /* ============================================================
-   Info row — 3 cards
+   Preview panel (right side)
    ============================================================ */
-.st-info-row {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 14px;
-	margin-top: 32px;
-	padding-top: 24px;
-	border-top: 1.5px solid #dcdcde;
-}
+.st-preview-panel { }
 
-.st-info-card {
-	background: #fff;
+.st-preview-block {
+	background: linear-gradient(135deg, #f0f4ff 0%, #f8f4ff 50%, #fff 100%);
 	border: 1px solid #dcdcde;
-	border-radius: 8px;
+	border-radius: 10px;
 	overflow: hidden;
+	margin-bottom: 14px;
 }
-.st-info-card__head {
+.st-preview-block__head {
 	display: flex; align-items: center; gap: 6px;
 	padding: 10px 14px;
-	background: #f0f0f1;
+	background: rgba(255,255,255,.7);
+	border-bottom: 1px solid #e8eaeb;
 	font-size: 12px; font-weight: 600; color: #1d2327;
 }
-.st-info-card__head .dashicons, .st-info-card__head .st-icon { color: #50575e; fill: #50575e; }
-.st-info-card__body { padding: 12px 14px; }
+.st-preview-block__head .dashicons,
+.st-preview-block__head .st-icon { color: #3f56e0; fill: #3f56e0; }
 
-.st-info-card--donate {
-	border-left: none;
-}
-.st-info-card--donate .st-info-card__head {
-	background: #fef2f2; color: #d63638;
-}
-.st-info-card--donate .st-info-card__head .dashicons,
-.st-info-card--donate .st-info-card__head .st-icon { color: #d63638; fill: #d63638; }
+.st-preview-block__body { padding: 14px; }
 
-.st-info-desc { font-size: 12px; color: #50575e; line-height: 1.6; margin: 0 0 8px; }
-.st-info-desc code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 11px; background: rgba(0,0,0,.05); padding: 1px 4px; border-radius: 3px; }
-.st-info-list { margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.6; color: #3c434a; }
-.st-info-list li { margin-bottom: 3px; }
-.st-info-list code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 10px; background: rgba(0,0,0,.05); padding: 1px 3px; border-radius: 3px; }
-.st-code-block { margin: 0 0 6px; }
-.st-code-block code { font-family: "SF Mono", Menlo, Consolas, Monaco, monospace; font-size: 12px; background: #f0f0f1; padding: 6px 10px; border-radius: 4px; color: #1d2327; display: block; }
+/* Preview output */
+.st-preview-output {
+	padding: 14px;
+	background: #fff;
+	border: 1px solid #e8eaeb;
+	border-radius: 6px;
+	min-height: 48px;
+	font-size: 16px;
+	color: #1d2327;
+	line-height: 1.5;
+	margin-bottom: 14px;
+}
+.st-preview-placeholder { color: #a7aab0; font-style: italic; font-size: 13px; }
+
+/* Sample values display */
+.st-preview-inputs {
+	display: flex; flex-direction: column; gap: 6px;
+}
+.st-preview-field {
+	display: flex; align-items: center; gap: 6px;
+	font-size: 12px; color: #50575e;
+}
+.st-preview-field label {
+	font-weight: 600;
+	flex-shrink: 0;
+	color: #3f56e0;
+}
+
+/* Quick links */
+.st-preview-link {
+	display: flex; align-items: center; gap: 6px;
+	padding: 8px 0;
+	color: #3f56e0; text-decoration: none; font-size: 13px; font-weight: 500;
+	border-bottom: 1px solid #f0f0f1;
+	transition: color .15s;
+}
+.st-preview-link:last-child { border-bottom: none; }
+.st-preview-link:hover { color: #2e3fa8; }
+
+/* Decorative text at the bottom of the panel */
+.st-preview-decoration {
+	margin-top: 24px;
+	padding: 16px;
+	text-align: center;
+	font-family: "SF Mono", Menlo, Consolas, Monaco, monospace;
+	font-size: 12px;
+	color: #d0d5e0;
+	line-height: 1.8;
+	user-select: none;
+	opacity: .7;
+}
+.st-preview-decoration__sep {
+	color: #dce0e8;
+}
 
 /* ============================================================
-   Buttons
+   Donation in sidebar
    ============================================================ */
-.st-button { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; text-decoration: none; transition: all .15s; }
-.st-button--primary { background: #2271b1; color: #fff; border: 1px solid #2271b1; }
-.st-button--primary:hover { background: #135e96; }
-.st-button--danger { background: #fff; color: #b32d2e; border: 1px solid #dcdcde; }
-.st-button--danger:hover { background: #fef0f0; border-color: #b32d2e; }
-.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate) { background: #fff; color: #1d2327; border: 1px solid #dcdcde; }
-.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate):hover { background: #f0f0f1; }
-.st-button--donate { background: #ffc439; color: #1d2327; border: 1px solid #e6a800; font-weight: 600; font-size: 12px; padding: 5px 12px; }
-.st-button--donate:hover { background: #ffb830; }
+.st-panel .st-donation { }
+
+.st-panel .st-donation__lead {
+	font-size: 12px; color: #50575e; line-height: 1.6;
+	font-weight: 500; margin: 0 0 8px;
+}
+.st-panel .st-donation p { font-size: 12px; color: #50575e; line-height: 1.6; margin: 0 0 10px; }
+.st-panel .st-donation .st-button--donate {
+	margin-top: 4px;
+}
 
 /* ============================================================
    Save bar
@@ -223,11 +278,25 @@
 	display: flex; align-items: center; gap: 10px;
 	padding: 14px 20px; background: #fff;
 	border: 1px solid #dcdcde; border-radius: 8px;
-	margin-top: 24px;
+	margin-top: 0;
 }
+.st-save-bar .dashicons, .st-save-bar .st-icon { flex-shrink: 0; }
 
 /* ============================================================
-   Meta box (Classic Editor)
+   Buttons
+   ============================================================ */
+.st-button { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; text-decoration: none; transition: all .15s; }
+.st-button--primary { background: #3f56e0; color: #fff; border: 1px solid #3f56e0; }
+.st-button--primary:hover { background: #2e3fa8; border-color: #2e3fa8; }
+.st-button--danger { background: #fff; color: #b32d2e; border: 1px solid #dcdcde; }
+.st-button--danger:hover { background: #fef0f0; border-color: #b32d2e; }
+.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate) { background: #fff; color: #1d2327; border: 1px solid #dcdcde; }
+.st-button:not(.st-button--primary):not(.st-button--danger):not(.st-button--donate):hover { background: #f0f0f1; }
+.st-button--donate { background: #ffc439; color: #1d2327; border: 1px solid #e6a800; font-weight: 600; font-size: 12px; padding: 5px 12px; border-radius: 5px; }
+.st-button--donate:hover { background: #ffb830; }
+
+/* ============================================================
+   Meta box
    ============================================================ */
 .st-meta-box { padding: 6px 0; }
 .st-meta-box .st-input { font-size: 14px; padding: 10px 12px; }
@@ -243,12 +312,11 @@
    Responsive
    ============================================================ */
 @media (max-width: 900px) {
-	.st-micro-grid { grid-template-columns: repeat(2, 1fr); }
-	#st-card-post-ids { grid-column: span 2; }
-	.st-info-row { grid-template-columns: 1fr; }
+	.st-split { flex-direction: column; }
+	.st-panel { flex: none; width: 100%; position: static; }
+	.st-grid-2 { grid-template-columns: 1fr; }
+	.st-grid-3 { grid-template-columns: 1fr; }
 }
-@media (max-width: 600px) {
-	.st-micro-grid { grid-template-columns: 1fr; }
-	#st-card-post-ids { grid-column: 1; }
-	.st-hero { flex-direction: column; align-items: flex-start; gap: 10px; }
+@media (max-width: 782px) {
+	.st-save-bar { flex-wrap: wrap; }
 }
