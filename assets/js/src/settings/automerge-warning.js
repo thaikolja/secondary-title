@@ -1,6 +1,6 @@
 /**
  * Toggles the auto-merge OFF warning below the live preview
- * when the user flips the "Auto-merge" toggle.
+ * with a smooth slide animation when the user flips the toggle.
  */
 export function initAutomergeWarning( root ) {
 	const toggle = root.querySelector( '#st-toggle-auto-show' );
@@ -12,12 +12,11 @@ export function initAutomergeWarning( root ) {
 
 	const update = () => {
 		if ( toggle.checked ) {
-			warning.hidden = true;
+			warning.classList.remove( 'st-automerge-warning--visible' );
 		} else {
-			warning.hidden = false;
+			warning.classList.add( 'st-automerge-warning--visible' );
 		}
 	};
 
 	toggle.addEventListener( 'change', update );
-	update();
 }
