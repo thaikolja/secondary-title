@@ -6,7 +6,7 @@
 	{% include 'components/icon.twig' with { name: 'merge', size: 18 } only %}
 	<div class="st-merge-card__info">
 		<strong>{{ __('Auto-merge', 'secondary-title') }}</strong>
-		<span>{{ __('Automatically insert the format below into the post title via the_title filter.', 'secondary-title') }}</span>
+		<span>{{ __('When enabled, the secondary title is merged into the post title using the format below. This happens via the <code>the_title</code> filter, so it works across your entire theme. Disable auto-merge to control placement manually with the shortcode, block, or PHP functions.', 'secondary-title')|raw }}</span>
 	</div>
 	{% include 'components/toggle.twig' with {
 		name:      keys.auto_show,
@@ -40,6 +40,10 @@
 			<span class="st-chip-row__label">{{ __('Insert:', 'secondary-title') }}</span>
 			<button type="button" class="st-chipp" data-st-placeholder="%title%"><code>%title%</code></button>
 			<button type="button" class="st-chipp" data-st-placeholder="%secondary_title%"><code>%secondary_title%</code></button>
+			<button type="button" class="st-preview-toggle" data-st-preview-toggle aria-label="{{ __('Toggle dark preview', 'secondary-title') }}">
+				{% include 'components/icon.twig' with { name: 'eye', size: 13 } only %}
+				<span>{{ __('Dark', 'secondary-title') }}</span>
+			</button>
 		</div>
 
 		<div class="st-preview-hero" id="st-format-preview"

@@ -17,7 +17,7 @@
 			</div>
 			<div class="st-info-row">
 				<span class="st-info-row__label">{{ __('Auto-merge', 'secondary-title') }}</span>
-				<span class="st-info-row__value st-info-row__value--{{ settings[keys.auto_show] == 'on' ? 'on' : 'off' }}">
+				<span class="st-info-row__value st-info-row__value--{{ settings[keys.auto_show] == 'on' ? 'on' : 'off' }}" data-st-info-automerge>
 					{{ settings[keys.auto_show] == 'on' ? __('Enabled', 'secondary-title') : __('Disabled', 'secondary-title') }}
 				</span>
 			</div>
@@ -48,11 +48,11 @@
 				<option value="post_type">{{ __('Post Types', 'secondary-title') }}</option>
 			</select>
 
-			<div class="st-sidebar-search">
-				{% include 'components/icon.twig' with { name: 'magnifying-glass', size: 14 } only %}
+			<div class="st-multi-select__search">
+				{% include 'components/icon.twig' with { name: 'magnifying-glass' } only %}
 				<input type="search"
 				       id="st-sidebar-term-search"
-				       class="st-sidebar-search__input"
+				       class="st-input"
 				       placeholder="{{ __('Search terms…', 'secondary-title') }}"
 				       data-st-sidebar-search>
 			</div>

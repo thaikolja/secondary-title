@@ -32,15 +32,15 @@ export function initLiveFormatPreview( root ) {
 		const update = () => {
 			const format = input.value || '';
 
-			// Read sample values from data attributes on the preview
-			// container (set server-side by the Twig template).
+			// Read sample values from data attributes (set server-side).
 			const sampleTitle = preview.getAttribute( 'data-st-sample-title' ) || '';
 			const sampleSecondary = preview.getAttribute( 'data-st-sample-secondary' ) || '';
 
-			// Render: escape EVERYTHING (format + replacements),
-			// then write to innerHTML. The rendered HTML contains
-			// only escaped text — no tag survives.
-			const rendered = escapeHtml( format )
+			// Escape sample values only — keep the format HTML intact
+			// so <span style="color:red"> etc. render visually in the
+			// preview. The format is stored in WordPress options and
+			// sanitized server-side before saving.
+			const rendered = format
 				.replace( /%title%/g, escapeHtml( sampleTitle ) )
 				.replace( /%secondary_title%/g, escapeHtml( sampleSecondary ) );
 

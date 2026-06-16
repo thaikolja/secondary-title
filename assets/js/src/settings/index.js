@@ -8,6 +8,7 @@ import { initSearchableSelects } from './searchable-select.js';
 import { initSaveBar } from './save-bar.js';
 import { initSidebar } from './sidebar.js';
 import { initAutomergeWarning } from './automerge-warning.js';
+import { initPreviewToggle } from './preview-toggle.js';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	initTabs( document );
@@ -16,4 +17,5 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initSaveBar( document );
 	initSidebar( document );
 	initAutomergeWarning( document );
+	initPreviewToggle( document );
 } );
