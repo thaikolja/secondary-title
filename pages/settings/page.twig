@@ -1,25 +1,21 @@
-{# Settings page — vertical split: settings left, decorative preview panel right. #}
+{# Settings page — two-column: main content + sidebar. #}
 <div class="st-settings">
 
-	<div class="st-header">
-		<div class="st-header__text">
-			<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
-			<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
-		</div>
+	<div class="st-head">
+		<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
+		<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
 	</div>
 
 	<form method="post" action="options.php" novalidate>
 		{{ settings_fields(page.option_group)|raw }}
 
-		<div class="st-split">
+		<div class="st-layout">
 			<div class="st-main">
 				{% include 'settings/sections/general.twig' %}
 			</div>
-
-			<aside class="st-panel">
-				{% include 'settings/sections/preview-panel.twig' %}
-				{% include 'settings/sections/donation.twig' %}
-			</aside>
+			<div class="st-sidebar">
+				{% include 'settings/sections/help.twig' %}
+			</div>
 		</div>
 
 		{% include 'partials/save-bar.twig' with { labels } only %}

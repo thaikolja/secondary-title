@@ -63,6 +63,20 @@ export function initLiveFormatPreview( root ) {
 			} );
 		} );
 
+		// Click-to-set for preset example buttons.
+		const presets = root.querySelectorAll( '[data-st-preset]' );
+		presets.forEach( ( btn ) => {
+			btn.addEventListener( 'click', ( event ) => {
+				event.preventDefault();
+				const value = btn.getAttribute( 'data-st-preset' );
+				if ( value === null ) {
+					return;
+				}
+				input.value = value;
+				update();
+			} );
+		} );
+
 		// Initial render.
 		update();
 	} );

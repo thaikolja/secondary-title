@@ -1,56 +1,65 @@
-{# Settings — all cards in a clean 2-col layout. #}
-
-<div class="st-format-hero">
-	<div class="st-format-hero__inner">
-		<div class="st-format-hero__head">
-			{% include 'components/icon.twig' with { name: 'paint-brush', size: 18 } only %}
-			<span>{{ __('Title format', 'secondary-title') }}</span>
+{# Combined card: Auto-merge toggle + Title format input + preview. #}
+<div class="st-section">
+	<div class="st-section__head">
+		<span>{{ __('Auto-merge & Format', 'secondary-title') }}</span>
+	</div>
+	<div class="st-section__body">
+		<div class="st-auto-row">
+			{% include 'components/toggle.twig' with { name: keys.auto_show, id: 'st-toggle-auto-show', value: settings[keys.auto_show], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
+			<span class="st-auto-desc">{{ __('Automatically merge the secondary title into the post title using the format below. Turn off for manual control via shortcode, block, or theme function.', 'secondary-title') }}</span>
 		</div>
-		<div class="st-format-hero__body">
-			<p class="st-format-intro">{{ __('Use <code>%title%</code> and <code>%secondary_title%</code> to build how both titles appear together. Simple HTML for styling is allowed.', 'secondary-title')|raw }}</p>
-			{% include 'fields/format-with-preview.twig' with { name: keys.title_format, id: 'st-field-title-format', preview_id: 'st-format-preview' } %}
-			<div class="st-format-examples">
-				<code>%secondary_title%: %title%</code>
-				<code>&lt;span style="color:#f00"&gt;%secondary_title%&lt;/span&gt; — %title%</code>
-				<code>&lt;strong&gt;%secondary_title%&lt;/strong&gt;</code>
+
+		<div class="st-format-area">
+			{% include 'fields/format-with-preview.twig' with { name: keys.title_format, id: 'st-field-title-format', preview_id: 'st-format-preview', value: settings[keys.title_format] } %}
+
+			<div class="st-presets">
+				<span class="st-presets__label">{{ __('Presets', 'secondary-title') }}</span>
+				<button type="button" class="st-preset" data-st-preset="%secondary_title%: %title%"><code>%secondary_title%: %title%</code></button>
+				<button type="button" class="st-preset" data-st-preset="%secondary_title% &mdash; %title%"><code>%secondary_title% &mdash; %title%</code></button>
+				<button type="button" class="st-preset" data-st-preset="%secondary_title%"><code>%secondary_title%</code></button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="st-grid-2">
-	{% embed 'components/card.twig' with { title: __('Auto merge', 'secondary-title'), icon: 'wand', id: 'st-card-auto-merge' } %}
-		{% block card_body %}
-			{% include 'components/toggle.twig' with { name: keys.auto_show, id: 'st-toggle-auto-show', value: settings[keys.auto_show], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
-			<p class="st-card-desc">{{ __('Automatically merges the secondary title using the format above. Turn off for manual control via shortcode or block.', 'secondary-title') }}</p>
-		{% endblock %}
-	{% endembed %}
+{# Card: Display Rules. #}
+<div class="st-section">
+	<div class="st-section__head">
+		<span>{{ __('Display rules', 'secondary-title') }}</span>
+	</div>
+	<div class="st-section__body">
+		<div class="st-rules-grid">
+			<div class="st-rule">
+				<div class="st-rule__label">
+					{% include 'components/icon.twig' with { name: 'article', size: 13 } only %}
+					<span>{{ __('Main post only', 'secondary-title') }}</span>
+				</div>
+				{% include 'components/toggle.twig' with { name: keys.only_show_in_main_post, id: 'st-toggle-only-main', value: settings[keys.only_show_in_main_post], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
+			</div>
 
-	{% embed 'components/card.twig' with { title: __('Only in main post', 'secondary-title'), icon: 'article', id: 'st-card-only-main' } %}
-		{% block card_body %}
-			{% include 'components/toggle.twig' with { name: keys.only_show_in_main_post, id: 'st-toggle-only-main', value: settings[keys.only_show_in_main_post], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
-			<p class="st-card-desc">{{ __('Limits the secondary title to the main post page. Widgets and related posts show the standard title.', 'secondary-title') }}</p>
-		{% endblock %}
-	{% endembed %}
-</div>
+			<div class="st-rule">
+				<div class="st-rule__label">
+					{% include 'components/icon.twig' with { name: 'files', size: 13 } only %}
+					<span>{{ __('Post types', 'secondary-title') }}</span>
+				</div>
+				{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types], placeholder: __('All post types', 'secondary-title') } %}
+			</div>
 
-<div class="st-grid-3">
-	{% embed 'components/card.twig' with { title: __('Post types', 'secondary-title'), icon: 'files', id: 'st-card-post-types' } %}
-		{% block card_body %}
-			{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types], placeholder: __('All post types', 'secondary-title') } %}
-		{% endblock %}
-	{% endembed %}
+			<div class="st-rule">
+				<div class="st-rule__label">
+					{% include 'components/icon.twig' with { name: 'folders', size: 13 } only %}
+					<span>{{ __('Categories', 'secondary-title') }}</span>
+				</div>
+				{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories], placeholder: __('All categories', 'secondary-title') } %}
+			</div>
 
-	{% embed 'components/card.twig' with { title: __('Categories', 'secondary-title'), icon: 'folders', id: 'st-card-categories' } %}
-		{% block card_body %}
-			{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories], placeholder: __('All categories', 'secondary-title') } %}
-		{% endblock %}
-	{% endembed %}
-
-	{% embed 'components/card.twig' with { title: __('Post IDs', 'secondary-title'), icon: 'list-numbers', id: 'st-card-post-ids' } %}
-		{% block card_body %}
-			{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: '13, 71, 33' } %}
-			<p class="st-card-desc">{{ __('Only show on specific posts by ID.', 'secondary-title') }}</p>
-		{% endblock %}
-	{% endembed %}
+			<div class="st-rule">
+				<div class="st-rule__label">
+					{% include 'components/icon.twig' with { name: 'list-numbers', size: 13 } only %}
+					<span>{{ __('Post IDs', 'secondary-title') }}</span>
+				</div>
+				{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: __('e.g. 13, 71, 33', 'secondary-title') } %}
+			</div>
+		</div>
+	</div>
 </div>
