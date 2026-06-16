@@ -1,0 +1,21 @@
+parameters:
+	level: 6
+	paths:
+		- classes
+		- includes
+		- secondary-title.php
+		- uninstall.php
+	bootstrapFiles:
+		- tests/bootstrap.php
+	excludePaths:
+		- vendor
+		- node_modules
+		- tests
+		- assets
+		treatPhpDocTypesAsCertain: false
+	reportUnmatchedIgnoredErrors: false
+	scanFiles:
+		- secondary-title.php
+		- uninstall.php
+includes:
+	- vendor/szepeviktor/phpstan-wordpress/extension.neon

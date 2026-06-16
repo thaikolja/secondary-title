@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "secondary-title/secondary-title",
+	"version": "3.0.0",
+	"title": "Secondary Title",
+	"category": "text",
+	"icon": "heading",
+	"description": "Renders the secondary title of the current post using the configured format.",
+	"keywords": [ "title", "secondary", "subtitle", "heading" ],
+	"textdomain": "secondary-title",
+	"supports": {
+		"html": false,
+		"align": [ "left", "center", "right" ]
+	},
+	"attributes": {
+		"postId": {
+			"type": "number",
+			"default": 0
+		},
+		"wrapperTag": {
+			"type": "string",
+			"default": "span"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style.css"
+}

@@ -1,0 +1,28 @@
+{% embed 'components/card.twig' with { title: __('Title format', 'secondary-title'), icon: 'paint-brush' } %}
+	{% block card_body %}
+		{% embed 'components/row.twig' with { label: __('Title format', 'secondary-title'), label_for: 'st-field-title-format', icon: 'paint-brush' } %}
+			{% block row_control %}
+				{% include 'fields/format-with-preview.twig' with { name: keys.title_format, id: 'st-field-title-format', value: settings[keys.title_format], preview_id: 'st-format-preview' } %}
+				<p class="st-field-desc">{{ __('Use %title% and %secondary_title% placeholders. Limited HTML like <code>&lt;span style="color:red"&gt;</code> is allowed for styling.', 'secondary-title') }}</p>
+			{% endblock %}
+		{% endembed %}
+	{% endblock %}
+{% endembed %}
+
+{% embed 'components/card.twig' with { title: __('Auto merge', 'secondary-title'), icon: 'wand' } %}
+	{% block card_body %}
+		{% embed 'components/row.twig' with { label: __('Auto merge', 'secondary-title'), label_for: 'st-toggle-auto-show', icon: 'wand' } %}
+			{% block row_control %}
+				{% include 'components/toggle.twig' with { name: keys.auto_show, id: 'st-toggle-auto-show', value: settings[keys.auto_show] } %}
+				<p class="st-field-desc">{{ __('When on, the secondary title is merged into the post title automatically on the front end using the title format above.', 'secondary-title') }}</p>
+			{% endblock %}
+		{% endembed %}
+
+		{% embed 'components/row.twig' with { label: __('Only show in main post', 'secondary-title'), label_for: 'st-toggle-only-main', icon: 'article' } %}
+			{% block row_control %}
+				{% include 'components/toggle.twig' with { name: keys.only_show_in_main_post, id: 'st-toggle-only-main', value: settings[keys.only_show_in_main_post] } %}
+				<p class="st-field-desc">{{ __('Limit the secondary title to the main post (loop) only. Widgets and related-posts stay unaffected.', 'secondary-title') }}</p>
+			{% endblock %}
+		{% endembed %}
+	{% endblock %}
+{% endembed %}

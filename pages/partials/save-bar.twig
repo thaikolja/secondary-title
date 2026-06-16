@@ -1,0 +1,15 @@
+{# Sticky save bar at the bottom of the settings page. #}
+<div class="st-save-bar">
+	<button type="submit" class="st-button st-button--primary">
+		{% include 'components/icon.twig' with { name: 'check', size: 16 } only %}
+		<span>{{ labels.save|e }}</span>
+	</button>
+	<button type="button" class="st-button st-button--danger" data-st-reset data-confirm="{{ labels.reset_confirm|e }}">
+		{% include 'components/icon.twig' with { name: 'arrow-counter-clockwise', size: 16 } only %}
+		<span>{{ labels.reset|e }}</span>
+	</button>
+	<a href="https://docs.kolja-nolte.com/secondary-title/" target="_blank" rel="noopener noreferrer" class="st-button">
+		{% include 'components/icon.twig' with { name: 'book-open', size: 16 } only %}
+		<span>{{ __('View documentation', 'secondary-title') }}</span>
+	</a>
+</div>

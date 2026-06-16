@@ -1,0 +1,50 @@
+{#
+   Format-with-preview field. A text input + a clickable list of
+   placeholders + a live preview area.
+
+   JS (live-preview.js) reads the input on every change, escapes
+   the format, replaces %title%/%secondary_title% with the sample
+   values, and writes the result to the preview element's innerHTML.
+#}
+{% set ff_name      = name|default('') %}
+{% set ff_id        = id|default('st-field-' ~ random(99999)) %}
+{% set ff_value     = value|default('') %}
+{% set ff_preview   = preview_id|default('st-format-preview') %}
+{% set ff_placeholder = placeholder|default('%secondary_title%: %title%') %}
+
+<div class="st-format-field">
+	<div class="st-format-field__input">
+		<input type="text"
+		       id="{{ ff_id|e }}"
+		       name="{{ ff_name|e }}"
+		       value="{{ ff_value|e }}"
+		       class="st-input st-input--code"
+		       placeholder="{{ ff_placeholder|e }}"
+		       data-st-format-input
+		       data-st-preview-target="{{ ff_preview|e }}"
+		       autocomplete="off">
+	</div>
+
+	<div class="st-format-field__placeholders">
+		<button type="button" class="st-chip" data-st-placeholder="%title%">
+			<code>%title%</code>
+			<span class="screen-reader-text">{{ __('Insert the primary title placeholder', 'secondary-title') }}</span>
+		</button>
+		<button type="button" class="st-chip" data-st-placeholder="%secondary_title%">
+			<code>%secondary_title%</code>
+			<span class="screen-reader-text">{{ __('Insert the secondary title placeholder', 'secondary-title') }}</span>
+		</button>
+	</div>
+
+	<div class="st-format-field__preview">
+		<header class="st-format-field__preview-head">
+			{% include 'components/icon.twig' with { name: 'eye' } only %}
+			<span>{{ __('Preview', 'secondary-title') }}</span>
+		</header>
+		<div id="{{ ff_preview|e }}"
+		     class="st-format-field__preview-body"
+		     data-st-preview
+		     data-st-sample-title="{{ preview.sample_title|e }}"
+		     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}"></div>
+	</div>
+</div>

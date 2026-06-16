@@ -1,0 +1,22 @@
+{
+  "name":            "secondary-title",
+  "version":         "3.0.0",
+  "private":         true,
+  "description":     "Add a secondary title to WordPress posts, pages, and custom post types.",
+  "license":         "GPL-2.0-or-later",
+  "engines":         {
+    "node": ">=18"
+  },
+  "main":            "assets/js/src/index.js",
+  "scripts":         {
+    "build":           "wp-scripts build",
+    "start":           "wp-scripts start",
+    "format":          "wp-scripts format",
+    "lint:js":         "wp-scripts lint-js",
+    "lint:css":        "wp-scripts lint-style",
+    "packages-update": "wp-scripts packages-update"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "latest"
+  }
+}

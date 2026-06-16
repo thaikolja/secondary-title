@@ -1,0 +1,35 @@
+{#
+   Inline icon. Uses WP dashicons (always available in admin).
+   The icon name should be one of: gear, wand, eye, sliders, question,
+   check, arrow-counter-clockwise, book-open, paint-brush, files,
+   folders, list-numbers, rocket, code, terminal, arrow-square-out,
+   article, magnifying-glass.
+#}
+{% set icon_name = name|default('gear') %}
+{% set icon_size = size|default(16) %}
+
+{% set dashicon_map = {
+	gear:                    'dashicons-admin-generic',
+	wand:                    'dashicons-art',
+	eye:                     'dashicons-visibility',
+	sliders:                 'dashicons-admin-settings',
+	question:                'dashicons-editor-help',
+	check:                   'dashicons-yes',
+	'arrow-counter-clockwise': 'dashicons-update',
+	'book-open':             'dashicons-book',
+	'paint-brush':           'dashicons-art',
+	files:                   'dashicons-media-default',
+	folders:                 'dashicons-category',
+	'list-numbers':          'dashicons-list-view',
+	rocket:                  'dashicons-hammer',
+	code:                    'dashicons-editor-code',
+	terminal:                'dashicons-editor-code',
+	'arrow-square-out':      'dashicons-external',
+	article:                 'dashicons-media-document',
+	'magnifying-glass':      'dashicons-search',
+	heart:                   'dashicons-heart',
+} %}
+
+{% set dashicon = icon_name in dashicon_map|keys ? dashicon_map[icon_name] : 'dashicons-admin-generic' %}
+
+<span class="dashicons {{ dashicon }}" style="font-size:{{ icon_size }}px;width:{{ icon_size }}px;height:{{ icon_size }}px" aria-hidden="true"></span>

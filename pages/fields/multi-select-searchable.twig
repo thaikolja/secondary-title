@@ -1,0 +1,62 @@
+{#
+   Searchable multi-select component. Renders a list of checkboxes
+   with a search input on top that filters the list as the user
+   types. Vanilla JS (no React).
+
+   Usage:
+       {% include 'fields/multi-select-searchable.twig' with {
+           name: keys.post_types,
+           id: 'st-field-post-types',
+           options: [
+               { value: 'post', label: 'Posts', count: 12 },
+               { value: 'page', label: 'Pages', count: 4 },
+           ],
+           selected: settings[keys.post_types],
+       } %}
+#}
+{% set ms_name       = name|default('') %}
+{% set ms_id         = id|default('st-ms-' ~ random()) %}
+{% set ms_options    = options|default([]) %}
+{% set ms_selected   = selected|default([]) %}
+{% set ms_placeholder = placeholder|default(__('Search...', 'secondary-title')) %}
+{% set ms_search     = __('Search', 'secondary-title') %}
+
+<div class="st-multi-select" data-st-multi-select>
+	<div class="st-multi-select__search">
+		{% include 'components/icon.twig' with { name: 'magnifying-glass' } only %}
+		<input type="search"
+		       class="st-input"
+		       id="{{ ms_id|e }}-search"
+		       placeholder="{{ ms_placeholder|e }}"
+		       aria-label="{{ ms_search|e }}"
+		       data-st-multi-select-search>
+	</div>
+
+	<ul class="st-multi-select__list" role="listbox" aria-multiselectable="true" data-st-multi-select-list>
+		{% for opt in ms_options %}
+			{% set opt_value = opt.value|default(opt) %}
+			{% set opt_label = opt.label|default(opt_value) %}
+			{% set opt_count = opt.count|default(null) %}
+			{% set opt_is_selected = opt_value in ms_selected %}
+			{% set opt_id = ms_id ~ '-opt-' ~ loop.index0 %}
+
+			<li class="st-multi-select__item" data-st-multi-select-item data-value="{{ opt_value|e }}">
+				<label for="{{ opt_id|e }}">
+					<input type="checkbox"
+					       id="{{ opt_id|e }}"
+					       name="{{ ms_name|e }}[]"
+					       value="{{ opt_value|e }}"
+					       {% if opt_is_selected %}checked{% endif %}>
+					<span class="st-multi-select__label">{{ opt_label|e }}</span>
+					{% if opt_count is not null %}
+						<small class="st-multi-select__count">({{ opt_count }})</small>
+					{% endif %}
+				</label>
+			</li>
+		{% endfor %}
+	</ul>
+
+	<button type="button" class="st-multi-select__toggle" data-st-multi-select-toggle>
+		{{ __('Toggle all', 'secondary-title') }}
+	</button>
+</div>

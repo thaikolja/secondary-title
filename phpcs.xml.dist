@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ruleset name="Secondary Title">
+	<description>Coding standards for the Secondary Title WordPress plugin.</description>
+
+	<!-- What to scan -->
+	<file>./classes</file>
+	<file>./includes</file>
+	<file>./tests</file>
+	<file>./secondary-title.php</file>
+	<file>./uninstall.php</file>
+
+	<!-- What to exclude -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/index.php</exclude-pattern>
+	<exclude-pattern>*/tests/bootstrap.php</exclude-pattern>
+
+	<!-- Use WordPress Coding Standards + PHPCompatibility for the min PHP version -->
+	<rule ref="WordPress">
+		<!-- We namespace and autoload everything, so this is fine. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<!-- Namespaced plugin code does not need the WP prefix. -->
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals"/>
+		<!-- We use modern PHP, not snake_case for everything. -->
+		<exclude name="WordPress.PHP.YodaConditions"/>
+		<exclude name="Generic.PHP.NoSilencedErrors"/>
+		<exclude name="Squiz.PHP.CommentedOutCode"/>
+		<!-- Strict types declared via declare(strict_types=1); -->
+		<exclude name="Generic.Files.LineLength.TooLong"/>
+		<exclude name="WordPress.PHP.DevelopmentFunctions"/>
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralText"/>
+		<exclude name="WordPress.Security.NonceVerification"/>
+		<exclude name="WordPress.Security.ValidatedSanitizedInput"/>
+		<exclude name="WordPress.Security.EscapeOutput"/>
+	</rule>
+
+	<config name="minimum_supported_wp_version" value="6.5"/>
+	<config name="testVersion" value="8.1-"/>
+	<config name="text_domain" value="secondary-title"/>
+
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+	<arg name="basepath" value="."/>
+	<arg name="parallel" value="8"/>
+</ruleset>

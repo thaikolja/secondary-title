@@ -1,0 +1,30 @@
+{% embed 'components/card.twig' with { title: __('Quick start', 'secondary-title'), icon: 'rocket' } %}
+	{% block card_body %}
+		<ol class="st-help-list">
+			<li>{{ __('Add a secondary title via the sidebar panel in the block editor or the meta box in the Classic Editor.', 'secondary-title') }}</li>
+			<li>{{ __('Use the shortcode [secondary_title] or insert the Gutenberg block anywhere in your content.', 'secondary-title') }}</li>
+			<li>{{ __('Or call <code>the_secondary_title()</code> from your theme to render manually.', 'secondary-title') }}</li>
+		</ol>
+	{% endblock %}
+{% endembed %}
+
+{% embed 'components/card.twig' with { title: __('Shortcode', 'secondary-title'), icon: 'code' } %}
+	{% block card_body %}
+		<pre class="st-code-block"><code>[secondary_title]</code></pre>
+		<p>{{ __('With attributes:') }}</p>
+		<ul>
+			<li><code>post_id</code> — {{ __('ID of the post to read from. Default: current post.', 'secondary-title') }}</li>
+			<li><code>allow_html</code> — {{ __('Render stored HTML instead of plain text. Default: false.', 'secondary-title') }}</li>
+		</ul>
+	{% endblock %}
+{% endembed %}
+
+{% embed 'components/card.twig' with { title: __('Developer reference', 'secondary-title'), icon: 'terminal' } %}
+	{% block card_body %}
+		<p>{{ __('The full developer reference is on the documentation site.', 'secondary-title') }}</p>
+		<a href="https://docs.kolja-nolte.com/secondary-title/" target="_blank" rel="noopener noreferrer" class="st-button">
+			{% include 'components/icon.twig' with { name: 'arrow-square-out', size: 16 } only %}
+			<span>{{ __('Open documentation', 'secondary-title') }}</span>
+		</a>
+	{% endblock %}
+{% endembed %}

@@ -1,0 +1,19 @@
+{% embed 'components/card.twig' with { title: '', icon: 'heart', id: 'st-card-donation' } %}
+	{% block card_body %}
+		<div class="st-donation">
+			<p class="st-donation__lead">
+				{{ __('Secondary Title is developed and maintained by one person — without AI-generated code. Every line is written, reviewed, and tested by hand. This takes significant time and effort.', 'secondary-title') }}
+			</p>
+			<p>
+				{{ __('If this plugin helps your site, please consider a small donation to support ongoing development and keep it compatible with future WordPress releases.', 'secondary-title') }}
+			</p>
+			<a href="https://www.paypal.me/thaikolja/10"
+			   class="st-button st-button--donate"
+			   target="_blank"
+			   rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'heart', size: 16 } only %}
+				<span>{{ __('Donate via PayPal', 'secondary-title') }}</span>
+			</a>
+		</div>
+	{% endblock %}
+{% endembed %}

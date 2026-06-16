@@ -1,0 +1,34 @@
+{#
+   Toggle (on/off) component. Renders a hidden checkbox + a visual
+   iOS-style switch.
+
+   Usage:
+       {% include 'components/toggle.twig' with {
+           name: keys.auto_show,
+           id: 'st-toggle-auto-show',
+           value: settings[keys.auto_show],
+           on_label: __('On', 'secondary-title'),
+           off_label: __('Off', 'secondary-title'),
+       } %}
+#}
+{% set toggle_name    = name|default('') %}
+{% set toggle_id      = id|default('st-toggle-' ~ random()) %}
+{% set toggle_value   = value|default('off') %}
+{% set toggle_on      = toggle_value == 'on' %}
+{% set toggle_on_lbl  = on_label|default(__('On', 'secondary-title')) %}
+{% set toggle_off_lbl = off_label|default(__('Off', 'secondary-title')) %}
+
+<label class="st-toggle" for="{{ toggle_id|e }}">
+	<input type="checkbox"
+	       id="{{ toggle_id|e }}"
+	       name="{{ toggle_name|e }}"
+	       value="on"
+	       {% if toggle_on %}checked{% endif %}>
+	<span class="st-toggle__track" aria-hidden="true">
+		<span class="st-toggle__thumb"></span>
+	</span>
+	<span class="st-toggle__labels">
+		<span class="st-toggle__on">{{ toggle_on_lbl|e }}</span>
+		<span class="st-toggle__off">{{ toggle_off_lbl|e }}</span>
+	</span>
+</label>

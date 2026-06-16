@@ -1,0 +1,37 @@
+{# Settings page — single flat layout with section headings. #}
+<div class="st-settings">
+	<div class="wrap">
+		<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
+		<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
+	</div>
+
+	<form method="post" action="options.php" class="st-form" novalidate>
+		{{ settings_fields(page.option_group)|raw }}
+
+		<div class="st-section-heading">
+			{% include 'components/icon.twig' with { name: 'gear', size: 20 } only %}
+			<h2>{{ __('General', 'secondary-title') }}</h2>
+		</div>
+		{% include 'settings/sections/general.twig' %}
+
+		<div class="st-section-heading">
+			{% include 'components/icon.twig' with { name: 'sliders', size: 20 } only %}
+			<h2>{{ __('Display rules', 'secondary-title') }}</h2>
+		</div>
+		{% include 'settings/sections/display-rules.twig' %}
+
+		<div class="st-section-heading">
+			{% include 'components/icon.twig' with { name: 'question', size: 20 } only %}
+			<h2>{{ __('Help', 'secondary-title') }}</h2>
+		</div>
+		{% include 'settings/sections/help.twig' %}
+
+		<div class="st-section-heading">
+			{% include 'components/icon.twig' with { name: 'heart', size: 20 } only %}
+			<h2>{{ __('Donation', 'secondary-title') }}</h2>
+		</div>
+		{% include 'settings/sections/donation.twig' %}
+
+		{% include 'partials/save-bar.twig' with { labels, page } only %}
+	</form>
+</div>

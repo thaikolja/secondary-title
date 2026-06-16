@@ -1,0 +1,36 @@
+{#
+   Form row. Use with {% embed %}:
+       {% embed 'components/row.twig' with { label: 'Title', label_for: 'my-id', icon: 'gear' } %}
+           {% block row_control %}
+               <input type="text" id="my-id" name="foo">
+           {% endblock %}
+       {% endembed %}
+#}
+{% set row_id          = id|default('st-row-' ~ random(99999)) %}
+{% set row_label       = label|default('') %}
+{% set row_label_for   = label_for|default('') %}
+{% set row_icon        = icon|default('') %}
+{% set row_description = description|default('') %}
+{% set row_help_url    = help_url|default('') %}
+
+<div id="{{ row_id|e }}" class="st-row">
+	<div class="st-row__label">
+		<label for="{{ row_label_for|e }}">
+			{% if row_icon %}
+				{% include 'components/icon.twig' with { name: row_icon, size: 16 } only %}
+			{% endif %}
+			<span>{{ row_label|e }}</span>
+		</label>
+	</div>
+	<div class="st-row__control">
+		{% block row_control %}{% endblock %}
+		{% if row_help_url %}
+			<a href="{{ row_help_url|e }}" class="st-row__help" target="_blank" rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'question', size: 14 } only %}
+			</a>
+		{% endif %}
+		{% if row_description %}
+			<p class="st-row__description">{{ row_description|raw }}</p>
+		{% endif %}
+	</div>
+</div>

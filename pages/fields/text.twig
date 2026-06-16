@@ -1,0 +1,29 @@
+{#
+   Text input component.
+
+   Usage:
+       {% include 'fields/text.twig' with {
+           name: 'some_option',
+           id: 'st-field-some',
+           value: settings.some_option,
+           placeholder: 'E.g. ...',
+       } %}
+#}
+{% set f_name        = name|default('') %}
+{% set f_id          = id|default('st-field-' ~ random()) %}
+{% set f_value       = value|default('') %}
+{% set f_placeholder = placeholder|default('') %}
+{% set f_class       = class|default('regular-text') %}
+{% set f_autocomplete = autocomplete|default('') %}
+{% set f_data        = data|default({}) %}
+{% set f_attrs       = attrs|default({}) %}
+
+<input type="text"
+       id="{{ f_id|e }}"
+       name="{{ f_name|e }}"
+       value="{{ f_value|e }}"
+       class="st-input {{ f_class|e }}"
+       {% if f_placeholder %}placeholder="{{ f_placeholder|e }}"{% endif %}
+       {% if f_autocomplete %}autocomplete="{{ f_autocomplete|e }}"{% endif %}
+       {% for k, v in f_data %}data-{{ k|e }}="{{ v|e }}"{% endfor %}
+       {% for k, v in f_attrs %}{{ k|e }}="{{ v|e }}"{% endfor %}>
