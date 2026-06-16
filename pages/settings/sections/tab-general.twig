@@ -1,7 +1,8 @@
 {# Tab 1 — General: Auto-merge + title format + live preview + basic options. #}
 
 {# ── Auto-merge row ────────────────────────────────────────────────────────── #}
-<div class="st-merge-card">
+{% set auto_show_on = settings[keys.auto_show] == 'on' %}
+<div class="st-merge-card{% if not auto_show_on %} st-merge-card--off{% endif %}">
 	<div class="st-merge-card__info">
 		<strong>{{ __('Auto-merge', 'secondary-title') }}</strong>
 		<span>{{ __('Automatically insert the format below into the post title via the_title filter.', 'secondary-title') }}</span>
@@ -13,6 +14,17 @@
 		on_label:  __('On',  'secondary-title'),
 		off_label: __('Off', 'secondary-title')
 	} %}
+</div>
+
+{# ── Auto-merge OFF warning ─────────────────────────────────────────────────── #}
+<div class="st-automerge-warning" id="st-automerge-warning" {% if auto_show_on %}hidden{% endif %}>
+	<div class="st-automerge-warning__head">
+		<span class="dashicons dashicons-info" aria-hidden="true"></span>
+		<strong>{{ __('Auto-merge is disabled', 'secondary-title') }}</strong>
+	</div>
+	<p>{{ __('The secondary title will not appear automatically in post titles. You can still display it manually using PHP or the shortcode:', 'secondary-title') }}</p>
+	<pre class="st-code-block">{{ '<?php the_secondary_title( $post->ID, true, [] ); ?>'|e }}</pre>
+	<pre class="st-code-block">[secondary_title]</pre>
 </div>
 
 {# ── Format + preview hero ─────────────────────────────────────────────────── #}
@@ -34,18 +46,10 @@
 		       autocomplete="off"
 		       spellcheck="false">
 
-		<div class="st-chip-row">
-			<div class="st-chip-row__group">
-				<span class="st-chip-row__label">{{ __('Insert:', 'secondary-title') }}</span>
-				<button type="button" class="st-chipp" data-st-placeholder="%title%"><code>%title%</code></button>
-				<button type="button" class="st-chipp" data-st-placeholder="%secondary_title%"><code>%secondary_title%</code></button>
-			</div>
-			<div class="st-chip-row__group">
-				<span class="st-chip-row__label">{{ __('Presets:', 'secondary-title') }}</span>
-				<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%: %title%"><code>%secondary_title%: %title%</code></button>
-				<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title% &mdash; %title%"><code>%secondary_title% &mdash; %title%</code></button>
-				<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%"><code>%secondary_title%</code></button>
-			</div>
+		<div class="st-chip-row st-chip-row--insert">
+			<span class="st-chip-row__label">{{ __('Insert:', 'secondary-title') }}</span>
+			<button type="button" class="st-chipp" data-st-placeholder="%title%"><code>%title%</code></button>
+			<button type="button" class="st-chipp" data-st-placeholder="%secondary_title%"><code>%secondary_title%</code></button>
 		</div>
 
 		<div class="st-preview-hero" id="st-format-preview"
@@ -59,6 +63,13 @@
 			&amp;
 			<span data-st-preview-secondary>{{ preview.sample_secondary_title|e }}</span>
 		</p>
+
+		<div class="st-chip-row st-chip-row--presets">
+			<span class="st-chip-row__label">{{ __('Presets:', 'secondary-title') }}</span>
+			<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%: %title%"><code>%secondary_title%: %title%</code></button>
+			<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title% &mdash; %title%"><code>%secondary_title% &mdash; %title%</code></button>
+			<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%"><code>%secondary_title%</code></button>
+		</div>
 	</div>
 </div>
 
@@ -68,7 +79,7 @@
 	<div class="st-rule">
 		<div class="st-rule__info">
 			<label for="st-toggle-only-main">{{ __('Main post only', 'secondary-title') }}</label>
-			<span>{{ __('Only replace the title in the primary post query, not widgets or sidebars.', 'secondary-title') }}</span>
+			<span>{{ __('Only replace the title in the primary post query, not in widgets or sidebars.', 'secondary-title') }}</span>
 		</div>
 		{% include 'components/toggle.twig' with {
 			name:      keys.only_show_in_main_post,
@@ -103,4 +114,76 @@
 		</select>
 	</div>
 
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-toggle-strip-html">{{ __('Strip HTML from output', 'secondary-title') }}</label>
+			<span>{{ __('Remove any HTML tags before displaying the secondary title. Useful when used inside attributes.', 'secondary-title') }}</span>
+		</div>
+		{% include 'components/toggle.twig' with {
+			name:      'secondary_title_strip_html',
+			id:        'st-toggle-strip-html',
+			value:     settings['secondary_title_strip_html']|default('off'),
+			on_label:  __('On',  'secondary-title'),
+			off_label: __('Off', 'secondary-title')
+		} %}
+	</div>
+
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-toggle-show-in-search">{{ __('Include in search', 'secondary-title') }}</label>
+			<span>{{ __('Make the secondary title searchable via the default WordPress search.', 'secondary-title') }}</span>
+		</div>
+		{% include 'components/toggle.twig' with {
+			name:      'secondary_title_show_in_search',
+			id:        'st-toggle-show-in-search',
+			value:     settings['secondary_title_show_in_search']|default('off'),
+			on_label:  __('On',  'secondary-title'),
+			off_label: __('Off', 'secondary-title')
+		} %}
+	</div>
+
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-toggle-show-in-rss">{{ __('Show in RSS feed', 'secondary-title') }}</label>
+			<span>{{ __('Append the secondary title to the post title in RSS and Atom feeds.', 'secondary-title') }}</span>
+		</div>
+		{% include 'components/toggle.twig' with {
+			name:      'secondary_title_show_in_rss',
+			id:        'st-toggle-show-in-rss',
+			value:     settings['secondary_title_show_in_rss']|default('off'),
+			on_label:  __('On',  'secondary-title'),
+			off_label: __('Off', 'secondary-title')
+		} %}
+	</div>
+
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-toggle-show-in-rest">{{ __('Expose via REST API', 'secondary-title') }}</label>
+			<span>{{ __('Include the secondary title in the WP REST API response for posts.', 'secondary-title') }}</span>
+		</div>
+		{% include 'components/toggle.twig' with {
+			name:      'secondary_title_show_in_rest',
+			id:        'st-toggle-show-in-rest',
+			value:     settings['secondary_title_show_in_rest']|default('on'),
+			on_label:  __('On',  'secondary-title'),
+			off_label: __('Off', 'secondary-title')
+		} %}
+	</div>
+
+</div>
+
+{# ── Donation section ──────────────────────────────────────────────────────── #}
+<div class="st-donate-section">
+	<div class="st-donate-section__inner">
+		<div class="st-donate-section__text">
+			<strong>{{ __('Enjoying Secondary Title?', 'secondary-title') }}</strong>
+			<span>{{ __('Built by hand — no AI-generated code. If this plugin saves you time, consider a small donation to keep it maintained.', 'secondary-title') }}</span>
+		</div>
+		<a href="https://www.paypal.me/thaikolja/10"
+		   class="st-donate-btn"
+		   target="_blank"
+		   rel="noopener noreferrer">
+			{{ __('☕ Donate via PayPal', 'secondary-title') }}
+		</a>
+	</div>
 </div>

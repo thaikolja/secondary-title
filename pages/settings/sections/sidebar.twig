@@ -6,19 +6,36 @@
 
 <div class="st-sidebar-inner" data-st-sidebar>
 
-	{# ── Live Preview block ─── #}
+	{# ── Plugin Info ─── #}
 	<div class="st-sidebar-card">
 		<div class="st-sidebar-card__head">
-			{% include 'components/icon.twig' with { name: 'eye', size: 14 } only %}
-			<span>{{ __('Live Preview', 'secondary-title') }}</span>
+			{% include 'components/icon.twig' with { name: 'gear', size: 14 } only %}
+			<span>{{ __('Plugin Info', 'secondary-title') }}</span>
 		</div>
-		<div class="st-sidebar-card__body">
-			<div class="st-preview-output"
-			     id="st-sidebar-preview"
-			     data-st-preview
-			     data-st-sample-title="{{ preview.sample_title|e }}"
-			     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}">
-				<span class="st-preview-output__placeholder">{{ __('Enter a format to see a preview', 'secondary-title') }}</span>
+		<div class="st-sidebar-card__body st-sidebar-card__body--info">
+			<div class="st-info-row">
+				<span class="st-info-row__label">{{ __('Version', 'secondary-title') }}</span>
+				<span class="st-info-row__value">3.0</span>
+			</div>
+			<div class="st-info-row">
+				<span class="st-info-row__label">{{ __('Format', 'secondary-title') }}</span>
+				<code class="st-info-row__code">{{ settings[keys.title_format]|default('%secondary_title%: %title%')|e }}</code>
+			</div>
+			<div class="st-info-row">
+				<span class="st-info-row__label">{{ __('Auto-merge', 'secondary-title') }}</span>
+				<span class="st-info-row__value st-info-row__value--{{ settings[keys.auto_show] == 'on' ? 'on' : 'off' }}">
+					{{ settings[keys.auto_show] == 'on' ? __('Enabled', 'secondary-title') : __('Disabled', 'secondary-title') }}
+				</span>
+			</div>
+			<div class="st-info-row">
+				<span class="st-info-row__label">{{ __('Post types', 'secondary-title') }}</span>
+				<span class="st-info-row__value">
+					{% if settings[keys.post_types] is not empty %}
+						{{ settings[keys.post_types]|join(', ') }}
+					{% else %}
+						{{ __('All', 'secondary-title') }}
+					{% endif %}
+				</span>
 			</div>
 		</div>
 	</div>
