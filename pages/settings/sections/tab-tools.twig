@@ -1,0 +1,74 @@
+{# Tab 3 — Tools & Help: API reference, shortcode, changelog, quick actions. #}
+
+<div class="st-tools-grid">
+
+	{# ── Quick start ─── #}
+	{% embed 'components/card.twig' with { title: __('Quick Start', 'secondary-title'), icon: 'rocket', id: 'st-card-quickstart' } %}
+		{% block card_body %}
+			<ol class="st-side-list">
+				<li>{{ __('Edit any post. Find "Secondary Title" in the block editor sidebar or the Classic Editor meta box.', 'secondary-title') }}</li>
+				<li>{{ __('Enter your secondary title and publish or update the post.', 'secondary-title') }}</li>
+				<li>{{ __('Enable Auto-merge on the General tab to have it appear in the post title automatically.', 'secondary-title') }}</li>
+			</ol>
+		{% endblock %}
+	{% endembed %}
+
+	{# ── Shortcode ─── #}
+	{% embed 'components/card.twig' with { title: __('Shortcode', 'secondary-title'), icon: 'code', id: 'st-card-shortcode' } %}
+		{% block card_body %}
+			<pre class="st-code-block"><code>[secondary_title]</code></pre>
+			<table class="st-attr-table">
+				<tr><td><code>post_id</code></td><td>{{ __('ID of the post. Default: current post.', 'secondary-title') }}</td></tr>
+				<tr><td><code>allow_html</code></td><td>{{ __('Allow HTML in output. Default: false.', 'secondary-title') }}</td></tr>
+				<tr><td><code>before</code></td><td>{{ __('String prepended to the output.', 'secondary-title') }}</td></tr>
+				<tr><td><code>after</code></td><td>{{ __('String appended to the output.', 'secondary-title') }}</td></tr>
+			</table>
+		{% endblock %}
+	{% endembed %}
+
+	{# ── PHP API ─── #}
+	{% embed 'components/card.twig' with { title: __('PHP API', 'secondary-title'), icon: 'terminal', id: 'st-card-php-api' } %}
+		{% block card_body %}
+			<table class="st-attr-table">
+				<tr><td><code>the_secondary_title()</code></td><td>{{ __('Echoes the secondary title of the current post.', 'secondary-title') }}</td></tr>
+				<tr><td><code>get_secondary_title()</code></td><td>{{ __('Returns the secondary title as a string.', 'secondary-title') }}</td></tr>
+				<tr><td><code>has_secondary_title()</code></td><td>{{ __('Returns true if a secondary title is set.', 'secondary-title') }}</td></tr>
+			</table>
+			<p class="st-panel__more">
+				<a href="https://docs.kolja-nolte.com/secondary-title/" target="_blank" rel="noopener noreferrer">{{ __('Full documentation →', 'secondary-title') }}</a>
+			</p>
+		{% endblock %}
+	{% endembed %}
+
+	{# ── Changelog ─── #}
+	{% embed 'components/card.twig' with { title: __('Changelog', 'secondary-title'), icon: 'list-numbers', id: 'st-card-changelog' } %}
+		{% block card_body %}
+			<ul class="st-changelog">
+				<li class="st-changelog__item">
+					<span class="st-changelog__version">3.0</span>
+					<span class="st-changelog__text">{{ __('Full rewrite — OOP, Twig templates, block editor sidebar panel.', 'secondary-title') }}</span>
+				</li>
+				<li class="st-changelog__item">
+					<span class="st-changelog__version">2.x</span>
+					<span class="st-changelog__text">{{ __('Procedural API, meta box, basic settings page.', 'secondary-title') }}</span>
+				</li>
+				<li class="st-changelog__item">
+					<span class="st-changelog__version">1.x</span>
+					<span class="st-changelog__text">{{ __('Initial public release.', 'secondary-title') }}</span>
+				</li>
+			</ul>
+		{% endblock %}
+	{% endembed %}
+
+	{# ── Support & Donate ─── #}
+	{% embed 'components/card.twig' with { title: __('Support the Plugin', 'secondary-title'), icon: 'heart', id: 'st-card-support' } %}
+		{% block card_body %}
+			<p>{{ __('Built by hand — no AI-generated code. Every line written, reviewed, and tested manually.', 'secondary-title') }}</p>
+			<div class="st-cta-group">
+				<a href="https://wordpress.org/support/plugin/secondary-title/" class="st-cta" target="_blank" rel="noopener noreferrer">{{ __('Get support', 'secondary-title') }}</a>
+				<a href="https://www.paypal.me/thaikolja/10" class="st-cta st-cta--gold" target="_blank" rel="noopener noreferrer">{{ __('Donate via PayPal', 'secondary-title') }}</a>
+			</div>
+		{% endblock %}
+	{% endembed %}
+
+</div>

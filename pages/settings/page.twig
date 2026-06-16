@@ -1,16 +1,87 @@
-{# Settings page — builder hero + two-column bottom row. #}
-<div class="st-settings">
+{# Full-width settings page with tab bar + sidebar (WPCode-style layout). #}
+<div class="st-wrap">
 
 	<div class="st-head">
-		<h1 class="wp-heading-inline">{{ page.heading|e }}</h1>
-		<p class="st-tagline">{{ __('Add a secondary title to posts, pages, and custom post types.', 'secondary-title') }}</p>
+		<h1>{{ page.heading|e }}</h1>
 	</div>
 
-	<form method="post" action="options.php" novalidate>
-		{{ settings_fields(page.option_group)|raw }}
+	{# ── Tab bar ─────────────────────────────────────────────────── #}
+	<div class="st-tabs" role="tablist" aria-label="{{ __('Settings sections', 'secondary-title') }}">
+		<button class="st-tab st-tab--active"
+		        role="tab"
+		        aria-selected="true"
+		        aria-controls="st-panel-general"
+		        data-tab="general"
+		        id="st-tab-general">
+			{% include 'components/icon.twig' with { name: 'sliders', size: 14 } only %}
+			<span>{{ __('General', 'secondary-title') }}</span>
+		</button>
+		<button class="st-tab"
+		        role="tab"
+		        aria-selected="false"
+		        aria-controls="st-panel-display-rules"
+		        data-tab="display-rules"
+		        id="st-tab-display-rules">
+			{% include 'components/icon.twig' with { name: 'eye', size: 14 } only %}
+			<span>{{ __('Display Rules', 'secondary-title') }}</span>
+		</button>
+		<button class="st-tab"
+		        role="tab"
+		        aria-selected="false"
+		        aria-controls="st-panel-tools"
+		        data-tab="tools"
+		        id="st-tab-tools">
+			{% include 'components/icon.twig' with { name: 'rocket', size: 14 } only %}
+			<span>{{ __('Tools & Help', 'secondary-title') }}</span>
+		</button>
+	</div>
 
-		{% include 'settings/sections/general.twig' %}
+	{# ── Page body: main + sidebar ───────────────────────────────── #}
+	<div class="st-body">
 
-		{% include 'partials/save-bar.twig' with { labels } only %}
-	</form>
-</div>
+		{# ── Main content area ─── #}
+		<main class="st-main">
+			<form method="post" action="options.php" novalidate>
+				{{ settings_fields(page.option_group)|raw }}
+
+				{# ── Panel: General ─── #}
+				<div id="st-panel-general"
+				     class="st-panel st-panel--active"
+				     data-panel="general"
+				     role="tabpanel"
+				     aria-labelledby="st-tab-general">
+					{% include 'settings/sections/tab-general.twig' %}
+				</div>
+
+				{# ── Panel: Display Rules ─── #}
+				<div id="st-panel-display-rules"
+				     class="st-panel"
+				     data-panel="display-rules"
+				     role="tabpanel"
+				     aria-labelledby="st-tab-display-rules"
+				     hidden>
+					{% include 'settings/sections/tab-display-rules.twig' %}
+				</div>
+
+				{# ── Panel: Tools & Help ─── #}
+				<div id="st-panel-tools"
+				     class="st-panel"
+				     data-panel="tools"
+				     role="tabpanel"
+				     aria-labelledby="st-tab-tools"
+				     hidden>
+					{% include 'settings/sections/tab-tools.twig' %}
+				</div>
+
+				{% include 'partials/save-bar.twig' with { labels } only %}
+			</form>
+		</main>
+
+		{# ── Sidebar ─── #}
+		<aside class="st-sidebar">
+			{% include 'settings/sections/sidebar.twig' %}
+		</aside>
+
+	</div>{# /.st-body #}
+
+</div>{# /.st-wrap #}

@@ -1,145 +1,90 @@
-{#
-   Full settings layout:
-   1. Builder hero card  — format input + live preview + auto-merge toggle in header
-   2. Bottom row         — display rules (left) + help panel (right)
-#}
+<div class="st-merge">
+	<span class="st-merge__label">{{ __('Auto-merge', 'secondary-title') }}</span>
+	{% include 'components/toggle.twig' with { name: keys.auto_show, id: 'st-toggle-auto-show', value: settings[keys.auto_show], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
+	<span class="st-merge__desc">{{ __('Insert format below into post title automatically', 'secondary-title') }}</span>
+</div>
 
-{# ═══════════════════════════════════════════════════════════
-   BUILDER HERO — Title format + auto-merge
-   ═══════════════════════════════════════════════════════════ #}
-<div class="st-builder">
+<div class="st-format">
+	<input type="text"
+		id="st-field-title-format"
+		name="{{ keys.title_format|e }}"
+		value="{{ settings[keys.title_format]|e }}"
+		class="st-format-input"
+		placeholder="%secondary_title%: %title%"
+		data-st-format-input
+		data-st-preview-target="st-format-preview"
+		autocomplete="off"
+		spellcheck="false">
 
-	<div class="st-builder__head">
-		<div class="st-builder__head-title">
-			<span>{{ __('Title Format', 'secondary-title') }}</span>
-			<span class="st-builder__head-hint">{{ __('Use %title% and %secondary_title% as placeholders.', 'secondary-title') }}</span>
+	<div class="st-format-row">
+		<div class="st-format-row__chips">
+			<button type="button" class="st-chipp" data-st-placeholder="%title%"><code>%title%</code></button>
+			<button type="button" class="st-chipp" data-st-placeholder="%secondary_title%"><code>%secondary_title%</code></button>
 		</div>
-		<div class="st-builder__head-merge">
-			<span class="st-merge-label">{{ __('Auto-merge', 'secondary-title') }}</span>
-			{% include 'components/toggle.twig' with { name: keys.auto_show, id: 'st-toggle-auto-show', value: settings[keys.auto_show], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
+		<div class="st-format-row__presets">
+			<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%: %title%"><code>%secondary_title%: %title%</code></button>
+			<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title% &mdash; %title%"><code>%secondary_title% &mdash; %title%</code></button>
+			<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%"><code>%secondary_title%</code></button>
 		</div>
 	</div>
 
-	<div class="st-builder__body">
+	<div id="st-format-preview"
+		class="st-preview"
+		data-st-preview
+		data-st-sample-title="{{ preview.sample_title|e }}"
+		data-st-sample-secondary="{{ preview.sample_secondary_title|e }}"></div>
+</div>
 
-		{# Format input #}
-		<div class="st-builder__input-wrap">
-			<input type="text"
-			       id="st-field-title-format"
-			       name="{{ keys.title_format|e }}"
-			       value="{{ settings[keys.title_format]|e }}"
-			       class="st-format-input"
-			       placeholder="%secondary_title%: %title%"
-			       data-st-format-input
-			       data-st-preview-target="st-format-preview"
-			       autocomplete="off"
-			       spellcheck="false">
+<div class="st-sep"></div>
+
+<div class="st-rules">
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-toggle-only-main">{{ __('Main post only', 'secondary-title') }}</label>
+			<span>{{ __('Only replace in the primary post query', 'secondary-title') }}</span>
 		</div>
-
-		{# Insert chips #}
-		<div class="st-builder__chips">
-			<span class="st-builder__chips-label">{{ __('Insert:', 'secondary-title') }}</span>
-			<button type="button" class="st-chip" data-st-placeholder="%title%"><code>%title%</code></button>
-			<button type="button" class="st-chip" data-st-placeholder="%secondary_title%"><code>%secondary_title%</code></button>
+		{% include 'components/toggle.twig' with { name: keys.only_show_in_main_post, id: 'st-toggle-only-main', value: settings[keys.only_show_in_main_post], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
+	</div>
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-field-post-types">{{ __('Post types', 'secondary-title') }}</label>
+			<span>{{ __('Leave empty to enable on all', 'secondary-title') }}</span>
 		</div>
-
-		{# Live preview #}
-		<div class="st-preview">
-			<div class="st-preview__label">{{ __('Preview', 'secondary-title') }}</div>
-			<div id="st-format-preview"
-			     class="st-preview__output"
-			     data-st-preview
-			     data-st-sample-title="{{ preview.sample_title|e }}"
-			     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}"></div>
+		{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types], placeholder: __('All post types', 'secondary-title') } %}
+	</div>
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-field-categories">{{ __('Categories', 'secondary-title') }}</label>
+			<span>{{ __('Leave empty to show in all', 'secondary-title') }}</span>
 		</div>
-
-		{# Preset examples #}
-		<div class="st-builder__presets">
-			<span class="st-builder__presets-label">{{ __('Presets:', 'secondary-title') }}</span>
-			<button type="button" class="st-preset" data-st-preset="%secondary_title%: %title%"><code>%secondary_title%: %title%</code></button>
-			<button type="button" class="st-preset" data-st-preset="%secondary_title% — %title%"><code>%secondary_title% — %title%</code></button>
-			<button type="button" class="st-preset" data-st-preset="%secondary_title%"><code>%secondary_title%</code></button>
+		{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories], placeholder: __('All categories', 'secondary-title') } %}
+	</div>
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-field-post-ids">{{ __('Post IDs', 'secondary-title') }}</label>
+			<span>{{ __('Comma-separated', 'secondary-title') }}</span>
 		</div>
-
+		{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: '13, 71, 33' } %}
 	</div>
 </div>
 
-{# ═══════════════════════════════════════════════════════════
-   BOTTOM ROW — Display rules + Help
-   ═══════════════════════════════════════════════════════════ #}
-<div class="st-bottom">
+<div class="st-sep"></div>
 
-	{# Display rules #}
-	<div class="st-card st-card--rules">
-		<div class="st-card__head">
-			<span>{{ __('Display rules', 'secondary-title') }}</span>
-			<span class="st-card__head-desc">{{ __('Where should the secondary title appear?', 'secondary-title') }}</span>
-		</div>
-		<div class="st-card__body">
-			<div class="st-rules-grid">
-
-				<div class="st-rule">
-					<label class="st-rule__label" for="st-toggle-only-main">{{ __('Main post only', 'secondary-title') }}</label>
-					<div class="st-rule__control">
-						{% include 'components/toggle.twig' with { name: keys.only_show_in_main_post, id: 'st-toggle-only-main', value: settings[keys.only_show_in_main_post], on_label: __('On', 'secondary-title'), off_label: __('Off', 'secondary-title') } %}
-					</div>
-					<p class="st-rule__desc">{{ __('Show only in the main post loop, not in widgets or secondary queries.', 'secondary-title') }}</p>
-				</div>
-
-				<div class="st-rule">
-					<label class="st-rule__label" for="st-field-post-types">{{ __('Post types', 'secondary-title') }}</label>
-					<div class="st-rule__control">
-						{% include 'fields/multi-select-searchable.twig' with { name: keys.post_types, id: 'st-field-post-types', options: post_types_options, selected: settings[keys.post_types], placeholder: __('Filter post types…', 'secondary-title') } %}
-					</div>
-					<p class="st-rule__desc">{{ __('Leave empty to show on all post types.', 'secondary-title') }}</p>
-				</div>
-
-				<div class="st-rule">
-					<label class="st-rule__label" for="st-field-categories">{{ __('Categories', 'secondary-title') }}</label>
-					<div class="st-rule__control">
-						{% include 'fields/multi-select-searchable.twig' with { name: keys.categories, id: 'st-field-categories', options: categories_options, selected: settings[keys.categories], placeholder: __('Filter categories…', 'secondary-title') } %}
-					</div>
-					<p class="st-rule__desc">{{ __('Leave empty to show in all categories.', 'secondary-title') }}</p>
-				</div>
-
-				<div class="st-rule">
-					<label class="st-rule__label" for="st-field-post-ids">{{ __('Post IDs', 'secondary-title') }}</label>
-					<div class="st-rule__control">
-						{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: 'e.g. 13, 71, 33' } %}
-					</div>
-					<p class="st-rule__desc">{{ __('Comma-separated. Leave empty for all posts.', 'secondary-title') }}</p>
-				</div>
-
-			</div>
-		</div>
+<div class="st-help">
+	<div class="st-help__col">
+		<p><strong>{{ __('Quick start', 'secondary-title') }}</strong></p>
+		<ol>
+			<li>{{ __('Edit a post, find Secondary Title in the sidebar or meta box.', 'secondary-title') }}</li>
+			<li>{{ __('Enter a value and save.', 'secondary-title') }}</li>
+		</ol>
+		<p class="st-help__usage">
+			<strong>{{ __('Shortcode', 'secondary-title') }}</strong> <code>[secondary_title]</code><br>
+			<strong>{{ __('PHP', 'secondary-title') }}</strong> <code>the_secondary_title()</code><br>
+			<strong>{{ __('Block', 'secondary-title') }}</strong> <em>{{ __('Block inserter', 'secondary-title') }}</em>
+		</p>
 	</div>
-
-	{# Help sidebar #}
-	<div class="st-help-col">
-
-		<div class="st-help-panel">
-			<div class="st-help-panel__head">{{ __('Quick start', 'secondary-title') }}</div>
-			<ol class="st-help-panel__list">
-				<li>{{ __('Open any post or page in the editor.', 'secondary-title') }}</li>
-				<li>{{ __('Find the "Secondary Title" panel in the block editor sidebar, or the meta box in Classic Editor.', 'secondary-title') }}</li>
-				<li>{{ __('Type a secondary title and save.', 'secondary-title') }}</li>
-			</ol>
-		</div>
-
-		<div class="st-help-panel">
-			<div class="st-help-panel__head">{{ __('Usage', 'secondary-title') }}</div>
-			<ul class="st-help-panel__list st-help-panel__list--unstyled">
-				<li><strong>{{ __('Shortcode', 'secondary-title') }}</strong><br><code>[secondary_title]</code></li>
-				<li><strong>{{ __('PHP', 'secondary-title') }}</strong><br><code>the_secondary_title()</code></li>
-				<li><strong>{{ __('Block', 'secondary-title') }}</strong><br>{{ __('Search "Secondary Title" in the block inserter.', 'secondary-title') }}</li>
-			</ul>
-		</div>
-
-		<div class="st-help-panel st-help-panel--muted">
-			<p>{{ __('Built entirely by hand — no AI-generated code.', 'secondary-title') }}</p>
-			<a href="https://www.paypal.me/thaikolja/10" class="st-donate" target="_blank" rel="noopener noreferrer">{{ __('Donate via PayPal', 'secondary-title') }}</a>
-		</div>
-
+	<div class="st-help__col st-help__col--donate">
+		<p>{{ __('Built by hand &mdash; no AI-generated code. Every line written, reviewed and tested manually.', 'secondary-title') }}</p>
+		<a href="https://www.paypal.me/thaikolja/10" class="st-donate" target="_blank" rel="noopener noreferrer">{{ __('Donate via PayPal', 'secondary-title') }}</a>
 	</div>
-
 </div>

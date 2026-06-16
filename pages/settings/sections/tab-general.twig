@@ -1,0 +1,106 @@
+{# Tab 1 — General: Auto-merge + title format + live preview + basic options. #}
+
+{# ── Auto-merge row ────────────────────────────────────────────────────────── #}
+<div class="st-merge-card">
+	<div class="st-merge-card__info">
+		<strong>{{ __('Auto-merge', 'secondary-title') }}</strong>
+		<span>{{ __('Automatically insert the format below into the post title via the_title filter.', 'secondary-title') }}</span>
+	</div>
+	{% include 'components/toggle.twig' with {
+		name:      keys.auto_show,
+		id:        'st-toggle-auto-show',
+		value:     settings[keys.auto_show],
+		on_label:  __('On',  'secondary-title'),
+		off_label: __('Off', 'secondary-title')
+	} %}
+</div>
+
+{# ── Format + preview hero ─────────────────────────────────────────────────── #}
+<div class="st-hero-card">
+	<div class="st-hero-card__head">
+		{% include 'components/icon.twig' with { name: 'wand', size: 15 } only %}
+		<span>{{ __('Title Format', 'secondary-title') }}</span>
+	</div>
+
+	<div class="st-hero-card__body">
+		<input type="text"
+		       id="st-field-title-format"
+		       name="{{ keys.title_format|e }}"
+		       value="{{ settings[keys.title_format]|e }}"
+		       class="st-format-input"
+		       placeholder="%secondary_title%: %title%"
+		       data-st-format-input
+		       data-st-preview-target="st-format-preview"
+		       autocomplete="off"
+		       spellcheck="false">
+
+		<div class="st-chip-row">
+			<div class="st-chip-row__group">
+				<span class="st-chip-row__label">{{ __('Insert:', 'secondary-title') }}</span>
+				<button type="button" class="st-chipp" data-st-placeholder="%title%"><code>%title%</code></button>
+				<button type="button" class="st-chipp" data-st-placeholder="%secondary_title%"><code>%secondary_title%</code></button>
+			</div>
+			<div class="st-chip-row__group">
+				<span class="st-chip-row__label">{{ __('Presets:', 'secondary-title') }}</span>
+				<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%: %title%"><code>%secondary_title%: %title%</code></button>
+				<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title% &mdash; %title%"><code>%secondary_title% &mdash; %title%</code></button>
+				<button type="button" class="st-chipp st-chipp--alt" data-st-preset="%secondary_title%"><code>%secondary_title%</code></button>
+			</div>
+		</div>
+
+		<div class="st-preview-hero" id="st-format-preview"
+		     data-st-preview
+		     data-st-sample-title="{{ preview.sample_title|e }}"
+		     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}">
+		</div>
+		<p class="st-preview-hero__note">
+			{{ __('Preview using', 'secondary-title') }}
+			<span data-st-preview-title>{{ preview.sample_title|e }}</span>
+			&amp;
+			<span data-st-preview-secondary>{{ preview.sample_secondary_title|e }}</span>
+		</p>
+	</div>
+</div>
+
+{# ── Options rows ──────────────────────────────────────────────────────────── #}
+<div class="st-options-card">
+
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-toggle-only-main">{{ __('Main post only', 'secondary-title') }}</label>
+			<span>{{ __('Only replace the title in the primary post query, not widgets or sidebars.', 'secondary-title') }}</span>
+		</div>
+		{% include 'components/toggle.twig' with {
+			name:      keys.only_show_in_main_post,
+			id:        'st-toggle-only-main',
+			value:     settings[keys.only_show_in_main_post],
+			on_label:  __('On',  'secondary-title'),
+			off_label: __('Off', 'secondary-title')
+		} %}
+	</div>
+
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-field-column-position">{{ __('Admin column position', 'secondary-title') }}</label>
+			<span>{{ __('Where the Secondary Title column appears in post list tables.', 'secondary-title') }}</span>
+		</div>
+		<select id="st-field-column-position"
+		        name="secondary_title_column_position"
+		        class="st-select">
+			<option value="right" {{ settings['secondary_title_column_position']|default('right') == 'right' ? 'selected' : '' }}>{{ __('After title', 'secondary-title') }}</option>
+			<option value="left"  {{ settings['secondary_title_column_position']|default('right') == 'left'  ? 'selected' : '' }}>{{ __('Before title', 'secondary-title') }}</option>
+		</select>
+	</div>
+
+	<div class="st-rule">
+		<div class="st-rule__info">
+			<label for="st-field-empty-behaviour">{{ __('Empty title behaviour', 'secondary-title') }}</label>
+			<span>{{ __('What to output when a post has no secondary title set.', 'secondary-title') }}</span>
+		</div>
+		<select id="st-field-empty-behaviour" name="secondary_title_empty_behaviour" class="st-select">
+			<option value="hide">{{ __('Hide (output nothing)', 'secondary-title') }}</option>
+			<option value="primary">{{ __('Fall back to primary title', 'secondary-title') }}</option>
+		</select>
+	</div>
+
+</div>

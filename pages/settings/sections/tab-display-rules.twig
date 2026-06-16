@@ -1,0 +1,48 @@
+{# Tab 2 — Display Rules: post types, categories, post IDs. #}
+
+<p class="st-panel-desc">
+	{{ __('Control which posts and pages display the secondary title. Leave all empty to enable everywhere.', 'secondary-title') }}
+</p>
+
+<div class="st-bento">
+
+	{# ── Post Types ─── #}
+	{% embed 'components/card.twig' with { title: __('Post types', 'secondary-title'), icon: 'files', id: 'st-card-post-types' } %}
+		{% block card_body %}
+			{% include 'fields/multi-select-searchable.twig' with {
+				name:     keys.post_types,
+				id:       'st-field-post-types',
+				options:  post_types_options,
+				selected: settings[keys.post_types]
+			} %}
+			<p class="st-field-desc">{{ __('Leave empty to enable on all post types.', 'secondary-title') }}</p>
+		{% endblock %}
+	{% endembed %}
+
+	{# ── Categories ─── #}
+	{% embed 'components/card.twig' with { title: __('Categories', 'secondary-title'), icon: 'folders', id: 'st-card-categories' } %}
+		{% block card_body %}
+			{% include 'fields/multi-select-searchable.twig' with {
+				name:     keys.categories,
+				id:       'st-field-categories',
+				options:  categories_options,
+				selected: settings[keys.categories]
+			} %}
+			<p class="st-field-desc">{{ __('Leave empty to show on all categories.', 'secondary-title') }}</p>
+		{% endblock %}
+	{% endembed %}
+
+	{# ── Post IDs ─── #}
+	{% embed 'components/card.twig' with { title: __('Specific post IDs', 'secondary-title'), icon: 'list-numbers', id: 'st-card-post-ids' } %}
+		{% block card_body %}
+			{% include 'fields/text.twig' with {
+				name:        keys.post_ids,
+				id:          'st-field-post-ids',
+				value:       settings[keys.post_ids]|default([])|join(', '),
+				placeholder: '13, 71, 33'
+			} %}
+			<p class="st-field-desc">{{ __('Comma-separated. Leave empty to include all posts.', 'secondary-title') }}</p>
+		{% endblock %}
+	{% endembed %}
+
+</div>

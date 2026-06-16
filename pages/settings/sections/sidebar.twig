@@ -1,0 +1,108 @@
+{#
+   Sidebar — taxonomy switcher dropdown + search + term list.
+   Taxonomy data is passed from PHP (categories_options, post_types_options).
+   The JS in sidebar.js handles swapping the list when the taxonomy changes.
+#}
+
+<div class="st-sidebar-inner" data-st-sidebar>
+
+	{# ── Live Preview block ─── #}
+	<div class="st-sidebar-card">
+		<div class="st-sidebar-card__head">
+			{% include 'components/icon.twig' with { name: 'eye', size: 14 } only %}
+			<span>{{ __('Live Preview', 'secondary-title') }}</span>
+		</div>
+		<div class="st-sidebar-card__body">
+			<div class="st-preview-output"
+			     id="st-sidebar-preview"
+			     data-st-preview
+			     data-st-sample-title="{{ preview.sample_title|e }}"
+			     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}">
+				<span class="st-preview-output__placeholder">{{ __('Enter a format to see a preview', 'secondary-title') }}</span>
+			</div>
+		</div>
+	</div>
+
+	{# ── Term Browser ─── #}
+	<div class="st-sidebar-card st-sidebar-card--terms">
+		<div class="st-sidebar-card__head">
+			{% include 'components/icon.twig' with { name: 'folders', size: 14 } only %}
+			<span>{{ __('Term Browser', 'secondary-title') }}</span>
+		</div>
+		<div class="st-sidebar-card__body">
+
+			{# Taxonomy switcher dropdown #}
+			<select class="st-sidebar-taxonomy" id="st-sidebar-taxonomy-select" data-st-taxonomy-select>
+				<option value="category">{{ __('Categories', 'secondary-title') }}</option>
+				<option value="post_tag">{{ __('Tags', 'secondary-title') }}</option>
+				<option value="post_type">{{ __('Post Types', 'secondary-title') }}</option>
+			</select>
+
+			{# Search field #}
+			<div class="st-sidebar-search">
+				{% include 'components/icon.twig' with { name: 'magnifying-glass', size: 14 } only %}
+				<input type="search"
+				       id="st-sidebar-term-search"
+				       class="st-sidebar-search__input"
+				       placeholder="{{ __('Search terms…', 'secondary-title') }}"
+				       data-st-sidebar-search>
+			</div>
+
+			{# Terms list — categories (default) #}
+			<ul class="st-term-list" id="st-term-list-category" data-st-term-list="category" role="listbox">
+				{% for opt in categories_options %}
+					<li class="st-term-list__item" data-label="{{ opt.label|lower|e }}">
+						<span class="st-term-list__name">{{ opt.label|e }}</span>
+						<span class="st-term-list__count">{{ opt.count }}</span>
+					</li>
+				{% else %}
+					<li class="st-term-list__empty">{{ __('No categories found.', 'secondary-title') }}</li>
+				{% endfor %}
+			</ul>
+
+			{# Terms list — post types (hidden by default) #}
+			<ul class="st-term-list" id="st-term-list-post_type" data-st-term-list="post_type" role="listbox" hidden>
+				{% for opt in post_types_options %}
+					<li class="st-term-list__item" data-label="{{ opt.label|lower|e }}">
+						<span class="st-term-list__name">{{ opt.label|e }}</span>
+						<span class="st-term-list__count">{{ opt.count }}</span>
+					</li>
+				{% else %}
+					<li class="st-term-list__empty">{{ __('No post types found.', 'secondary-title') }}</li>
+				{% endfor %}
+			</ul>
+
+			{# Tags — mock data (no live PHP data for tags yet) #}
+			<ul class="st-term-list" id="st-term-list-post_tag" data-st-term-list="post_tag" role="listbox" hidden>
+				<li class="st-term-list__item" data-label="news"><span class="st-term-list__name">News</span><span class="st-term-list__count">14</span></li>
+				<li class="st-term-list__item" data-label="featured"><span class="st-term-list__name">Featured</span><span class="st-term-list__count">7</span></li>
+				<li class="st-term-list__item" data-label="tutorial"><span class="st-term-list__name">Tutorial</span><span class="st-term-list__count">5</span></li>
+				<li class="st-term-list__item" data-label="review"><span class="st-term-list__name">Review</span><span class="st-term-list__count">3</span></li>
+			</ul>
+
+		</div>
+	</div>
+
+	{# ── Quick Links ─── #}
+	<div class="st-sidebar-card">
+		<div class="st-sidebar-card__head">
+			{% include 'components/icon.twig' with { name: 'book-open', size: 14 } only %}
+			<span>{{ __('Quick Links', 'secondary-title') }}</span>
+		</div>
+		<div class="st-sidebar-card__body">
+			<a href="https://docs.kolja-nolte.com/secondary-title/" class="st-quick-link" target="_blank" rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'arrow-square-out', size: 13 } only %}
+				<span>{{ __('Documentation', 'secondary-title') }}</span>
+			</a>
+			<a href="https://wordpress.org/support/plugin/secondary-title/" class="st-quick-link" target="_blank" rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'question', size: 13 } only %}
+				<span>{{ __('Support forum', 'secondary-title') }}</span>
+			</a>
+			<a href="https://wordpress.org/plugins/secondary-title/#reviews" class="st-quick-link" target="_blank" rel="noopener noreferrer">
+				{% include 'components/icon.twig' with { name: 'heart', size: 13 } only %}
+				<span>{{ __('Leave a review ★', 'secondary-title') }}</span>
+			</a>
+		</div>
+	</div>
+
+</div>
