@@ -1,0 +1,7 @@
+{# Post IDs card — spans full width, gray accent. #}
+{% embed 'components/card.twig' with { title: __('Post IDs', 'secondary-title'), icon: 'list-numbers', id: 'st-card-post-ids', accent: 'slate' } %}
+	{% block card_body %}
+		{% include 'fields/text.twig' with { name: keys.post_ids, id: 'st-field-post-ids', value: settings[keys.post_ids]|default([])|join(', '), placeholder: '13, 71, 33' } %}
+		<p class="st-card-desc">{{ __('Only show the secondary title on specific posts by their ID. Leave empty to show on all.', 'secondary-title') }}</p>
+	{% endblock %}
+{% endembed %}

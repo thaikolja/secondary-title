@@ -1,4 +1,4 @@
-{# Settings page — two-column: main content + sidebar. #}
+{# Settings page — builder hero + two-column bottom row. #}
 <div class="st-settings">
 
 	<div class="st-head">
@@ -9,14 +9,7 @@
 	<form method="post" action="options.php" novalidate>
 		{{ settings_fields(page.option_group)|raw }}
 
-		<div class="st-layout">
-			<div class="st-main">
-				{% include 'settings/sections/general.twig' %}
-			</div>
-			<div class="st-sidebar">
-				{% include 'settings/sections/help.twig' %}
-			</div>
-		</div>
+		{% include 'settings/sections/general.twig' %}
 
 		{% include 'partials/save-bar.twig' with { labels } only %}
 	</form>
