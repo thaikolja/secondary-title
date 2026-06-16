@@ -49,8 +49,10 @@
 		<div class="st-preview-hero" id="st-format-preview"
 		     data-st-preview
 		     data-st-sample-title="{{ preview.sample_title|e }}"
-		     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}">
+		     data-st-sample-secondary="{{ preview.sample_secondary_title|e }}"
+		     data-st-preview-ready="false">
 		</div>
+		<p class="st-preview-note">{{ __('This is how the merged title might look on your site.', 'secondary-title') }}</p>
 
 		<div class="st-chip-row st-chip-row--presets">
 			<span class="st-chip-row__label">{{ __('Presets:', 'secondary-title') }}</span>

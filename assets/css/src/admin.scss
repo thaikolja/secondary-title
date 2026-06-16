@@ -31,7 +31,7 @@
 .st-wrap {
 	max-width: 1180px;
 	margin: 0;
-	padding: 0 18px;
+	padding: 18px;
 	box-sizing: border-box;
 }
 
@@ -111,6 +111,8 @@
 .st-panel { display: none; }
 .st-panel--active { display: block; }
 
+.st-main form { margin-bottom: 40px; }
+
 .st-panel-desc {
 	margin: 0 0 16px;
 	font-size: 14px;
@@ -138,6 +140,8 @@
 .st-merge-card--donate {
 	background: #fef7ed;
 	border-color: #f5cba0;
+	margin-top: 24px;
+	margin-bottom: 8px;
 }
 .st-merge-card__info { flex: 1; min-width: 0; }
 .st-merge-card__info strong {
@@ -147,7 +151,7 @@
 	color: var(--st-text);
 	margin-bottom: 2px;
 }
-.st-merge-card__info span { font-size: 12px; color: var(--st-muted); }
+.st-merge-card__info span { font-size: 14px; color: var(--st-muted); }
 
 /* ═══════════════════════════════════════════════════════════════
    HERO CARD — format input + preview (prominent, centred)
@@ -215,27 +219,31 @@
 .st-preview-toggle {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 4px;
 	margin-left: auto;
-	padding: 3px 9px;
+	padding: 4px 10px;
+	min-width: 64px;
 	font-size: 12px;
 	font-weight: 500;
 	color: #787c82;
-	background: none;
-	border: 1px solid transparent;
+	background: #f0f0f1;
+	border: 1px solid #dcdcde;
 	border-radius: 3px;
 	cursor: pointer;
 	transition: color .1s, background .1s, border-color .1s;
+	white-space: nowrap;
+	box-sizing: border-box;
 }
 .st-preview-toggle:hover {
 	color: var(--st-text);
-	background: var(--st-bg);
-	border-color: var(--st-border);
+	background: #e2e4e7;
+	border-color: #c3c4c7;
 }
 .st-preview-toggle--on {
 	color: var(--st-blue);
-	border-color: var(--st-border);
-	background: var(--st-bg);
+	background: #f0f6fc;
+	border-color: var(--st-blue);
 }
 .st-preview-toggle--on .dashicons { color: var(--st-blue); }
 .st-chip-row--presets {
@@ -277,6 +285,7 @@
 .st-preview-hero {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	min-height: 56px;
 	padding: 12px 16px;
 	background: var(--st-bg);
@@ -290,10 +299,30 @@
 	margin-bottom: 6px;
 	transition: background .15s, color .15s, border-color .15s;
 }
+.st-preview-hero[data-st-preview-ready="false"] {
+	justify-content: center;
+}
+.st-preview-hero[data-st-preview-ready="false"]::before {
+	content: '';
+	width: 28px;
+	height: 28px;
+	border: 3px solid #dcdcde;
+	border-top-color: var(--st-blue);
+	border-radius: 50%;
+	animation: st-spin .7s linear infinite;
+}
+@keyframes st-spin { to { transform: rotate(360deg); } }
 .st-preview-hero--dark {
 	background: #1d2327;
 	color: #e0e0e0;
 	border-color: #32373c;
+}
+
+.st-preview-note {
+	margin: 0 0 10px;
+	font-size: 12px;
+	color: #8c8f94;
+	text-align: left;
 }
 
 /* Auto-merge warning */

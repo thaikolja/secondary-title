@@ -79,6 +79,7 @@ export function initLiveFormatPreview( root ) {
 
 		// Initial render.
 		update();
+		preview.setAttribute( 'data-st-preview-ready', 'true' );
 	} );
 }
 
