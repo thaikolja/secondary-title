@@ -3,7 +3,7 @@
 Contributors:        thaikolja
 Tags:                title, secondary title, subheading, heading
 Tested up to:        7.0
-Stable tag:          3.0.0
+Stable tag:          3.0.0.rc.1
 Requires at least:   6.5
 Requires PHP:        8.1
 License:             GPLv2 or later
@@ -38,7 +38,8 @@ The stored value is plain text (or optionally HTML). Standard WordPress search a
 When **Auto merge** is on, the secondary title is automatically merged into the post title. When it is off, use `the_secondary_title()` in your theme template files or insert the `[secondary_title]` shortcode.
 
 = Is the v2.x.x API still supported? =
-Yes. Every v2.x.x function (`get_secondary_title`, `the_secondary_title`, etc.) is kept as a compat wrapper in `includes/depreciation/`. They trigger a deprecation notice and delegate to the new `Thaikolja\SecondaryTitle\Api` facade.
+Yes. Every v2.x.x function (`get_secondary_title`, `the_secondary_title`, etc.) is kept as a compact wrapper in
+`includes/depreciation/`. They trigger a deprecation notice and delegate to the new `Thaikolja\SecondaryTitle\Api` facade.
 
 = Can I use HTML in the secondary title? =
 Yes. The value is sanitized on save via `wp_kses_post()` (which allows limited, safe HTML). The exact allow-list is filterable via the `secondary_title_allowed_tags` hook.

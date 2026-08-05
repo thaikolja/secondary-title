@@ -1,6 +1,6 @@
 {
   "name":            "secondary-title",
-  "version":         "3.0.0",
+  "version":         "3.0.0.rc.1",
   "private":         true,
   "description":     "Add a secondary title to WordPress posts, pages, and custom post types.",
   "license":         "GPL-2.0-or-later",
