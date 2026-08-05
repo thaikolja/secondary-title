@@ -3,7 +3,7 @@
  * Plugin Name:       Secondary Title
  * Plugin URI:        https://docs.kolja-nolte.com/secondary-title
  * Description:       Add a secondary title to posts, pages, and custom post types. Display it automatically, with a shortcode, or via a real Gutenberg block.
- * Version:           3.0.0.rc.1
+ * Version:           3.0.0
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            Kolja Nolte
