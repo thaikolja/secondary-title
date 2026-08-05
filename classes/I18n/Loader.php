@@ -17,7 +17,7 @@ namespace Thaikolja\SecondaryTitle\I18n;
 use Thaikolja\SecondaryTitle\Plugin;
 
 /**
- * i18n loader.
+ * I18n loader.
  *
  * @since 3.0.0
  */
@@ -36,7 +36,7 @@ final class Loader {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( self::HOOK, [ $this, 'load' ] );
+		add_action( self::HOOK, array( $this, 'load' ) );
 	}
 
 	/**

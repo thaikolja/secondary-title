@@ -33,6 +33,10 @@ composer-error.log
 .phpunit.result.cache
 .phpunit.cache
 *.lcov
+AGENTS.md
+
+# Temporary i18n extraction stub (tools/make-pot.sh)
+.twig-strings.php
 
 # Release builds
 /dist/

@@ -25,11 +25,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // ============================================================
 // Display: get_secondary_title, the_secondary_title,
-//          has_secondary_title.
+// has_secondary_title.
 // ============================================================
 
 if ( ! function_exists( 'get_secondary_title' ) ) {
 	/**
+	 * Returns the secondary title of a post.
+	 *
+	 * @param int    $post_id      Post ID. Defaults to the current post.
+	 * @param string $prefix       Text to prepend to the title.
+	 * @param string $suffix       Text to append to the title.
+	 * @param bool   $use_settings Whether to apply the display restrictions.
+	 * @return string The secondary title, or an empty string.
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::get() instead.
 	 */
 	function get_secondary_title( $post_id = 0, $prefix = '', $suffix = '', $use_settings = false ): string {
@@ -39,12 +47,20 @@ if ( ! function_exists( 'get_secondary_title' ) ) {
 			return '';
 		}
 
-		return Api::get( (int) $post_id, (string) $prefix, (string) $suffix );
+		return Plugin::instance()->api->get( (int) $post_id, (string) $prefix, (string) $suffix );
 	}
 }
 
 if ( ! function_exists( 'the_secondary_title' ) ) {
 	/**
+	 * Prints the secondary title of a post.
+	 *
+	 * @param int    $post_id      Post ID. Defaults to the current post.
+	 * @param string $prefix       Text to prepend to the title.
+	 * @param string $suffix       Text to append to the title.
+	 * @param bool   $use_settings Whether to apply the display restrictions.
+	 * @return void
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::get() (and echo) instead.
 	 */
 	function the_secondary_title( $post_id = 0, $prefix = '', $suffix = '', $use_settings = false ): void {
@@ -56,11 +72,16 @@ if ( ! function_exists( 'the_secondary_title' ) ) {
 
 if ( ! function_exists( 'has_secondary_title' ) ) {
 	/**
+	 * Checks whether a post has a secondary title.
+	 *
+	 * @param int $post_id Post ID. Defaults to the current post.
+	 * @return bool True when a secondary title exists.
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::has() instead.
 	 */
 	function has_secondary_title( $post_id = 0 ): bool {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Api::has()' );
-		return Api::has( (int) $post_id );
+		return Plugin::instance()->api->has( (int) $post_id );
 	}
 }
 
@@ -70,43 +91,57 @@ if ( ! function_exists( 'has_secondary_title' ) ) {
 
 if ( ! function_exists( 'get_secondary_title_post_ids' ) ) {
 	/**
+	 * Returns the post IDs the secondary title is enabled for.
+	 *
+	 * @return array<int, int>
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::get_enabled_post_ids() instead.
 	 */
 	function get_secondary_title_post_ids(): array {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Api::get_enabled_post_ids()' );
-		return Api::get_enabled_post_ids();
+		return Plugin::instance()->api->get_enabled_post_ids();
 	}
 }
 
 if ( ! function_exists( 'get_secondary_title_post_types' ) ) {
 	/**
+	 * Returns the post types the secondary title is enabled for.
+	 *
+	 * @return array<int, string>
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::get_enabled_post_types() instead.
 	 */
 	function get_secondary_title_post_types(): array {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Api::get_enabled_post_types()' );
-		return Api::get_enabled_post_types();
+		return Plugin::instance()->api->get_enabled_post_types();
 	}
 }
 
 if ( ! function_exists( 'get_secondary_title_post_categories' ) ) {
 	/**
+	 * Returns the category IDs the secondary title is enabled for.
+	 *
+	 * @return array<int, int>
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::get_enabled_categories() instead.
 	 */
 	function get_secondary_title_post_categories(): array {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Api::get_enabled_categories()' );
-		return Api::get_enabled_categories();
+		return Plugin::instance()->api->get_enabled_categories();
 	}
 }
 
 if ( ! function_exists( 'get_secondary_title_filtered_post_types' ) ) {
 	/**
-	 * @deprecated 3.0.0 No replacement; use get_post_types() directly.
+	 * Returns all public post types.
 	 *
-	 * Kept for back-compat. Returns all public post types.
+	 * @return array<string, string>
+	 *
+	 * @deprecated 3.0.0 No replacement; use get_post_types() directly.
 	 */
 	function get_secondary_title_filtered_post_types(): array {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'get_post_types()' );
-		return get_post_types( [ 'public' => true ] );
+		return get_post_types( array( 'public' => true ) );
 	}
 }
 
@@ -116,22 +151,27 @@ if ( ! function_exists( 'get_secondary_title_filtered_post_types' ) ) {
 
 if ( ! function_exists( 'get_posts_with_secondary_title' ) ) {
 	/**
-	 * @deprecated 3.0.0 Use a WP_Query with meta_key = '_secondary_title' instead.
+	 * Returns posts that have a secondary title.
 	 *
-	 * Kept for back-compat.
+	 * @param array<string, mixed> $additional_query Extra WP_Query arguments.
+	 * @return array<int, \WP_Post>
+	 *
+	 * @deprecated 3.0.0 Use a WP_Query with meta_key = '_secondary_title' instead.
 	 */
-	function get_posts_with_secondary_title( array $additional_query = [] ): array {
+	function get_posts_with_secondary_title( array $additional_query = array() ): array {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'WP_Query with meta_key meta_query' );
 
 		$args = wp_parse_args(
 			$additional_query,
-			[
+			array(
 				'post_type'    => 'any',
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- v2 back-compat query contract.
 				'meta_key'     => Plugin::META_KEY,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- v2 back-compat query contract.
 				'meta_value'   => ' ',
 				'meta_compare' => '!=',
 				'post_status'  => 'publish',
-			]
+			)
 		);
 
 		return get_posts( $args );
@@ -140,16 +180,20 @@ if ( ! function_exists( 'get_posts_with_secondary_title' ) ) {
 
 if ( ! function_exists( 'get_random_post_with_secondary_title' ) ) {
 	/**
+	 * Returns a random post that has a secondary title.
+	 *
+	 * @return \WP_Post|false
+	 *
 	 * @deprecated 3.0.0 No direct replacement; use get_posts_with_secondary_title() + shuffle.
 	 */
 	function get_random_post_with_secondary_title() {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'get_posts_with_secondary_title()' );
 
 		$post = get_posts_with_secondary_title(
-			[
+			array(
 				'showposts' => 1,
 				'orderby'   => 'rand',
-			]
+			)
 		);
 
 		return $post ? $post[0] : false;
@@ -162,6 +206,10 @@ if ( ! function_exists( 'get_random_post_with_secondary_title' ) ) {
 
 if ( ! function_exists( 'secondary_title_get_default_settings' ) ) {
 	/**
+	 * Returns every setting and its default value.
+	 *
+	 * @return array<string, mixed>
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Settings\Defaults::all() instead.
 	 */
 	function secondary_title_get_default_settings(): array {
@@ -173,6 +221,11 @@ if ( ! function_exists( 'secondary_title_get_default_settings' ) ) {
 
 if ( ! function_exists( 'secondary_title_get_settings' ) ) {
 	/**
+	 * Returns every setting with its current value.
+	 *
+	 * @param bool $use_prefix Whether to keep the `secondary_title_` prefix.
+	 * @return array<string, mixed>
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Settings\Repository::all() instead.
 	 */
 	function secondary_title_get_settings( bool $use_prefix = true ): array {
@@ -182,7 +235,7 @@ if ( ! function_exists( 'secondary_title_get_settings' ) ) {
 		$settings   = $repository->all();
 
 		if ( ! $use_prefix ) {
-			$out = [];
+			$out = array();
 			foreach ( $settings as $key => $value ) {
 				$out[ str_replace( 'secondary_title_', '', (string) $key ) ] = $value;
 			}
@@ -195,32 +248,44 @@ if ( ! function_exists( 'secondary_title_get_settings' ) ) {
 
 if ( ! function_exists( 'secondary_title_get_setting' ) ) {
 	/**
+	 * Returns a single setting value.
+	 *
+	 * @param string $setting The setting name without the prefix.
+	 * @return mixed
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Api::get_setting() instead.
 	 */
 	function secondary_title_get_setting( string $setting ) {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Api::get_setting()' );
-		return Api::get_setting( $setting );
+		return Plugin::instance()->api->get_setting( $setting );
 	}
 }
 
 if ( ! function_exists( 'secondary_title_update_settings' ) ) {
 	/**
+	 * Stores a full set of settings.
+	 *
+	 * @param array<string, mixed> $new_settings The settings to store.
+	 * @return bool True when every setting was stored.
+	 *
 	 * @deprecated 3.0.0 No direct replacement. Use the WordPress Settings API
-	 *                       or Thaikolja\SecondaryTitle\Settings\Repository::set_many().
 	 */
-	function secondary_title_update_settings( array $new_settings = [] ): bool {
+	function secondary_title_update_settings( array $new_settings = array() ): bool {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Settings\\Repository::set_many()' );
 
 		$repository = Plugin::instance()->settings_repository;
 		$failed     = $repository->set_many( $new_settings );
-		return [] === $failed;
+		return array() === $failed;
 	}
 }
 
 if ( ! function_exists( 'secondary_title_install' ) ) {
 	/**
+	 * Re-runs the plugin activation routine.
+	 *
+	 * @return bool Always true.
+	 *
 	 * @deprecated 3.0.0 Replaced by Thaikolja\SecondaryTitle\Lifecycle\Activator.
-	 *                    Kept as a no-op alias.
 	 */
 	function secondary_title_install(): bool {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Lifecycle\\Activator' );
@@ -231,8 +296,11 @@ if ( ! function_exists( 'secondary_title_install' ) ) {
 
 if ( ! function_exists( 'secondary_title_reset_settings' ) ) {
 	/**
+	 * Resets every setting to its default value.
+	 *
+	 * @return bool Always true.
+	 *
 	 * @deprecated 3.0.0 No direct replacement. Iterate defaults via
-	 *                       Thaikolja\SecondaryTitle\Settings\Repository.
 	 */
 	function secondary_title_reset_settings(): bool {
 		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Settings\\Defaults + Repository::set()' );
@@ -250,10 +318,12 @@ if ( ! function_exists( 'secondary_title_reset_settings' ) ) {
 
 if ( ! function_exists( 'secondary_title_validate' ) ) {
 	/**
+	 * Validates whether the secondary title may be displayed.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return bool Always true (display rules moved to the renderer).
+	 *
 	 * @deprecated 3.0.0 No direct replacement. Display rules moved to the
-	 *                       title renderer / shortcode. Kept as a no-op
-	 *                       that always returns true so callers don't
-	 *                       crash.
 	 */
 	function secondary_title_validate( int $post_id ): bool {
 		_deprecated_function( __FUNCTION__, '3.0.0' );
@@ -264,8 +334,11 @@ if ( ! function_exists( 'secondary_title_validate' ) ) {
 
 if ( ! function_exists( 'secondary_title_verify_admin_page' ) ) {
 	/**
+	 * Checks whether the current admin page is the settings page.
+	 *
+	 * @return bool Always true.
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Editor\MetaBox (it
-	 *                       checks the post type internally).
 	 */
 	function secondary_title_verify_admin_page(): bool {
 		_deprecated_function( __FUNCTION__, '3.0.0' );
@@ -279,6 +352,12 @@ if ( ! function_exists( 'secondary_title_verify_admin_page' ) ) {
 
 if ( ! function_exists( 'secondary_title_documentation_url' ) ) {
 	/**
+	 * Builds a documentation URL.
+	 *
+	 * @param string $path   The documentation page path.
+	 * @param string $anchor Optional anchor fragment.
+	 * @return string
+	 *
 	 * @deprecated 3.0.0 No direct replacement; link to the docs site directly.
 	 */
 	function secondary_title_documentation_url( string $path, string $anchor = '' ): string {
@@ -290,9 +369,14 @@ if ( ! function_exists( 'secondary_title_documentation_url' ) ) {
 
 if ( ! function_exists( 'secondary_title_documentation_icon' ) ) {
 	/**
+	 * Prints a documentation help icon.
+	 *
+	 * @param string $path   The documentation page path.
+	 * @param string $anchor Optional anchor fragment.
+	 * @param string $icon   Optional icon name (ignored).
+	 * @return void
+	 *
 	 * @deprecated 3.0.0 No direct replacement. Settings page UI
-	 *                       now uses Twig templates with built-in
-	 *                       help popovers.
 	 */
 	function secondary_title_documentation_icon( string $path, string $anchor = '', string $icon = '' ): void {
 		_deprecated_function( __FUNCTION__, '3.0.0' );
@@ -303,6 +387,10 @@ if ( ! function_exists( 'secondary_title_documentation_icon' ) ) {
 
 if ( ! function_exists( 'secondary_title_print_html_info_circle' ) ) {
 	/**
+	 * Prints the legacy HTML info circle.
+	 *
+	 * @return void
+	 *
 	 * @deprecated 2.2.0 Already deprecated in v2.2.0. No replacement.
 	 */
 	function secondary_title_print_html_info_circle() {
@@ -316,6 +404,11 @@ if ( ! function_exists( 'secondary_title_print_html_info_circle' ) ) {
 
 if ( ! function_exists( 'secondary_title_add_settings_link' ) ) {
 	/**
+	 * Adds the settings link to the plugins screen.
+	 *
+	 * @param array<int, string> $links The existing action links.
+	 * @return array<int, string>
+	 *
 	 * @deprecated 3.0.0 Use Thaikolja\SecondaryTitle\Admin\SettingsLink.
 	 */
 	function secondary_title_add_settings_link( array $links ): array {
@@ -327,6 +420,10 @@ if ( ! function_exists( 'secondary_title_add_settings_link' ) ) {
 
 if ( ! function_exists( 'secondary_title_reset_donation_notice' ) ) {
 	/**
+	 * Re-arms the (removed) donation notice.
+	 *
+	 * @return bool Always true.
+	 *
 	 * @deprecated 3.0.0 No replacement. The donation notice is gone.
 	 */
 	function secondary_title_reset_donation_notice(): bool {

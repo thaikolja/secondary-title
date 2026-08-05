@@ -25,11 +25,14 @@ use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 final class Repository {
 
 	/**
+	 * Sanitizer.
+	 *
 	 * @var Sanitizer
-	 */
-	private readonly Sanitizer $sanitizer;
+	 */ private readonly Sanitizer $sanitizer;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param Sanitizer $sanitizer The sanitizer for incoming values.
 	 */
 	public function __construct( Sanitizer $sanitizer ) {

@@ -7,7 +7,6 @@
   "engines":         {
     "node": ">=18"
   },
-  "main":            "assets/js/src/index.js",
   "scripts":         {
     "build":           "wp-scripts build",
     "start":           "wp-scripts start",

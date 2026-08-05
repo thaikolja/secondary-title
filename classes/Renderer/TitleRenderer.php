@@ -42,49 +42,47 @@ final class TitleRenderer {
 	public const PRIORITY = 10;
 
 	/**
+	 * Settings repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $settings_repository;
+	 */ private readonly SettingsRepository $settings_repository;
 
 	/**
+	 * Format.
+	 *
 	 * @var Format
-	 */
-	private readonly Format $format;
+	 */ private readonly Format $format;
 
 	/**
-	 * @var Placeholder
-	 */
-	private readonly Placeholder $placeholder;
-
-	/**
+	 * Wrapper.
+	 *
 	 * @var Wrapper
-	 */
-	private readonly Wrapper $wrapper;
+	 */ private readonly Wrapper $wrapper;
 
 	/**
+	 * Meta repository.
+	 *
 	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
+	 */ private readonly MetaRepository $meta_repository;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param SettingsRepository $settings_repository Settings repository.
 	 * @param Format             $format              Title format.
-	 * @param Placeholder        $placeholder         Placeholder tokens.
 	 * @param Wrapper            $wrapper             Output wrapper.
 	 * @param MetaRepository     $meta_repository     Meta repository.
 	 */
 	public function __construct(
 		SettingsRepository $settings_repository,
 		Format $format,
-		Placeholder $placeholder,
 		Wrapper $wrapper,
 		MetaRepository $meta_repository
 	) {
 		$this->settings_repository = $settings_repository;
 		$this->format              = $format;
-		$this->placeholder         = $placeholder;
 		$this->wrapper             = $wrapper;
-		$this->meta_repository    = $meta_repository;
+		$this->meta_repository     = $meta_repository;
 	}
 
 	/**
@@ -93,7 +91,7 @@ final class TitleRenderer {
 	 * @return void
 	 */
 	public function register(): void {
-		add_filter( 'the_title', [ $this, 'filter_the_title' ], self::PRIORITY, 2 );
+		add_filter( 'the_title', array( $this, 'filter_the_title' ), self::PRIORITY, 2 );
 	}
 
 	/**

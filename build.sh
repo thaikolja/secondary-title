@@ -103,13 +103,16 @@ rsync -a \
     --exclude 'bun.lock' \
     --exclude 'coverage/' \
     --exclude 'dist/' \
+    --exclude 'docs/' \
     --exclude 'node_modules/' \
     --exclude 'package.json' \
     --exclude 'package-lock.json' \
     --exclude 'phpcs.xml.dist' \
+    --exclude 'phpstan-bootstrap.php' \
     --exclude 'phpstan.neon.dist' \
     --exclude 'phpunit.xml.dist' \
     --exclude 'tests/' \
+    --exclude 'tools/' \
     --exclude 'vendor/' \
     --exclude 'webpack.config.js' \
     --exclude 'assets/css/src/' \
@@ -148,12 +151,12 @@ fi
 
 if [ "${SKIP_LINT:-0}" != "1" ]; then
     if [ -x "$PLUGIN_DIR/vendor/bin/phpstan" ]; then
-        echo "==> PHPStan (warnings only; pre-existing issues do not fail the build)"
-        "$PLUGIN_DIR/vendor/bin/phpstan" analyse --no-progress --memory-limit=1G || true
+        echo "==> PHPStan (fails the build on errors)"
+        "$PLUGIN_DIR/vendor/bin/phpstan" analyse --no-progress --memory-limit=1G
     fi
     if [ -x "$PLUGIN_DIR/vendor/bin/phpcs" ]; then
-        echo "==> PHPCS (warnings only; pre-existing issues do not fail the build)"
-        "$PLUGIN_DIR/vendor/bin/phpcs" --report=summary || true
+        echo "==> PHPCS (fails the build on errors)"
+        "$PLUGIN_DIR/vendor/bin/phpcs" --report=summary
     fi
 fi
 

@@ -43,11 +43,14 @@ final class Shortcode {
 	public const FILTER = 'secondary_title_shortcode';
 
 	/**
+	 * Meta repository.
+	 *
 	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
+	 */ private readonly MetaRepository $meta_repository;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param MetaRepository $meta_repository Meta read access.
 	 */
 	public function __construct( MetaRepository $meta_repository ) {
@@ -66,7 +69,7 @@ final class Shortcode {
 	/**
 	 * Renders the shortcode.
 	 *
-	 * @param array|string $atts Shortcode attributes.
+	 * @param array<int|string, mixed>|string $atts Shortcode attributes.
 	 *
 	 * @return string Rendered HTML (or empty string).
 	 */

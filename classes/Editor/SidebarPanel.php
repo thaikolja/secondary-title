@@ -19,11 +19,8 @@ declare( strict_types = 1 );
 namespace Thaikolja\SecondaryTitle\Editor;
 
 use Thaikolja\SecondaryTitle\Plugin;
-use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
-use Thaikolja\SecondaryTitle\Renderer\Format as Format;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
 
 /**
  * Gutenberg sidebar panel for the secondary title.
@@ -42,52 +39,31 @@ final class SidebarPanel {
 	public const HANDLE = 'secondary-title-sidebar';
 
 	/**
-	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
-
-	/**
+	 * Settings repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $settings_repository;
+	 */ private readonly SettingsRepository $settings_repository;
 
 	/**
-	 * @var Format
+	 * Constructor.
+	 *
+	 * @param SettingsRepository $settings_repository Settings repository.
 	 */
-	private readonly Format $format;
-
-	/**
-	 * @var Wrapper
-	 */
-	private readonly Wrapper $wrapper;
-
-	/**
-	 * @param MetaRepository     $meta_repository    Meta read/write.
-	 * @param Format              $format              Title format.
-	 * @param Wrapper             $wrapper             Output wrapper.
-	 * @param SettingsRepository  $settings_repository Settings repository.
-	 */
-	public function __construct(
-		MetaRepository $meta_repository,
-		Format $format,
-		Wrapper $wrapper,
-		SettingsRepository $settings_repository
-	) {
-		$this->meta_repository    = $meta_repository;
-		$this->format              = $format;
-		$this->wrapper             = $wrapper;
+	public function __construct( SettingsRepository $settings_repository ) {
 		$this->settings_repository = $settings_repository;
 	}
 
 	/**
-	 * Registers the editor scripts + the post.php hook that prints
-	 * the inline data the JS reads to bootstrap the panel.
+	 * Registers the editor script and the inline bootstrap data.
+	 *
+	 * Both run on `enqueue_block_editor_assets`, which only fires
+	 * on block-editor screens — `edit_form_after_title` does not.
 	 *
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue' ] );
-		add_action( 'edit_form_after_title', [ $this, 'print_bootstrap_data' ] );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'print_bootstrap_data' ) );
 	}
 
 	/**
@@ -109,10 +85,10 @@ final class SidebarPanel {
 		$asset_file = SECONDARY_TITLE_PATH . 'assets/js/dist/editor/editor.asset.php';
 		$asset      = file_exists( $asset_file )
 			? (array) include $asset_file
-			: [
-				'dependencies' => [ 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-i18n' ],
+			: array(
+				'dependencies' => array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-i18n' ),
 				'version'      => Plugin::VERSION,
-			];
+			);
 
 		wp_enqueue_script(
 			self::HANDLE,
@@ -153,15 +129,15 @@ final class SidebarPanel {
 		$secondary = (string) get_post_meta( $post->ID, Plugin::META_KEY, true );
 		$format    = (string) $this->settings_repository->get( SettingsDefaults::OPTION_TITLE_FORMAT, SettingsDefaults::TITLE_FORMAT );
 
-		$data = [
+		$data = array(
 			'secondaryTitle' => $secondary,
-			'title'           => $post->post_title,
-			'format'          => $format,
-			'fieldName'        => MetaBox::FIELD_NAME,
-			'metaKey'          => Plugin::META_KEY,
-		];
+			'title'          => $post->post_title,
+			'format'         => $format,
+			'fieldName'      => MetaBox::FIELD_NAME,
+			'metaKey'        => Plugin::META_KEY,
+		);
 
-		wp_print_inline_script(
+		wp_add_inline_script(
 			self::HANDLE,
 			'window.SecondaryTitleBootstrap = ' . wp_json_encode( $data ) . ';',
 			'before'
@@ -174,13 +150,13 @@ final class SidebarPanel {
 	 * @return array<int, string>
 	 */
 	private function enabled_post_types(): array {
-		$enabled = (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, [] );
+		$enabled = (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, array() );
 
-		if ( [] !== $enabled ) {
+		if ( array() !== $enabled ) {
 			return array_values( array_filter( $enabled, 'post_type_exists' ) );
 		}
 
-		$public = get_post_types( [ 'public' => true ] );
+		$public = get_post_types( array( 'public' => true ) );
 		return array_values( array_filter( $public, static fn ( string $t ): bool => 'attachment' !== $t ) );
 	}
 

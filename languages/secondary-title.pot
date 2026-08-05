@@ -1,0 +1,682 @@
+# Copyright (C) 2026 Kolja Nolte
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Secondary Title 3.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/secondary-title\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-05T16:50:42+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+
+#. Plugin Name of the plugin
+#: secondary-title.php
+#: classes/Editor/MetaBox.php:125
+#: classes/Settings/Page.php:97
+#: classes/Settings/Page.php:136
+#: assets/js/src/block/edit.js:39
+#: assets/js/src/block/index.js:23
+#: assets/js/src/editor/index.js:24
+#: assets/js/src/editor/sidebar-panel.js:81
+msgid "Secondary Title"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: secondary-title.php
+msgid "https://docs.kolja-nolte.com/secondary-title"
+msgstr ""
+
+#. Description of the plugin
+#: secondary-title.php
+msgid "Add a secondary title to posts, pages, and custom post types. Display it automatically, with a shortcode, or via a real Gutenberg block."
+msgstr ""
+
+#. Author of the plugin
+#: secondary-title.php
+msgid "Kolja Nolte"
+msgstr ""
+
+#. Author URI of the plugin
+#: secondary-title.php
+msgid "https://www.kolja-nolte.com"
+msgstr ""
+
+#: pages/*.twig
+msgid "Add a secondary title via the sidebar in the block editor or the meta box in the Classic Editor."
+msgstr ""
+
+#: pages/*.twig
+msgid "Add a secondary title via the sidebar panel in the block editor or the meta box in the Classic Editor."
+msgstr ""
+
+#: pages/*.twig
+msgid "Admin column position"
+msgstr ""
+
+#: pages/*.twig
+msgid "After title"
+msgstr ""
+
+#: pages/*.twig
+msgid "All categories"
+msgstr ""
+
+#: pages/*.twig
+msgid "All post types"
+msgstr ""
+
+#: pages/*.twig
+msgid "All types"
+msgstr ""
+
+#: pages/*.twig
+msgid "Allow HTML in output. Default: false."
+msgstr ""
+
+#: pages/*.twig
+msgid "Append the secondary title to the post title in RSS and Atom feeds."
+msgstr ""
+
+#: pages/*.twig
+msgid "Attributes:"
+msgstr ""
+
+#: pages/*.twig
+msgid "Auto-merge is disabled"
+msgstr ""
+
+#: pages/*.twig
+msgid "Auto-merge"
+msgstr ""
+
+#: pages/*.twig
+msgid "Before title"
+msgstr ""
+
+#: pages/*.twig
+msgid "Block inserter"
+msgstr ""
+
+#: pages/*.twig
+msgid "Block"
+msgstr ""
+
+#: pages/*.twig
+msgid "Built by hand &mdash; no AI-generated code. Every line written, reviewed and tested manually."
+msgstr ""
+
+#: pages/*.twig
+msgid "Built by hand — no AI-generated code. Every line written, reviewed, and tested manually."
+msgstr ""
+
+#: pages/*.twig
+msgid "Built by hand — no AI-generated code. If this plugin saves you time, consider a small donation to keep it maintained."
+msgstr ""
+
+#: pages/*.twig
+msgid "Built by hand"
+msgstr ""
+
+#: pages/*.twig
+msgid "Call <code>the_secondary_title()</code> from your theme."
+msgstr ""
+
+#: pages/*.twig
+msgid "Categories"
+msgstr ""
+
+#: pages/*.twig
+msgid "Changelog"
+msgstr ""
+
+#: pages/*.twig
+msgid "Comma-separated list of post IDs. Leave empty for all."
+msgstr ""
+
+#: pages/*.twig
+msgid "Comma-separated"
+msgstr ""
+
+#: pages/*.twig
+msgid "Comma-separated. Leave empty to include all posts."
+msgstr ""
+
+#: pages/*.twig
+msgid "Control which posts and pages display the secondary title. Leave all empty to enable everywhere."
+msgstr ""
+
+#: pages/*.twig
+msgid "Dark"
+msgstr ""
+
+#: pages/*.twig
+msgid "Disabled"
+msgstr ""
+
+#: pages/*.twig
+msgid "Display Rules"
+msgstr ""
+
+#: pages/*.twig
+msgid "Documentation"
+msgstr ""
+
+#: pages/*.twig
+msgid "Donate via PayPal"
+msgstr ""
+
+#: pages/*.twig
+msgid "Echoes the secondary title of the current post."
+msgstr ""
+
+#: pages/*.twig
+msgid "Edit a post, find Secondary Title in the sidebar or meta box."
+msgstr ""
+
+#: pages/*.twig
+msgid "Empty title behaviour"
+msgstr ""
+
+#: pages/*.twig
+msgid "Enable Auto-merge on the General tab to have it appear in the post title automatically."
+msgstr ""
+
+#: pages/*.twig
+msgid "Enabled for"
+msgstr ""
+
+#: pages/*.twig
+msgid "Enabled"
+msgstr ""
+
+#: pages/*.twig
+msgid "Enjoying Secondary Title?"
+msgstr ""
+
+#: pages/*.twig
+msgid "Enter a title format to see preview"
+msgstr ""
+
+#: pages/*.twig
+msgid "Enter a value and save."
+msgstr ""
+
+#: pages/*.twig
+msgid "Enter your secondary title and publish or update the post."
+msgstr ""
+
+#: pages/*.twig
+msgid "Expose via REST API"
+msgstr ""
+
+#: pages/*.twig
+msgid "Fall back to primary title"
+msgstr ""
+
+#: pages/*.twig
+msgid "Full docs &rarr;"
+msgstr ""
+
+#: pages/*.twig
+msgid "Full documentation →"
+msgstr ""
+
+#: pages/*.twig
+msgid "Full rewrite — OOP, Twig templates, block editor sidebar panel."
+msgstr ""
+
+#: pages/*.twig
+#: classes/Settings/Page.php:145
+msgid "General"
+msgstr ""
+
+#: pages/*.twig
+msgid "Get support"
+msgstr ""
+
+#: pages/*.twig
+msgid "Hide (output nothing)"
+msgstr ""
+
+#: pages/*.twig
+msgid "ID of the post. Default: current post."
+msgstr ""
+
+#: pages/*.twig
+msgid "ID of the post. Default: current."
+msgstr ""
+
+#: pages/*.twig
+msgid "If this plugin helps your site, please consider a small donation to support ongoing development."
+msgstr ""
+
+#: pages/*.twig
+msgid "Include in search"
+msgstr ""
+
+#: pages/*.twig
+msgid "Include the secondary title in the WP REST API response for posts."
+msgstr ""
+
+#: pages/*.twig
+msgid "Initial public release."
+msgstr ""
+
+#: pages/*.twig
+msgid "Insert format below into post title automatically"
+msgstr ""
+
+#: pages/*.twig
+msgid "Insert the primary title placeholder"
+msgstr ""
+
+#: pages/*.twig
+msgid "Insert the secondary title placeholder"
+msgstr ""
+
+#: pages/*.twig
+msgid "Insert:"
+msgstr ""
+
+#: pages/*.twig
+msgid "Leave a review ★"
+msgstr ""
+
+#: pages/*.twig
+msgid "Leave empty to enable on all post types."
+msgstr ""
+
+#: pages/*.twig
+msgid "Leave empty to enable on all"
+msgstr ""
+
+#: pages/*.twig
+msgid "Leave empty to show in all"
+msgstr ""
+
+#: pages/*.twig
+msgid "Leave empty to show on all categories."
+msgstr ""
+
+#: pages/*.twig
+msgid "Leave empty to show on all post types."
+msgstr ""
+
+#: pages/*.twig
+msgid "Live Preview"
+msgstr ""
+
+#: pages/*.twig
+msgid "Main post only"
+msgstr ""
+
+#: pages/*.twig
+msgid "Make the secondary title searchable via the default WordPress search."
+msgstr ""
+
+#: pages/*.twig
+msgid "No AI-generated code. Every line is written, reviewed, and tested manually."
+msgstr ""
+
+#: pages/*.twig
+msgid "No categories found."
+msgstr ""
+
+#: pages/*.twig
+msgid "No post types found."
+msgstr ""
+
+#: pages/*.twig
+msgid "Off"
+msgstr ""
+
+#: pages/*.twig
+#: pages/*.twig
+msgid "On"
+msgstr ""
+
+#: pages/*.twig
+msgid "Only replace in the primary post query"
+msgstr ""
+
+#: pages/*.twig
+msgid "Only replace the title in the primary post query, not in widgets or sidebars."
+msgstr ""
+
+#: pages/*.twig
+msgid "Only show the secondary title on specific posts by their ID. Leave empty to show on all."
+msgstr ""
+
+#: pages/*.twig
+msgid "Or call <code>the_secondary_title()</code> from your theme."
+msgstr ""
+
+#: pages/*.twig
+msgid "PHP API"
+msgstr ""
+
+#: pages/*.twig
+msgid "PHP"
+msgstr ""
+
+#: pages/*.twig
+msgid "PayPal"
+msgstr ""
+
+#: pages/*.twig
+msgid "Plugin Info"
+msgstr ""
+
+#: pages/*.twig
+msgid "Post IDs"
+msgstr ""
+
+#: pages/*.twig
+msgid "Post Types"
+msgstr ""
+
+#: pages/*.twig
+msgid "Post types"
+msgstr ""
+
+#: pages/*.twig
+msgid "Presets:"
+msgstr ""
+
+#: pages/*.twig
+#: classes/Editor/MetaBox.php:164
+#: assets/js/src/editor/sidebar-panel.js:94
+msgid "Preview"
+msgstr ""
+
+#: pages/*.twig
+msgid "Procedural API, meta box, basic settings page."
+msgstr ""
+
+#: pages/*.twig
+msgid "Quick Links"
+msgstr ""
+
+#: pages/*.twig
+msgid "Quick Start"
+msgstr ""
+
+#: pages/*.twig
+msgid "Quick links"
+msgstr ""
+
+#: pages/*.twig
+msgid "Quick start"
+msgstr ""
+
+#: pages/*.twig
+msgid "Read documentation"
+msgstr ""
+
+#: pages/*.twig
+msgid "Remove any HTML tags before displaying the secondary title. Useful when used inside attributes."
+msgstr ""
+
+#: pages/*.twig
+msgid "Render HTML. Default: false."
+msgstr ""
+
+#: pages/*.twig
+msgid "Returns the secondary title as a string."
+msgstr ""
+
+#: pages/*.twig
+msgid "Returns true if a secondary title is set."
+msgstr ""
+
+#: pages/*.twig
+msgid "Search terms…"
+msgstr ""
+
+#: pages/*.twig
+msgid "Search"
+msgstr ""
+
+#: pages/*.twig
+msgid "Search..."
+msgstr ""
+
+#: pages/*.twig
+msgid "Secondary Title is developed by one person — without AI-generated code. Every line is written, reviewed, and tested by hand. This takes significant time."
+msgstr ""
+
+#: pages/*.twig
+msgid "Secondary:"
+msgstr ""
+
+#: pages/*.twig
+msgid "Settings sections"
+msgstr ""
+
+#: pages/*.twig
+msgid "Shortcode"
+msgstr ""
+
+#: pages/*.twig
+msgid "Show in RSS feed"
+msgstr ""
+
+#: pages/*.twig
+msgid "Specific post IDs"
+msgstr ""
+
+#: pages/*.twig
+msgid "String appended to the output."
+msgstr ""
+
+#: pages/*.twig
+msgid "String prepended to the output."
+msgstr ""
+
+#: pages/*.twig
+msgid "Strip HTML from output"
+msgstr ""
+
+#: pages/*.twig
+msgid "Support forum"
+msgstr ""
+
+#: pages/*.twig
+msgid "Support the Plugin"
+msgstr ""
+
+#: pages/*.twig
+msgid "Support"
+msgstr ""
+
+#: pages/*.twig
+msgid "Tags"
+msgstr ""
+
+#: pages/*.twig
+msgid "Term Browser"
+msgstr ""
+
+#: pages/*.twig
+msgid "The secondary title will not appear automatically in post titles. You can still display it manually using PHP or the shortcode:"
+msgstr ""
+
+#: pages/*.twig
+msgid "This is how the merged title might look on your site."
+msgstr ""
+
+#: pages/*.twig
+msgid "Title Format"
+msgstr ""
+
+#: pages/*.twig
+msgid "Title:"
+msgstr ""
+
+#: pages/*.twig
+msgid "Toggle all"
+msgstr ""
+
+#: pages/*.twig
+msgid "Toggle dark preview"
+msgstr ""
+
+#: pages/*.twig
+msgid "Tools & Help"
+msgstr ""
+
+#: pages/*.twig
+msgid "Use <code>[secondary_title]</code> in your content or the Gutenberg block."
+msgstr ""
+
+#: pages/*.twig
+msgid "Use the shortcode <code>[secondary_title]</code> or insert the Gutenberg block."
+msgstr ""
+
+#: pages/*.twig
+msgid "Version"
+msgstr ""
+
+#: pages/*.twig
+msgid "View documentation"
+msgstr ""
+
+#: pages/*.twig
+msgid "What to output when a post has no secondary title set."
+msgstr ""
+
+#: pages/*.twig
+msgid "When enabled, the secondary title is merged into the post title using the format below. This happens via the <code>the_title</code> filter, so it works across your entire theme. Disable auto-merge to control placement manually with the shortcode, block, or PHP functions."
+msgstr ""
+
+#: pages/*.twig
+msgid "Where the Secondary Title column appears in post list tables."
+msgstr ""
+
+#: pages/*.twig
+msgid "post ID. Default: current."
+msgstr ""
+
+#: pages/*.twig
+msgid "render HTML. Default: false."
+msgstr ""
+
+#: classes/Admin/Columns.php:115
+#: classes/Admin/Columns.php:120
+#: classes/Admin/Columns.php:129
+#: classes/Editor/MetaBox.php:151
+#: assets/js/src/editor/sidebar-panel.js:84
+msgid "Secondary title"
+msgstr ""
+
+#: classes/Admin/SettingsLink.php:46
+msgid "Settings"
+msgstr ""
+
+#: classes/Admin/SettingsLink.php:47
+msgid "Go to Secondary Title's options page"
+msgstr ""
+
+#: classes/Editor/Block/ServerRender.php:128
+#: assets/js/src/block/edit.js:65
+msgid "(no secondary title set)"
+msgstr ""
+
+#: classes/Editor/MetaBox.php:159
+#: assets/js/src/editor/sidebar-panel.js:88
+msgid "Enter secondary title here"
+msgstr ""
+
+#: classes/Settings/Page.php:96
+msgid "Secondary Title Settings"
+msgstr ""
+
+#: classes/Settings/Page.php:114
+msgid "You are not authorized to view this page."
+msgstr ""
+
+#: classes/Settings/Page.php:141
+msgid "Save Changes"
+msgstr ""
+
+#: classes/Settings/Page.php:142
+msgid "Reset to defaults"
+msgstr ""
+
+#: classes/Settings/Page.php:143
+msgid "Are you sure you want to reset all settings to their defaults? This cannot be undone."
+msgstr ""
+
+#: classes/Settings/Page.php:144
+msgid "Settings saved."
+msgstr ""
+
+#: classes/Settings/Page.php:146
+msgid "Display rules"
+msgstr ""
+
+#: classes/Settings/Page.php:147
+msgid "Help"
+msgstr ""
+
+#: classes/Settings/Page.php:168
+msgid "Hello world"
+msgstr ""
+
+#: classes/Settings/Page.php:169
+msgid "Breaking news"
+msgstr ""
+
+#: assets/js/src/block/edit.js:41
+msgid "Post ID"
+msgstr ""
+
+#: assets/js/src/block/edit.js:42
+msgid "Leave 0 to use the current post."
+msgstr ""
+
+#: assets/js/src/block/edit.js:48
+msgid "Wrapper tag"
+msgstr ""
+
+#: assets/js/src/block/index.js:24
+msgid "Renders the secondary title of the current post using the configured format."
+msgstr ""
+
+#: assets/js/src/editor/sidebar-panel.js:85
+msgid "The secondary title is shown next to the post title based on the title format."
+msgstr ""
+
+#: assets/js/src/block/block.json
+msgctxt "block title"
+msgid "Secondary Title"
+msgstr ""
+
+#: assets/js/src/block/block.json
+msgctxt "block description"
+msgid "Renders the secondary title of the current post using the configured format."
+msgstr ""
+
+#: assets/js/src/block/block.json
+msgctxt "block keyword"
+msgid "title"
+msgstr ""
+
+#: assets/js/src/block/block.json
+msgctxt "block keyword"
+msgid "secondary"
+msgstr ""
+
+#: assets/js/src/block/block.json
+msgctxt "block keyword"
+msgid "subtitle"
+msgstr ""
+
+#: assets/js/src/block/block.json
+msgctxt "block keyword"
+msgid "heading"
+msgstr ""

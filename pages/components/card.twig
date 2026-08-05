@@ -1,26 +1,26 @@
 {#
-   Card component. Use with {% embed %}:
-       {% embed 'components/card.twig' with { title: 'Title', icon: 'gear' } %}
-           {% block card_body %}
-               <p>Body here</p>
-           {% endblock %}
-       {% endembed %}
+Card component. Use with {% embed %}:
+    {% embed 'components/card.twig' with { title: 'Title', icon: 'gear' } %}
+        {% block card_body %}
+            <p>Body here</p>
+        {% endblock %}
+    {% endembed %}
 #}
 {% set card_id    = id|default('st-card-' ~ random(99999)) %}
 {% set card_title = title|default('') %}
 {% set card_icon  = icon|default('') %}
 
 <section id="{{ card_id|e }}" class="st-card">
-	<header class="st-card__head">
-		<h2 class="st-card__title">
-			{% if card_icon %}
-				{% include 'components/icon.twig' with { name: card_icon, size: 18 } only %}
-			{% endif %}
-			<span>{{ card_title|e }}</span>
-		</h2>
-		{% block card_actions %}{% endblock %}
-	</header>
-	<div class="st-card__body">
-		{% block card_body %}{% endblock %}
-	</div>
+  <header class="st-card__head">
+    <h2 class="st-card__title">
+      {% if card_icon %}
+        {% include 'components/icon.twig' with { name: card_icon, size: 18 } only %}
+      {% endif %}
+      <span>{{ card_title|e }}</span>
+    </h2>
+    {% block card_actions %}{% endblock %}
+  </header>
+  <div class="st-card__body">
+    {% block card_body %}{% endblock %}
+  </div>
 </section>

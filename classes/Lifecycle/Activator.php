@@ -29,16 +29,20 @@ use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 final class Activator {
 
 	/**
+	 * Defaults.
+	 *
 	 * @var SettingsDefaults
-	 */
-	private readonly SettingsDefaults $defaults;
+	 */ private readonly SettingsDefaults $defaults;
 
 	/**
+	 * Repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $repository;
+	 */ private readonly SettingsRepository $repository;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param SettingsDefaults   $defaults   Default values.
 	 * @param SettingsRepository $repository Options repository.
 	 */

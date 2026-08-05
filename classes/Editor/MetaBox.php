@@ -16,11 +16,11 @@ namespace Thaikolja\SecondaryTitle\Editor;
 use WP_Post;
 use Thaikolja\SecondaryTitle\Plugin;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
-use Thaikolja\SecondaryTitle\Meta\Sanitizer as MetaSanitizer;
+
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
-use Thaikolja\SecondaryTitle\Renderer\Format as Format;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
+use Thaikolja\SecondaryTitle\Renderer\Format;
+use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 
 /**
  * Classic Editor meta box.
@@ -54,46 +54,44 @@ final class MetaBox {
 	public const NONCE_ACTION = 'secondary_title_save_classic';
 
 	/**
+	 * Meta repository.
+	 *
 	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
+	 */ private readonly MetaRepository $meta_repository;
 
 	/**
-	 * @var MetaSanitizer
-	 */
-	private readonly MetaSanitizer $meta_sanitizer;
-
-	/**
+	 * Settings repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $settings_repository;
+	 */ private readonly SettingsRepository $settings_repository;
 
 	/**
+	 * Format.
+	 *
 	 * @var Format
-	 */
-	private readonly Format $format;
+	 */ private readonly Format $format;
 
 	/**
+	 * Wrapper.
+	 *
 	 * @var Wrapper
-	 */
-	private readonly Wrapper $wrapper;
+	 */ private readonly Wrapper $wrapper;
 
 	/**
-	 * @param MetaRepository    $meta_repository    Meta read/write.
-	 * @param MetaSanitizer     $meta_sanitizer     Meta sanitizer.
+	 * Constructor.
+	 *
+	 * @param MetaRepository     $meta_repository    Meta read/write.
 	 * @param SettingsRepository $settings_repository Settings repository.
 	 * @param Format             $format              Title format.
 	 * @param Wrapper            $wrapper             Output wrapper.
 	 */
 	public function __construct(
 		MetaRepository $meta_repository,
-		MetaSanitizer $meta_sanitizer,
 		SettingsRepository $settings_repository,
 		Format $format,
 		Wrapper $wrapper
 	) {
-		$this->meta_repository    = $meta_repository;
-		$this->meta_sanitizer     = $meta_sanitizer;
+		$this->meta_repository     = $meta_repository;
 		$this->settings_repository = $settings_repository;
 		$this->format              = $format;
 		$this->wrapper             = $wrapper;
@@ -105,8 +103,8 @@ final class MetaBox {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
-		add_action( 'save_post', [ $this, 'save' ], 10, 2 );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 	}
 
 	/**
@@ -118,14 +116,14 @@ final class MetaBox {
 	public function add_meta_box(): void {
 		$enabled = $this->enabled_post_types();
 
-		if ( [] === $enabled ) {
+		if ( array() === $enabled ) {
 			return;
 		}
 
 		add_meta_box(
 			self::ID,
 			__( 'Secondary Title', 'secondary-title' ),
-			[ $this, 'render' ],
+			array( $this, 'render' ),
 			$enabled,
 			'normal',
 			'high'
@@ -166,9 +164,9 @@ final class MetaBox {
 					<?php esc_html_e( 'Preview', 'secondary-title' ); ?>
 				</p>
 				<div class="st-meta-box__preview" data-st-classic-preview
-				     data-st-format="<?php echo esc_attr( $format ); ?>"
-				     data-st-secondary="<?php echo esc_attr( $secondary_title ); ?>"
-				     data-st-title="<?php echo esc_attr( $post->post_title ); ?>">
+					data-st-format="<?php echo esc_attr( $format ); ?>"
+					data-st-secondary="<?php echo esc_attr( $secondary_title ); ?>"
+					data-st-title="<?php echo esc_attr( $post->post_title ); ?>">
 					<?php
 					$preview = $this->format->render(
 						$post->post_title,
@@ -197,6 +195,8 @@ final class MetaBox {
 	 * @return void
 	 */
 	public function save( int $post_id, WP_Post $post ): void {
+		unset( $post );
+
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
@@ -242,14 +242,14 @@ final class MetaBox {
 	 * @return array<int, string>
 	 */
 	private function enabled_post_types(): array {
-		$enabled = (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, [] );
+		$enabled = (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, array() );
 
-		if ( [] !== $enabled ) {
+		if ( array() !== $enabled ) {
 			return array_values( array_filter( $enabled, 'post_type_exists' ) );
 		}
 
 		// Empty = all public post types except attachments.
-		$public = get_post_types( [ 'public' => true ] );
+		$public = get_post_types( array( 'public' => true ) );
 		return array_values( array_filter( $public, static fn ( string $t ): bool => 'attachment' !== $t ) );
 	}
 }

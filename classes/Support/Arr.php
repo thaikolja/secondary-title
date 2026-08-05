@@ -19,52 +19,52 @@ namespace Thaikolja\SecondaryTitle\Support;
 final class Arr {
 
 	/**
-	 * Returns the value at $key in $array, or $default if the key is missing.
+	 * Returns the value at $key in $items, or $fallback if the key is missing.
 	 *
-	 * @param array<mixed> $array   The array to read from.
-	 * @param string|int   $key     The key to look up.
-	 * @param mixed        $default Value returned when the key is missing.
+	 * @param array<mixed> $items    The array to read from.
+	 * @param string|int   $key      The key to look up.
+	 * @param mixed        $fallback Value returned when the key is missing.
 	 *
 	 * @return mixed
 	 */
-	public static function get( array $array, string|int $key, mixed $default = null ): mixed {
-		return array_key_exists( $key, $array ) ? $array[ $key ] : $default;
+	public static function get( array $items, string|int $key, mixed $fallback = null ): mixed {
+		return array_key_exists( $key, $items ) ? $items[ $key ] : $fallback;
 	}
 
 	/**
-	 * Returns true when $value is in $array (strict comparison).
+	 * Returns true when $value is in $items (strict comparison).
 	 *
-	 * @param array<mixed> $array The haystack.
+	 * @param array<mixed> $items The haystack.
 	 * @param mixed        $value The needle.
 	 *
 	 * @return bool
 	 */
-	public static function contains( array $array, mixed $value ): bool {
-		return in_array( $value, $array, true );
+	public static function contains( array $items, mixed $value ): bool {
+		return in_array( $value, $items, true );
 	}
 
 	/**
 	 * Returns a new array that only contains the keys in $keys.
 	 *
-	 * @param array<mixed>  $array The source array.
+	 * @param array<mixed>  $items The source array.
 	 * @param array<string> $keys  The keys to keep.
 	 *
 	 * @return array<mixed>
 	 */
-	public static function only( array $array, array $keys ): array {
-		return array_intersect_key( $array, array_flip( $keys ) );
+	public static function only( array $items, array $keys ): array {
+		return array_intersect_key( $items, array_flip( $keys ) );
 	}
 
 	/**
 	 * Returns a new array that excludes the keys in $keys.
 	 *
-	 * @param array<mixed>  $array The source array.
+	 * @param array<mixed>  $items The source array.
 	 * @param array<string> $keys  The keys to drop.
 	 *
 	 * @return array<mixed>
 	 */
-	public static function except( array $array, array $keys ): array {
-		return array_diff_key( $array, array_flip( $keys ) );
+	public static function except( array $items, array $keys ): array {
+		return array_diff_key( $items, array_flip( $keys ) );
 	}
 
 	/**
@@ -85,18 +85,18 @@ final class Arr {
 	 */
 	public static function string_list( mixed $value ): array {
 		if ( null === $value ) {
-			return [];
+			return array();
 		}
 
 		if ( is_string( $value ) ) {
-			return '' === $value ? [] : [ $value ];
+			return '' === $value ? array() : array( $value );
 		}
 
 		if ( ! is_array( $value ) ) {
-			return [];
+			return array();
 		}
 
-		$out = [];
+		$out = array();
 
 		foreach ( $value as $item ) {
 			if ( is_scalar( $item ) ) {
@@ -120,16 +120,16 @@ final class Arr {
 	 */
 	public static function positive_int_list( string $value ): array {
 		if ( '' === trim( $value ) ) {
-			return [];
+			return array();
 		}
 
 		$cleaned = (string) preg_replace( '/[^0-9,]/', '', $value );
 
 		if ( '' === $cleaned ) {
-			return [];
+			return array();
 		}
 
-		$parts = array_map( 'intval', array_filter( explode( ',', $cleaned ), 'strlen' ) );
+		$parts = array_map( 'intval', array_filter( explode( ',', $cleaned ), static fn ( string $part ): bool => '' !== $part ) );
 
 		return array_values( array_filter( $parts, static fn ( int $id ): bool => $id > 0 ) );
 	}

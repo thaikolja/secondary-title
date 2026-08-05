@@ -36,12 +36,12 @@ use Thaikolja\SecondaryTitle\Admin\SettingsLink as AdminSettingsLink;
 use Thaikolja\SecondaryTitle\Admin\Columns as AdminColumns;
 use Thaikolja\SecondaryTitle\Admin\Notices as AdminNotices;
 use Thaikolja\SecondaryTitle\I18n\Loader as I18nLoader;
-use Thaikolja\SecondaryTitle\Lifecycle\Activator as Activator;
-use Thaikolja\SecondaryTitle\Lifecycle\Deactivator as Deactivator;
-use Thaikolja\SecondaryTitle\Lifecycle\Upgrader as Upgrader;
-use Thaikolja\SecondaryTitle\Renderer\Format as Format;
-use Thaikolja\SecondaryTitle\Renderer\Placeholder as Placeholder;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
+use Thaikolja\SecondaryTitle\Lifecycle\Activator;
+use Thaikolja\SecondaryTitle\Lifecycle\Deactivator;
+use Thaikolja\SecondaryTitle\Lifecycle\Upgrader;
+use Thaikolja\SecondaryTitle\Renderer\Format;
+use Thaikolja\SecondaryTitle\Renderer\Placeholder;
+use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 use Thaikolja\SecondaryTitle\Renderer\TitleRenderer;
 use Thaikolja\SecondaryTitle\Renderer\Shortcode as ShortcodeRenderer;
 
@@ -107,33 +107,200 @@ final class Plugin {
 	// Services. New services are added as their phases land.
 	// ============================================================
 
+	/**
+	 * Twig environment for the admin templates.
+	 *
+	 * @var TwigEnv
+	 */
 	public readonly TwigEnv $twig;
+
+	/**
+	 * Placeholder token handler.
+	 *
+	 * @var Placeholder
+	 */
 	public readonly Placeholder $placeholder;
+
+	/**
+	 * Output wrapper for rendered secondary titles.
+	 *
+	 * @var Wrapper
+	 */
 	public readonly Wrapper $wrapper;
+
+	/**
+	 * Default option values.
+	 *
+	 * @var SettingsDefaults
+	 */
 	public readonly SettingsDefaults $settings_defaults;
+
+	/**
+	 * Typed option read/write access.
+	 *
+	 * @var SettingsRepository
+	 */
 	public readonly SettingsRepository $settings_repository;
+
+	/**
+	 * Per-option sanitization callbacks.
+	 *
+	 * @var SettingsSanitizer
+	 */
 	public readonly SettingsSanitizer $settings_sanitizer;
+
+	/**
+	 * Settings API wiring (register_setting).
+	 *
+	 * @var SettingsManager
+	 */
 	public readonly SettingsManager $settings_manager;
+
+	/**
+	 * Settings page controller.
+	 *
+	 * @var SettingsPage
+	 */
 	public readonly SettingsPage $settings_page;
+
+	/**
+	 * Title format value object.
+	 *
+	 * @var Format
+	 */
 	public readonly Format $format;
+
+	/**
+	 * Post meta sanitizer.
+	 *
+	 * @var MetaSanitizer
+	 */
 	public readonly MetaSanitizer $meta_sanitizer;
+
+	/**
+	 * Typed post meta read/write access.
+	 *
+	 * @var MetaRepository
+	 */
 	public readonly MetaRepository $meta_repository;
+
+	/**
+	 * Post meta registration (register_meta).
+	 *
+	 * @var MetaRegistry
+	 */
 	public readonly MetaRegistry $meta_registry;
+
+	/**
+	 * Classic editor meta box.
+	 *
+	 * @var ClassicMetaBox
+	 */
 	public readonly ClassicMetaBox $classic_meta_box;
+
+	/**
+	 * Block editor sidebar panel.
+	 *
+	 * @var GutenbergSidebar
+	 */
 	public readonly GutenbergSidebar $gutenberg_sidebar;
+
+	/**
+	 * Server-side rendering of the canvas block.
+	 *
+	 * @var BlockServerRender
+	 */
 	public readonly BlockServerRender $block_server_render;
+
+	/**
+	 * Block registration (block.json).
+	 *
+	 * @var BlockRegistrar
+	 */
 	public readonly BlockRegistrar $block_registrar;
+
+	/**
+	 * `the_title` filter integration.
+	 *
+	 * @var TitleRenderer
+	 */
 	public readonly TitleRenderer $title_renderer;
+
+	/**
+	 * `[secondary_title]` shortcode handler.
+	 *
+	 * @var ShortcodeRenderer
+	 */
 	public readonly ShortcodeRenderer $shortcode_renderer;
+
+	/**
+	 * Admin asset enqueueing.
+	 *
+	 * @var AdminAssets
+	 */
 	public readonly AdminAssets $admin_assets;
+
+	/**
+	 * Admin menu registration.
+	 *
+	 * @var AdminMenu
+	 */
 	public readonly AdminMenu $admin_menu;
+
+	/**
+	 * Settings link on the plugins screen.
+	 *
+	 * @var AdminSettingsLink
+	 */
 	public readonly AdminSettingsLink $admin_settings_link;
+
+	/**
+	 * Post-list overview column.
+	 *
+	 * @var AdminColumns
+	 */
 	public readonly AdminColumns $admin_columns;
+
+	/**
+	 * Admin notice handling.
+	 *
+	 * @var AdminNotices
+	 */
 	public readonly AdminNotices $admin_notices;
+
+	/**
+	 * Text domain loader.
+	 *
+	 * @var I18nLoader
+	 */
 	public readonly I18nLoader $i18n;
+
+	/**
+	 * Activation handler.
+	 *
+	 * @var Activator
+	 */
 	public readonly Activator $activator;
+
+	/**
+	 * Deactivation handler.
+	 *
+	 * @var Deactivator
+	 */
 	public readonly Deactivator $deactivator;
+
+	/**
+	 * Upgrades v2 data to v3.
+	 *
+	 * @var Upgrader
+	 */
 	public readonly Upgrader $upgrader;
+
+	/**
+	 * Static API facade instance.
+	 *
+	 * @var Api
+	 */
 	public readonly Api $api;
 
 	/**
@@ -145,54 +312,54 @@ final class Plugin {
 	 */
 	private function __construct() {
 		// 1. No-dep infrastructure
-		$this->twig              = new TwigEnv( SECONDARY_TITLE_PATH . 'pages' );
-		$this->placeholder       = new Placeholder();
-		$this->wrapper           = new Wrapper();
+		$this->twig        = new TwigEnv( SECONDARY_TITLE_PATH . 'pages' );
+		$this->placeholder = new Placeholder();
+		$this->wrapper     = new Wrapper();
 
 		// 2. Settings
-		$this->settings_defaults  = new SettingsDefaults();
+		$this->settings_defaults   = new SettingsDefaults();
 		$this->settings_repository = new SettingsRepository( $this->settings_defaults );
-		$this->settings_sanitizer = new SettingsSanitizer( $this->settings_defaults );
-		$this->settings_manager   = new SettingsManager( $this->settings_repository, $this->settings_sanitizer );
-		$this->settings_page      = new SettingsPage( $this->settings_repository, $this->twig );
+		$this->settings_sanitizer  = new SettingsSanitizer();
+		$this->settings_manager    = new SettingsManager( $this->settings_sanitizer );
+		$this->settings_page       = new SettingsPage( $this->settings_repository, $this->twig );
 
 		// 3. Meta
-		$this->meta_sanitizer     = new MetaSanitizer();
-		$this->meta_repository    = new MetaRepository( $this->meta_sanitizer );
+		$this->meta_sanitizer  = new MetaSanitizer();
+		$this->meta_repository = new MetaRepository( $this->meta_sanitizer );
 
 		// 4. Renderer value objects
-		$this->format             = new Format( $this->settings_repository );
+		$this->format = new Format( $this->settings_repository );
 
 		// 5. Meta registry (depends on WP's register_meta, called on init)
-		$this->meta_registry      = new MetaRegistry();
+		$this->meta_registry = new MetaRegistry();
 
 		// 6. Editor
-		$this->classic_meta_box   = new ClassicMetaBox( $this->meta_repository, $this->meta_sanitizer, $this->settings_repository, $this->format, $this->wrapper );
-		$this->gutenberg_sidebar  = new GutenbergSidebar( $this->meta_repository, $this->format, $this->wrapper, $this->settings_repository );
-		$this->block_server_render = new BlockServerRender( $this->meta_repository, $this->settings_repository, $this->format, $this->wrapper );
-		$this->block_registrar    = new BlockRegistrar( $this->block_server_render );
+		$this->classic_meta_box    = new ClassicMetaBox( $this->meta_repository, $this->settings_repository, $this->format, $this->wrapper );
+		$this->gutenberg_sidebar   = new GutenbergSidebar( $this->settings_repository );
+		$this->block_server_render = new BlockServerRender( $this->meta_repository, $this->format, $this->wrapper );
+		$this->block_registrar     = new BlockRegistrar( $this->block_server_render );
 
 		// 7. Renderer
-		$this->title_renderer     = new TitleRenderer( $this->settings_repository, $this->format, $this->placeholder, $this->wrapper, $this->meta_repository );
+		$this->title_renderer     = new TitleRenderer( $this->settings_repository, $this->format, $this->wrapper, $this->meta_repository );
 		$this->shortcode_renderer = new ShortcodeRenderer( $this->meta_repository );
 
 		// 8. Admin
 		$this->admin_assets        = new AdminAssets();
 		$this->admin_menu          = new AdminMenu();
 		$this->admin_settings_link = new AdminSettingsLink();
-		$this->admin_columns       = new AdminColumns( $this->settings_repository, $this->meta_repository, $this->wrapper );
+		$this->admin_columns       = new AdminColumns( $this->settings_repository, $this->meta_repository );
 		$this->admin_notices       = new AdminNotices();
 
 		// 9. i18n
-		$this->i18n                = new I18nLoader();
+		$this->i18n = new I18nLoader();
 
 		// 10. Lifecycle
-		$this->activator          = new Activator( $this->settings_defaults, $this->settings_repository );
-		$this->deactivator        = new Deactivator();
-		$this->upgrader           = new Upgrader( $this->settings_repository, $this->settings_defaults );
+		$this->activator   = new Activator( $this->settings_defaults, $this->settings_repository );
+		$this->deactivator = new Deactivator();
+		$this->upgrader    = new Upgrader( $this->settings_repository, $this->settings_defaults );
 
 		// 11. Public API facade
-		$this->api                = new Api( $this->settings_repository, $this->meta_repository, $this->format, $this->wrapper );
+		$this->api = new Api( $this->settings_repository, $this->meta_repository, $this->wrapper );
 	}
 
 	/**
@@ -215,10 +382,10 @@ final class Plugin {
 	public function boot(): void {
 		$plugin_file = SECONDARY_TITLE_PATH . 'secondary-title.php';
 
-		register_activation_hook( $plugin_file, [ $this, 'on_activate' ] );
-		register_deactivation_hook( $plugin_file, [ $this, 'on_deactivate' ] );
+		register_activation_hook( $plugin_file, array( $this, 'on_activate' ) );
+		register_deactivation_hook( $plugin_file, array( $this, 'on_deactivate' ) );
 
-		add_action( 'plugins_loaded', [ $this, 'on_plugins_loaded' ] );
+		add_action( 'plugins_loaded', array( $this, 'on_plugins_loaded' ) );
 	}
 
 	/**

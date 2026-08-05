@@ -2,8 +2,8 @@
 
 Contributors:        thaikolja
 Tags:                title, secondary title, subheading, heading
-Tested up to:        7.2
-Stable tag:          3.0.0.rc.1
+Tested up to:        7.0.2
+Stable tag:          3.0.0
 Requires at least:   6.5
 Requires PHP:        8.1
 License:             GPLv2 or later
@@ -46,6 +46,12 @@ Yes. The value is sanitized on save via `wp_kses_post()` (which allows limited, 
 
 = Does this plugin work with the Classic Editor? =
 Yes. A proper meta box is added to the Classic Editor. The Gutenberg block editor is supported via a sidebar panel and a real canvas block.
+
+== Screenshots ==
+
+1. The settings page with auto-merge toggle, title format input, and live preview.
+2. The secondary title sidebar panel in the block editor.
+3. The secondary title rendered on the front end.
 
 == Changelog ==
 

@@ -43,14 +43,14 @@ final class Placeholder {
 	 * @return array<int, string>
 	 */
 	public static function all(): array {
-		return [ self::TITLE, self::SECONDARY_TITLE ];
+		return array( self::TITLE, self::SECONDARY_TITLE );
 	}
 
 	/**
 	 * Replaces every placeholder in $format with the matching value
 	 * from $values.
 	 *
-	 * @param string             $format The format string with placeholders.
+	 * @param string               $format The format string with placeholders.
 	 * @param array<string,string> $values Map of placeholder (with percent signs) to value.
 	 *
 	 * @return string The format with all known placeholders replaced.
@@ -60,7 +60,7 @@ final class Placeholder {
 		$search  = array_keys( $values );
 		$replace = array_values( $values );
 
-		if ( [] === $search ) {
+		if ( array() === $search ) {
 			return $format;
 		}
 

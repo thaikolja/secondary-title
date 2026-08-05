@@ -69,10 +69,11 @@ foreach ( $option_keys as $option_key ) {
  * the network, not only the current one.
  */
 if ( is_multisite() ) {
-	$blog_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time uninstall sweep over the network blog IDs.
+	$site_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
 
-	foreach ( $blog_ids as $blog_id ) {
-		switch_to_blog( (int) $blog_id );
+	foreach ( $site_ids as $site_id ) {
+		switch_to_blog( (int) $site_id );
 
 		foreach ( $option_keys as $option_key ) {
 			delete_option( $option_key );

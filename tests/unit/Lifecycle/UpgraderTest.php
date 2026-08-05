@@ -69,8 +69,8 @@ final class UpgraderTest extends \PHPUnit\Framework\TestCase {
 		$updates =& $this->updates;
 
 		Functions\when( 'get_option' )->alias(
-			static function ( string $key, mixed $default = false ) use ( &$store ): mixed {
-				return array_key_exists( $key, $store ) ? $store[ $key ] : $default;
+			static function ( string $key, mixed $fallback = false ) use ( &$store ): mixed {
+				return array_key_exists( $key, $store ) ? $store[ $key ] : $fallback;
 			}
 		);
 
@@ -135,46 +135,50 @@ final class UpgraderTest extends \PHPUnit\Framework\TestCase {
 	private function set_wpdb_rows( array $rows ): void {
 		$GLOBALS['wpdb'] = new class( $rows ) {
 			/**
+			 * The fixture rows returned by get_results().
+			 *
 			 * @var array<int, object>
 			 */
 			public array $rows;
 
 			/**
+			 * The postmeta table name.
+			 *
 			 * @var string
 			 */
 			public string $postmeta = 'wp_postmeta';
 
-		/**
-		 * Constructor.
-		 *
-		 * @param array<int, object> $rows Rows returned by get_results().
-		 */
-		public function __construct( array $rows ) {
-			$this->rows = $rows;
-		}
+			/**
+			 * Constructor.
+			 *
+			 * @param array<int, object> $rows Rows returned by get_results().
+			 */
+			public function __construct( array $rows ) {
+				$this->rows = $rows;
+			}
 
-		/**
-		 * Prepares the SQL string (identity, for unit tests).
-		 *
-		 * @param string $query The query template.
-		 * @param mixed  ...$args Query arguments (ignored).
-		 *
-		 * @return string
-		 */
-		public function prepare( string $query, ...$args ): string {
-			return $query;
-		}
+			/**
+			 * Prepares the SQL string (identity, for unit tests).
+			 *
+			 * @param string $query The query template.
+			 * @param mixed  ...$args Query arguments (ignored).
+			 *
+			 * @return string
+			 */
+			public function prepare( string $query, ...$args ): string {
+				return $query;
+			}
 
-		/**
-		 * Returns the fixture rows.
-		 *
-		 * @param string|null $query Ignored.
-		 *
-		 * @return array<int, object>
-		 */
-		public function get_results( $query = null ): array {
-			return $this->rows;
-		}
+			/**
+			 * Returns the fixture rows.
+			 *
+			 * @param string|null $query Ignored.
+			 *
+			 * @return array<int, object>
+			 */
+			public function get_results( $query = null ): array {
+				return $this->rows;
+			}
 		};
 	}
 
@@ -278,10 +282,10 @@ final class UpgraderTest extends \PHPUnit\Framework\TestCase {
 			}
 		);
 		Functions\when( 'get_option' )->alias(
-			static function ( string $key, mixed $default = false ) use ( &$current_blog, &$blog_stores ): mixed {
+			static function ( string $key, mixed $fallback = false ) use ( &$current_blog, &$blog_stores ): mixed {
 				$store = $blog_stores[ $current_blog ] ?? array();
 
-				return array_key_exists( $key, $store ) ? $store[ $key ] : $default;
+				return array_key_exists( $key, $store ) ? $store[ $key ] : $fallback;
 			}
 		);
 		Functions\when( 'update_option' )->alias(

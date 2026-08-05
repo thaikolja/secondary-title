@@ -37,7 +37,7 @@ use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 
 /**
- * v2.x.x -> v3.0.0 data upgrader.
+ * Upgrades v2.x.x data to v3.0.0.
  *
  * @since 3.0.0
  */
@@ -73,16 +73,20 @@ final class Upgrader {
 	);
 
 	/**
+	 * Repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $repository;
+	 */ private readonly SettingsRepository $repository;
 
 	/**
+	 * Defaults.
+	 *
 	 * @var SettingsDefaults
-	 */
-	private readonly SettingsDefaults $defaults;
+	 */ private readonly SettingsDefaults $defaults;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param SettingsRepository $repository Options repository.
 	 * @param SettingsDefaults   $defaults   Default values.
 	 */
@@ -205,8 +209,8 @@ final class Upgrader {
 	/**
 	 * Sanitizes unsanitized legacy post meta in place.
 	 *
-	 * v2 saved `_secondary_title` HTML-escaped from the Classic
-	 * Editor, but RAW from the block editor (its `register_meta()`
+	 * Legacy v2 values were saved HTML-escaped from the Classic
+	 * Editor, but raw from the block editor (its `register_meta()`
 	 * call had no `sanitize_callback`), so legacy values may contain
 	 * actual markup that never went through any sanitizer.
 	 *
@@ -222,6 +226,7 @@ final class Upgrader {
 	private function sanitize_legacy_meta(): void {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time migration sweep; runs a single time before the db_version flag is stamped.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s",
@@ -229,7 +234,7 @@ final class Upgrader {
 			)
 		);
 
-		if ( ! is_array( $rows ) || [] === $rows ) {
+		if ( ! is_array( $rows ) || array() === $rows ) {
 			return;
 		}
 

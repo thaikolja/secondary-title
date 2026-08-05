@@ -42,11 +42,14 @@ final class Registrar {
 	private const HOOK = 'init';
 
 	/**
+	 * Server render.
+	 *
 	 * @var ServerRender
-	 */
-	private readonly ServerRender $server_render;
+	 */ private readonly ServerRender $server_render;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param ServerRender $server_render The PHP render callback.
 	 */
 	public function __construct( ServerRender $server_render ) {
@@ -60,7 +63,7 @@ final class Registrar {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( self::HOOK, [ $this, 'register_block' ] );
+		add_action( self::HOOK, array( $this, 'register_block' ) );
 	}
 
 	/**
@@ -82,6 +85,6 @@ final class Registrar {
 			return;
 		}
 
-		register_block_type( $dir, [ 'render_callback' => [ $this->server_render, 'render' ] ] );
+		register_block_type( $dir, array( 'render_callback' => array( $this->server_render, 'render' ) ) );
 	}
 }

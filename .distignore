@@ -2,15 +2,11 @@
 /node_modules/
 .git/
 .github/
-.idea/
 .vscode/
-
-# Development tooling
 /phpcs.xml
 /phpstan.neon
 /phpunit.xml
 /.phpunit.*.cache
-/.phpunit.result.cache
 /.phpcs.xml
 /.phpstan.neon
 /tests/

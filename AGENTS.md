@@ -9,8 +9,9 @@
 | Build release ZIP | `./build.sh` (or `bun run zip`) — outputs `dist/secondary-title-<version>.zip` |
 | PHPCS lint | `vendor/bin/phpcs` |
 | PHPStan | `vendor/bin/phpstan analyse` |
-| PHPUnit (unit only) | `vendor/bin/phpunit --testsuite Unit` |
-| PHPUnit (integration) | `WP_TESTS_DIR=/tmp/wordpress-tests-lib WP_CORE_DIR=/tmp/wordpress vendor/bin/phpunit --testsuite Integration` (needs the WP test suite + a `wordpress_test` DB) |
+| PHPUnit (unit only) | `vendor/bin/phpunit --testsuite unit` |
+| PHPUnit (integration) | `WP_TESTS_DIR=/tmp/wordpress-tests-lib WP_CORE_DIR=/tmp/wordpress vendor/bin/phpunit --testsuite integration` (needs the WP test suite + a `wordpress_test` DB). Note: the suite name is lowercase — `--testsuite Integration` silently runs zero tests. |
+| Regenerate POT | `./tools/make-pot.sh` (extracts PHP, JS, and Twig strings into `languages/secondary-title.pot`) |
 
 `bun run build` runs `@wordpress/scripts` webpack with 3 entrypoints: `settings`, `editor`, `block`. Output lands in `assets/js/dist/` with `<entry>.asset.php` files for auto-dependency loading.
 

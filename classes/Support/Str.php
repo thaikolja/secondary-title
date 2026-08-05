@@ -76,9 +76,9 @@ final class Str {
 	 * Multibyte-safe: uses `mb_strimwidth` so accented and non-ASCII
 	 * characters are not split in half.
 	 *
-	 * @param string      $value The string to truncate.
-	 * @param int<0, max> $limit Maximum number of characters to keep.
-	 * @param string      $end   The suffix appended after truncation. Default: ''.
+	 * @param string     $value The string to truncate.
+	 * @param int<0,max> $limit Maximum number of characters to keep.
+	 * @param string     $end   The suffix appended after truncation. Default: ''.
 	 *
 	 * @return string The truncated string.
 	 *

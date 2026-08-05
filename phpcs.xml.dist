@@ -34,6 +34,24 @@
 		<exclude name="WordPress.Security.NonceVerification"/>
 		<exclude name="WordPress.Security.ValidatedSanitizedInput"/>
 		<exclude name="WordPress.Security.EscapeOutput"/>
+		<!--
+			Squiz's doc-vs-native hint comparison cannot parse
+			PHPStan generics like `int<0, max>` and misreads them
+			as `int`. PHPStan is the type authority in this repo.
+		-->
+		<exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint"/>
+	</rule>
+
+	<!--
+		Tests intentionally build fixture data through direct DB calls
+		and postmeta array keys; these sniffs are about production
+		code, so they are relaxed for the test suite.
+	-->
+	<rule ref="WordPress.DB.DirectDatabaseQuery">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.DB.SlowDBQuery">
+		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
 
 	<config name="minimum_supported_wp_version" value="6.5"/>

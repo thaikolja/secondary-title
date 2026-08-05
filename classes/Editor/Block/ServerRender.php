@@ -21,10 +21,8 @@ namespace Thaikolja\SecondaryTitle\Editor\Block;
 use WP_Block;
 use WP_Post;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
-use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
-use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
-use Thaikolja\SecondaryTitle\Renderer\Format as Format;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
+use Thaikolja\SecondaryTitle\Renderer\Format;
+use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 use Thaikolja\SecondaryTitle\Plugin;
 
 /**
@@ -35,51 +33,48 @@ use Thaikolja\SecondaryTitle\Plugin;
 final class ServerRender {
 
 	/**
+	 * Meta repository.
+	 *
 	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
+	 */ private readonly MetaRepository $meta_repository;
 
 	/**
-	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $settings_repository;
-
-	/**
+	 * Format.
+	 *
 	 * @var Format
-	 */
-	private readonly Format $format;
+	 */ private readonly Format $format;
 
 	/**
+	 * Wrapper.
+	 *
 	 * @var Wrapper
-	 */
-	private readonly Wrapper $wrapper;
+	 */ private readonly Wrapper $wrapper;
 
 	/**
-	 * @param MetaRepository     $meta_repository    Meta read/write.
-	 * @param SettingsRepository  $settings_repository Settings repository.
-	 * @param Format              $format              Title format.
-	 * @param Wrapper             $wrapper             Output wrapper.
+	 * Constructor.
+	 *
+	 * @param MetaRepository $meta_repository Meta read/write.
+	 * @param Format         $format          Title format.
+	 * @param Wrapper        $wrapper         Output wrapper.
 	 */
 	public function __construct(
 		MetaRepository $meta_repository,
-		SettingsRepository $settings_repository,
 		Format $format,
 		Wrapper $wrapper
 	) {
-		$this->meta_repository    = $meta_repository;
-		$this->settings_repository = $settings_repository;
-		$this->format              = $format;
-		$this->wrapper             = $wrapper;
+		$this->meta_repository = $meta_repository;
+		$this->format          = $format;
+		$this->wrapper         = $wrapper;
 	}
 
 	/**
 	 * The render callback registered with `register_block_type()`.
 	 *
-	 * @param array          $attributes Block attributes. May contain
-	 *                                   `postId` (int) and
-	 *                                   `wrapperTag` (string).
-	 * @param string         $content    Block inner content (unused).
-	 * @param WP_Block|null  $block      Block instance, may be null.
+	 * @param array<int|string, mixed> $attributes Block attributes. May contain
+	 *                                  `postId` (int) and
+	 *                                  `wrapperTag` (string).
+	 * @param string                   $content    Block inner content (unused).
+	 * @param WP_Block|null            $block      Block instance, may be null.
 	 *
 	 * @return string Rendered HTML.
 	 */

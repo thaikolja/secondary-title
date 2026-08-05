@@ -23,7 +23,6 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Thaikolja\SecondaryTitle\Plugin;
 
 /**
  * Builds a configured Twig environment for the plugin.
@@ -40,6 +39,8 @@ final class Twig {
 	private readonly string $templates_path;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param string $templates_path Absolute filesystem path to the
 	 *                                `pages/` directory.
 	 */
@@ -57,12 +58,12 @@ final class Twig {
 
 		$twig = new Environment(
 			$loader,
-			[
+			array(
 				'cache'            => $this->resolve_cache(),
 				'auto_reload'      => $this->should_auto_reload(),
 				'strict_variables' => defined( 'WP_DEBUG' ) && WP_DEBUG,
 				'autoescape'       => 'html',
-			]
+			)
 		);
 
 		( new Functions( $twig ) )->register();
@@ -109,6 +110,7 @@ final class Twig {
 	private function cache_path(): string {
 		$uploads = wp_upload_dir();
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- One-time dir probe before wp_mkdir_p(); WP_Filesystem is not available on every request context.
 		if ( ! empty( $uploads['basedir'] ) && is_writable( $uploads['basedir'] ) ) {
 			$cache = $uploads['basedir'] . '/secondary-title/twig-cache';
 			wp_mkdir_p( $cache );
@@ -132,6 +134,10 @@ final class Twig {
 			return true;
 		}
 
-		return Plugin::VERSION === 'dev' || Plugin::VERSION === '0.0.0';
+		// Resolve dynamically so static analysis cannot collapse the
+		// comparisons; the point is to detect dev/placeholder builds.
+		$version = (string) constant( 'SECONDARY_TITLE_VERSION' );
+
+		return 'dev' === $version || '0.0.0' === $version;
 	}
 }

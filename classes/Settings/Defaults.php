@@ -108,16 +108,16 @@ final class Defaults {
 	 * @return array<string, mixed>
 	 */
 	public function all(): array {
-		return [
-			self::OPTION_POST_TYPES             => [],
-			self::OPTION_CATEGORIES             => [],
-			self::OPTION_POST_IDS               => [],
+		return array(
+			self::OPTION_POST_TYPES             => array(),
+			self::OPTION_CATEGORIES             => array(),
+			self::OPTION_POST_IDS               => array(),
 			self::OPTION_AUTO_SHOW              => self::ON,
 			self::OPTION_TITLE_FORMAT           => self::TITLE_FORMAT,
 			self::OPTION_ONLY_SHOW_IN_MAIN_POST => self::OFF,
-			self::OPTION_COLUMN_POSITION       => 'right',
+			self::OPTION_COLUMN_POSITION        => 'right',
 			self::OPTION_DB_VERSION             => 0,
-		];
+		);
 	}
 
 	/**

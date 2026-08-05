@@ -17,8 +17,7 @@ namespace Thaikolja\SecondaryTitle;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
-use Thaikolja\SecondaryTitle\Renderer\Format as Format;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
+use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 
 /**
  * Static API facade.
@@ -28,40 +27,37 @@ use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
 final class Api {
 
 	/**
+	 * Settings repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $settings_repository;
+	 */ private readonly SettingsRepository $settings_repository;
 
 	/**
+	 * Meta repository.
+	 *
 	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
+	 */ private readonly MetaRepository $meta_repository;
 
 	/**
-	 * @var Format
-	 */
-	private readonly Format $format;
-
-	/**
+	 * Wrapper.
+	 *
 	 * @var Wrapper
-	 */
-	private readonly Wrapper $wrapper;
+	 */ private readonly Wrapper $wrapper;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param SettingsRepository $settings_repository Settings repository.
 	 * @param MetaRepository     $meta_repository     Meta repository.
-	 * @param Format             $format              Title format.
 	 * @param Wrapper            $wrapper             Output wrapper.
 	 */
 	public function __construct(
 		SettingsRepository $settings_repository,
 		MetaRepository $meta_repository,
-		Format $format,
 		Wrapper $wrapper
 	) {
 		$this->settings_repository = $settings_repository;
 		$this->meta_repository     = $meta_repository;
-		$this->format              = $format;
 		$this->wrapper             = $wrapper;
 	}
 
@@ -130,7 +126,7 @@ final class Api {
 	 * @return array<int, string>
 	 */
 	public function get_enabled_post_types(): array {
-		return (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, [] );
+		return (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, array() );
 	}
 
 	/**
@@ -139,7 +135,7 @@ final class Api {
 	 * @return array<int, int>
 	 */
 	public function get_enabled_categories(): array {
-		return array_map( 'intval', (array) $this->settings_repository->get( SettingsDefaults::OPTION_CATEGORIES, [] ) );
+		return array_map( 'intval', (array) $this->settings_repository->get( SettingsDefaults::OPTION_CATEGORIES, array() ) );
 	}
 
 	/**
@@ -148,7 +144,7 @@ final class Api {
 	 * @return array<int, int>
 	 */
 	public function get_enabled_post_ids(): array {
-		return array_map( 'intval', (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_IDS, [] ) );
+		return array_map( 'intval', (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_IDS, array() ) );
 	}
 
 	/**
@@ -173,12 +169,12 @@ final class Api {
 	 * Returns a single setting value.
 	 *
 	 * @param string $key     The option key (with or without `secondary_title_` prefix).
-	 * @param mixed  $default Default if the key is missing.
+	 * @param mixed  $fallback Default if the key is missing.
 	 *
 	 * @return mixed
 	 */
-	public function get_setting( string $key, mixed $default = null ): mixed {
+	public function get_setting( string $key, mixed $fallback = null ): mixed {
 		$full = str_starts_with( $key, 'secondary_title_' ) ? $key : 'secondary_title_' . $key;
-		return $this->settings_repository->get( $full, $default );
+		return $this->settings_repository->get( $full, $fallback );
 	}
 }

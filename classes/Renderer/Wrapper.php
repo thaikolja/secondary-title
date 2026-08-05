@@ -51,6 +51,8 @@ final class Wrapper {
 	public const FILTER_TAG = 'secondary_title_wrapper_tag';
 
 	/**
+	 * Filter: the CSS class applied to the wrapper element.
+	 *
 	 * @var string
 	 */
 	public const FILTER_CLASS = 'secondary_title_wrapper_class';

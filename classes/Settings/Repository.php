@@ -24,11 +24,14 @@ namespace Thaikolja\SecondaryTitle\Settings;
 final class Repository {
 
 	/**
+	 * Defaults.
+	 *
 	 * @var Defaults
-	 */
-	private readonly Defaults $defaults;
+	 */ private readonly Defaults $defaults;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param Defaults $defaults The defaults source.
 	 */
 	public function __construct( Defaults $defaults ) {
@@ -43,21 +46,21 @@ final class Repository {
 	 * never have to deal with `false` or null "missing" values.
 	 *
 	 * @param string $key     The option key.
-	 * @param mixed  $default Optional override for the default value.
+	 * @param mixed  $fallback Optional override for the default value.
 	 *                        If null, the {@see Defaults} value is used.
 	 *
 	 * @return mixed The stored value, the explicit default, or the
 	 *               {@see Defaults} value (in that order).
 	 */
-	public function get( string $key, mixed $default = null ): mixed {
+	public function get( string $key, mixed $fallback = null ): mixed {
 		$value = get_option( $key, null );
 
 		if ( null !== $value ) {
 			return $value;
 		}
 
-		if ( null !== $default ) {
-			return $default;
+		if ( null !== $fallback ) {
+			return $fallback;
 		}
 
 		return $this->defaults->get( $key );
@@ -96,10 +99,10 @@ final class Repository {
 	 * @return array<string, mixed>
 	 */
 	public function all(): array {
-		$out = [];
+		$out = array();
 
-		foreach ( $this->defaults->all() as $key => $default ) {
-			$out[ $key ] = $this->get( $key, $default );
+		foreach ( $this->defaults->all() as $key => $fallback ) {
+			$out[ $key ] = $this->get( $key, $fallback );
 		}
 
 		return $out;
@@ -116,7 +119,7 @@ final class Repository {
 	 * @return array<int, string> The list of keys that failed to persist.
 	 */
 	public function set_many( array $values ): array {
-		$failed = [];
+		$failed = array();
 
 		foreach ( $values as $key => $value ) {
 			if ( ! array_key_exists( $key, $this->defaults->all() ) ) {

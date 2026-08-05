@@ -20,8 +20,4 @@ module.exports = {
 		path: path.resolve( __dirname, 'assets/js/dist' ),
 		filename: '[name].js',
 	},
-	// Phosphor SVG sprite: build the sprite once and output it to
-	// assets/img/phosphor-sprite.svg at build time. A small Node
-	// script (./build-sprite.mjs) handles this via the
-	// @wordpress/scripts post-build hook.
 };

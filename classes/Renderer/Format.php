@@ -91,6 +91,8 @@ final class Format {
 	private readonly SettingsRepository $settings;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param SettingsRepository $settings The settings repository.
 	 */
 	public function __construct( SettingsRepository $settings ) {
@@ -131,9 +133,9 @@ final class Format {
 	 *   5. Apply the `secondary_title_display` filter as a final
 	 *      escape hatch.
 	 *
-	 * @param string        $title           The primary title (already escaped by WP).
-	 * @param string        $secondary_title The secondary title (already wrapped, already safe).
-	 * @param int           $post_id         The post ID, for context in filters.
+	 * @param string $title           The primary title (already escaped by WP).
+	 * @param string $secondary_title The secondary title (already wrapped, already safe).
+	 * @param int    $post_id         The post ID, for context in filters.
 	 *
 	 * @return string
 	 */
@@ -143,10 +145,10 @@ final class Format {
 
 		$rendered = Placeholder::replace(
 			$template,
-			[
+			array(
 				Placeholder::TITLE           => $title,
 				Placeholder::SECONDARY_TITLE => $secondary_title,
-			]
+			)
 		);
 
 		if ( (bool) apply_filters( self::FILTER_AUTOP, false, $rendered, $post_id ) ) {
@@ -181,7 +183,7 @@ final class Format {
 		 */
 		return (array) apply_filters(
 			'wp_kses_allowed_html',
-			[],
+			array(),
 			'post'
 		);
 	}
@@ -208,7 +210,7 @@ final class Format {
 
 		$end = (string) apply_filters( self::FILTER_TRIM_EXCESS, '…' );
 
-		$plain = wp_strip_all_tags( $secondary_title );
+		$plain     = wp_strip_all_tags( $secondary_title );
 		$truncated = mb_strimwidth( $plain, 0, $limit, $end );
 
 		// Preserve the wrapper by re-wrapping the truncated plain text.

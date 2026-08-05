@@ -26,28 +26,25 @@ use Thaikolja\SecondaryTitle\Plugin;
 final class Manager {
 
 	/**
-	 * @var Repository
-	 */
-	private readonly Repository $repository;
-
-	/**
+	 * Sanitizer.
+	 *
 	 * @var Sanitizer
-	 */
-	private readonly Sanitizer $sanitizer;
+	 */ private readonly Sanitizer $sanitizer;
 
 	/**
+	 * Defaults.
+	 *
 	 * @var Defaults
-	 */
-	private readonly Defaults $defaults;
+	 */ private readonly Defaults $defaults;
 
 	/**
-	 * @param Repository $repository The typed options repository.
-	 * @param Sanitizer  $sanitizer  The per-option sanitizer.
+	 * Constructor.
+	 *
+	 * @param Sanitizer $sanitizer The per-option sanitizer.
 	 */
-	public function __construct( Repository $repository, Sanitizer $sanitizer ) {
-		$this->repository = $repository;
-		$this->sanitizer  = $sanitizer;
-		$this->defaults   = new Defaults();
+	public function __construct( Sanitizer $sanitizer ) {
+		$this->sanitizer = $sanitizer;
+		$this->defaults  = new Defaults();
 	}
 
 	/**
@@ -56,7 +53,7 @@ final class Manager {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'admin_init', [ $this, 'register_settings' ] );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
 	}
 
 	/**
@@ -67,8 +64,8 @@ final class Manager {
 	 * @return void
 	 */
 	public function register_settings(): void {
-		foreach ( $this->defaults->all() as $key => $default ) {
-			$this->register_one( $key, $default );
+		foreach ( $this->defaults->all() as $key => $fallback ) {
+			$this->register_one( $key, $fallback );
 		}
 	}
 
@@ -76,11 +73,11 @@ final class Manager {
 	 * Registers a single option with the Settings API.
 	 *
 	 * @param string $key     The option key.
-	 * @param mixed  $default The default value to register.
+	 * @param mixed  $fallback The default value to register.
 	 *
 	 * @return void
 	 */
-	private function register_one( string $key, mixed $default ): void {
+	private function register_one( string $key, mixed $fallback ): void {
 		/**
 		 * `wp_unslash()` is applied by the Settings API itself, but
 		 * we also call it inside the sanitizer as a defense in depth
@@ -90,14 +87,14 @@ final class Manager {
 		register_setting(
 			Plugin::OPTION_GROUP,
 			$key,
-			[
+			array(
 				'type'              => $this->type_for( $key ),
 				'sanitize_callback' => function ( mixed $value ) use ( $key ): mixed {
 					return $this->sanitizer->sanitize( $key, $value );
 				},
-				'default'           => $default,
+				'default'           => $fallback,
 				'show_in_rest'      => false,
-			]
+			)
 		);
 	}
 

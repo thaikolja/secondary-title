@@ -3,10 +3,10 @@ parameters:
 	paths:
 		- classes
 		- includes
-		- secondary-title.php
 		- uninstall.php
 	bootstrapFiles:
 		- tests/bootstrap.php
+		- phpstan-bootstrap.php
 	excludePaths:
 		- vendor
 		- node_modules

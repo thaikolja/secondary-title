@@ -30,15 +30,9 @@ use Thaikolja\SecondaryTitle\Support\Arr;
 final class Sanitizer {
 
 	/**
-	 * @var Defaults
+	 * Constructor.
 	 */
-	private readonly Defaults $defaults;
-
-	/**
-	 * @param Defaults $defaults The defaults source.
-	 */
-	public function __construct( Defaults $defaults ) {
-		$this->defaults = $defaults;
+	public function __construct() {
 	}
 
 	/**
@@ -196,6 +190,6 @@ final class Sanitizer {
 	 * @return string Either 'left' or 'right'.
 	 */
 	public function sanitize_column_position( mixed $value ): string {
-		return in_array( $value, [ 'left', 'right' ], true ) ? $value : 'right';
+		return in_array( $value, array( 'left', 'right' ), true ) ? $value : 'right';
 	}
 }

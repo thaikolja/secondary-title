@@ -22,21 +22,16 @@ use Thaikolja\SecondaryTitle\Plugin;
 final class SettingsLink {
 
 	/**
-	 * The hook for the row actions filter.
+	 * Registers the plugin-action-link filter.
 	 *
-	 * `plugin_basename()` produces the stable key regardless of
+	 * `plugin_basename()` produces the stable hook key regardless of
 	 * the directory name, so the link survives a plugin rename.
 	 *
-	 * @var string
-	 */
-	private const HOOK = ''; // Assigned in register().
-
-	/**
 	 * @return void
 	 */
 	public function register(): void {
 		$hook = 'plugin_action_links_' . plugin_basename( SECONDARY_TITLE_PATH . 'secondary-title.php' );
-		add_filter( $hook, [ $this, 'add_link' ] );
+		add_filter( $hook, array( $this, 'add_link' ) );
 	}
 
 	/**

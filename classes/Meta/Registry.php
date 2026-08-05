@@ -39,7 +39,7 @@ final class Registry {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( self::HOOK, [ $this, 'register_meta' ] );
+		add_action( self::HOOK, array( $this, 'register_meta' ) );
 	}
 
 	/**
@@ -57,24 +57,24 @@ final class Registry {
 		register_meta(
 			'post',
 			Plugin::META_KEY,
-			[
-				'object_subtype' => '', // Applies to every post type.
-				'type'           => 'string',
-				'single'         => true,
-				'show_in_rest'   => [
-					'schema' => [
+			array(
+				'object_subtype'    => '', // Applies to every post type.
+				'type'              => 'string',
+				'single'            => true,
+				'show_in_rest'      => array(
+					'schema' => array(
 						'type' => 'string',
-					],
-				],
-			'sanitize_callback' => static function ( $value ): string {
-				// Route through the full MetaSanitizer which applies
-				// wp_kses_post() — same path as the Classic Editor save.
-				return ( new \Thaikolja\SecondaryTitle\Meta\Sanitizer() )->sanitize( $value );
-			},
-				'auth_callback' => static function ( $allowed, $meta_key, $post_id ): bool {
+					),
+				),
+				'sanitize_callback' => static function ( $value ): string {
+					// Route through the full MetaSanitizer which applies
+					// wp_kses_post() — same path as the Classic Editor save.
+					return ( new \Thaikolja\SecondaryTitle\Meta\Sanitizer() )->sanitize( $value );
+				},
+				'auth_callback'     => static function ( $allowed, $meta_key, $post_id ): bool {
 					return current_user_can( 'edit_post', (int) $post_id );
 				},
-			]
+			)
 		);
 	}
 }

@@ -12,7 +12,6 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       secondary-title
  * Domain Path:       /languages
- * Update URI:        https://docs.kolja-nolte.com/secondary-title
  *
  * @package Thaikolja\SecondaryTitle
  */
@@ -34,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
  * argument for enqueued assets and as the source of truth for
  * upgrade routines.
  */
-const SECONDARY_TITLE_VERSION = '3.0.0.rc.1';
+const SECONDARY_TITLE_VERSION = '3.0.0';
 
 /**
  * Defines the text domain used for all translatable strings.

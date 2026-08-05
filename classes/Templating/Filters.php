@@ -11,7 +11,6 @@ namespace Thaikolja\SecondaryTitle\Templating;
 
 use Twig\Environment;
 use Twig\TwigFilter;
-use Thaikolja\SecondaryTitle\Plugin;
 use Thaikolja\SecondaryTitle\Renderer\Placeholder;
 
 /**
@@ -22,11 +21,14 @@ use Thaikolja\SecondaryTitle\Renderer\Placeholder;
 final class Filters {
 
 	/**
+	 * Twig.
+	 *
 	 * @var Environment
-	 */
-	private readonly Environment $twig;
+	 */ private readonly Environment $twig;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param Environment $twig The Twig environment to register the filters on.
 	 */
 	public function __construct( Environment $twig ) {
@@ -39,19 +41,17 @@ final class Filters {
 	 * @return void
 	 */
 	public function register(): void {
-		$domain = Plugin::TEXT_DOMAIN;
+		// Translation.
+		$this->add( 'translate', fn ( string $text ): string => __( $text, 'secondary-title' ), array( 'is_safe' => array( 'html' ) ) );
+		$this->add( 'translate_eschtml', fn ( string $text ): string => esc_html( __( $text, 'secondary-title' ) ) );
+		$this->add( 'translate_escattr', fn ( string $text ): string => esc_attr( __( $text, 'secondary-title' ) ) );
 
-		// Translation
-		$this->add( 'translate',     fn ( string $text ): string => __( $text, $domain ), [ 'is_safe' => [ 'html' ] ] );
-		$this->add( 'translate_eschtml', fn ( string $text ): string => esc_html( __( $text, $domain ) ) );
-		$this->add( 'translate_escattr', fn ( string $text ): string => esc_attr( __( $text, $domain ) ) );
-
-		// Escaping (sanity aliases; twig already auto-escapes {{ }})
-		$this->add( 'esc_html',    'esc_html' );
-		$this->add( 'esc_attr',    'esc_attr' );
-		$this->add( 'esc_url',     'esc_url' );
+		// Escaping (sanity aliases; twig already auto-escapes {{ }}).
+		$this->add( 'esc_html', 'esc_html' );
+		$this->add( 'esc_attr', 'esc_attr' );
+		$this->add( 'esc_url', 'esc_url' );
 		$this->add( 'esc_textarea', 'esc_textarea' );
-		$this->add( 'esc_js',      'esc_js' );
+		$this->add( 'esc_js', 'esc_js' );
 
 		// Format the placeholders for the title format.
 		$this->add(
@@ -59,28 +59,28 @@ final class Filters {
 			static function ( string $format, string $title, string $secondary_title ): string {
 				return Placeholder::replace(
 					$format,
-					[
+					array(
 						Placeholder::TITLE           => $title,
 						Placeholder::SECONDARY_TITLE => $secondary_title,
-					]
+					)
 				);
 			},
-			[ 'is_safe' => [ 'html' ] ]
+			array( 'is_safe' => array( 'html' ) )
 		);
 	}
 
 	/**
 	 * Registers a single Twig filter.
 	 *
-	 * @param string         $name     The filter name (Twig side).
-	 * @param callable|array $callable The PHP callable.
-	 * @param array          $options  Optional flags. Recognized:
-	 *                                 - is_safe: array of output types the filter is considered safe for.
+	 * @param string                              $name     The filter name (Twig side).
+	 * @param callable|array<int|string, mixed>   $callback The PHP callable.
+	 * @param array{is_safe?: array<int, string>} $options Optional flags. Recognized:
+	 *                                                     - is_safe: array of output types the filter is considered safe for.
 	 *
 	 * @return void
 	 */
-	private function add( string $name, callable|array $callable, array $options = [] ): void {
-		$filter = new TwigFilter( $name, $callable, $options );
+	private function add( string $name, callable|array $callback, array $options = array() ): void {
+		$filter = new TwigFilter( $name, $callback, $options );
 		$this->twig->addFilter( $filter );
 	}
 }

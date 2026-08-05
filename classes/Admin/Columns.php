@@ -16,7 +16,6 @@ namespace Thaikolja\SecondaryTitle\Admin;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 
 /**
  * Post-list column.
@@ -41,33 +40,29 @@ final class Columns {
 	public const POSITION_RIGHT = 'right';
 
 	/**
+	 * Settings repository.
+	 *
 	 * @var SettingsRepository
-	 */
-	private readonly SettingsRepository $settings_repository;
+	 */ private readonly SettingsRepository $settings_repository;
 
 	/**
+	 * Meta repository.
+	 *
 	 * @var MetaRepository
-	 */
-	private readonly MetaRepository $meta_repository;
+	 */ private readonly MetaRepository $meta_repository;
 
 	/**
-	 * @var Wrapper
-	 */
-	private readonly Wrapper $wrapper;
-
-	/**
+	 * Constructor.
+	 *
 	 * @param SettingsRepository $settings_repository Settings repository.
 	 * @param MetaRepository     $meta_repository     Meta read access.
-	 * @param Wrapper            $wrapper             Output wrapper.
 	 */
 	public function __construct(
 		SettingsRepository $settings_repository,
-		MetaRepository $meta_repository,
-		Wrapper $wrapper
+		MetaRepository $meta_repository
 	) {
 		$this->settings_repository = $settings_repository;
 		$this->meta_repository     = $meta_repository;
-		$this->wrapper             = $wrapper;
 	}
 
 	/**

@@ -81,7 +81,7 @@ final class Assets {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( self::HOOK, [ $this, 'enqueue' ] );
+		add_action( self::HOOK, array( $this, 'enqueue' ) );
 	}
 
 	/**
@@ -104,7 +104,7 @@ final class Assets {
 			return;
 		}
 
-		$base = $current_screen->base ?? '';
+		$base = (string) $current_screen->base;
 
 		if ( 'post' === $base || 'edit' === $base ) {
 			$this->enqueue_editor_styles();
@@ -122,7 +122,7 @@ final class Assets {
 		wp_enqueue_style(
 			self::CSS_HANDLE,
 			SECONDARY_TITLE_URL . self::SETTINGS_CSS_PATH,
-			[ 'wp-components' ],
+			array( 'wp-components' ),
 			Plugin::VERSION
 		);
 
@@ -156,7 +156,7 @@ final class Assets {
 		wp_enqueue_style(
 			self::CSS_HANDLE,
 			SECONDARY_TITLE_URL . self::SETTINGS_CSS_PATH,
-			[],
+			array(),
 			Plugin::VERSION
 		);
 	}
@@ -172,15 +172,15 @@ final class Assets {
 	private function asset_data( string $relative_path ): array {
 		$file = SECONDARY_TITLE_PATH . ltrim( $relative_path, '/' );
 
-		$data = [];
+		$data = array();
 
 		if ( file_exists( $file ) ) {
 			$data = (array) include $file;
 		}
 
-		return [
-			'dependencies' => $data['dependencies'] ?? [],
+		return array(
+			'dependencies' => $data['dependencies'] ?? array(),
 			'version'      => $data['version'] ?? Plugin::VERSION,
-		];
+		);
 	}
 }
