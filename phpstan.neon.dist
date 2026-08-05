@@ -12,10 +12,8 @@ parameters:
 		- node_modules
 		- tests
 		- assets
-		treatPhpDocTypesAsCertain: false
+	treatPhpDocTypesAsCertain: false
 	reportUnmatchedIgnoredErrors: false
 	scanFiles:
 		- secondary-title.php
 		- uninstall.php
-includes:
-	- vendor/szepeviktor/phpstan-wordpress/extension.neon

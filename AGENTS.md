@@ -9,7 +9,7 @@
 | PHPCS lint | `vendor/bin/phpcs` |
 | PHPStan | `vendor/bin/phpstan analyse` |
 | PHPUnit (unit only) | `vendor/bin/phpunit --testsuite Unit` |
-| PHPUnit (integration) | `vendor/bin/phpunit --testsuite Integration` (needs `WP_TESTS_DIR` env) |
+| PHPUnit (integration) | `WP_TESTS_DIR=/tmp/wordpress-tests-lib WP_CORE_DIR=/tmp/wordpress vendor/bin/phpunit --testsuite Integration` (needs the WP test suite + a `wordpress_test` DB) |
 
 `bun run build` runs `@wordpress/scripts` webpack with 3 entrypoints: `settings`, `editor`, `block`. Output lands in `assets/js/dist/` with `<entry>.asset.php` files for auto-dependency loading.
 

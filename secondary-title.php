@@ -3,7 +3,7 @@
  * Plugin Name:       Secondary Title
  * Plugin URI:        https://docs.kolja-nolte.com/secondary-title
  * Description:       Add a secondary title to posts, pages, and custom post types. Display it automatically, with a shortcode, or via a real Gutenberg block.
- * Version:           3.0.0
+ * Version:           3.0.0.rc.1
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            Kolja Nolte
@@ -34,7 +34,7 @@ defined( 'ABSPATH' ) || exit;
  * argument for enqueued assets and as the source of truth for
  * upgrade routines.
  */
-const SECONDARY_TITLE_VERSION = '3.0.0';
+const SECONDARY_TITLE_VERSION = '3.0.0.rc.1';
 
 /**
  * Defines the text domain used for all translatable strings.
@@ -61,10 +61,20 @@ const SECONDARY_TITLE_DOCS_URL = 'https://docs.kolja-nolte.com/secondary-title';
  *
  * The autoloader is the only file we require manually. Every other
  * file in the plugin is reached through the PSR-4 autoloader
- * (`Thaikolja\SecondaryTitle\` -> `classes/`) or the file autoload
- * entries in composer.json (`includes/*.php`).
+ * (`Thaikolja\SecondaryTitle\` -> `classes/`).
+ *
+ * NOTE: The deprecated v2.x.x API lives in
+ * `includes/depreciation/functions.php` and must NOT be loaded via
+ * Composer's `autoload.files` — its `ABSPATH` guard makes it exit
+ * silently in CLI contexts (PHPUnit, PHPStan, WP-CLI). It is
+ * required explicitly below, after the guard in this file has run.
  */
 require_once __DIR__ . '/vendor/autoload.php';
+
+/**
+ * Loads the deprecated v2.x.x procedural API (see note above).
+ */
+require_once __DIR__ . '/includes/depreciation/functions.php';
 
 /**
  * Boots the plugin.

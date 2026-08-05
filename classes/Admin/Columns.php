@@ -16,7 +16,7 @@ namespace Thaikolja\SecondaryTitle\Admin;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
-use Thaikolja\SecondaryTitle\Renderer\Wrapper as Wrapper;
+use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 
 /**
  * Post-list column.
@@ -66,7 +66,7 @@ final class Columns {
 		Wrapper $wrapper
 	) {
 		$this->settings_repository = $settings_repository;
-		$this->meta_repository    = $meta_repository;
+		$this->meta_repository     = $meta_repository;
 		$this->wrapper             = $wrapper;
 	}
 
@@ -76,7 +76,7 @@ final class Columns {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'admin_init', [ $this, 'register_columns' ] );
+		add_action( 'admin_init', array( $this, 'register_columns' ) );
 	}
 
 	/**
@@ -88,13 +88,13 @@ final class Columns {
 	public function register_columns(): void {
 		$enabled = $this->enabled_post_types();
 
-		if ( [] === $enabled ) {
+		if ( array() === $enabled ) {
 			return;
 		}
 
 		foreach ( $enabled as $post_type ) {
-			add_filter( "manage_{$post_type}_posts_columns", [ $this, 'add_column' ] );
-			add_action( "manage_{$post_type}_posts_custom_column", [ $this, 'render_column' ], 10, 2 );
+			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_column' ) );
+			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'render_column' ), 10, 2 );
 		}
 	}
 
@@ -111,19 +111,19 @@ final class Columns {
 		// Fall back to "right" if an unknown value is stored.
 		$position = self::POSITION_LEFT === $position ? self::POSITION_LEFT : self::POSITION_RIGHT;
 
-		$out = [];
+		$out = array();
 
 		$inserted = false;
 		foreach ( $columns as $slug => $label ) {
 			if ( 'title' === $slug ) {
 				if ( self::POSITION_LEFT === $position ) {
 					$out[ self::COLUMN_SLUG ] = __( 'Secondary title', 'secondary-title' );
-					$inserted                  = true;
+					$inserted                 = true;
 				}
 				$out[ $slug ] = $label;
 				if ( self::POSITION_RIGHT === $position ) {
 					$out[ self::COLUMN_SLUG ] = __( 'Secondary title', 'secondary-title' );
-					$inserted                  = true;
+					$inserted                 = true;
 				}
 				continue;
 			}
@@ -158,10 +158,10 @@ final class Columns {
 			return;
 		}
 
-		// Output the raw, already-sanitized value. The value is
-		// already kses'd on save; we strip tags here to keep the
-		// column safe at-a-glance.
-		echo esc_html( wp_strip_all_tags( $value ) );
+		// Output the sanitized value. Stored values are
+		// entity-encoded, so decode once before escaping; tags are
+		// stripped to keep the column safe at-a-glance.
+		echo esc_html( wp_strip_all_tags( html_entity_decode( $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ) );
 	}
 
 	/**
@@ -170,13 +170,13 @@ final class Columns {
 	 * @return array<int, string>
 	 */
 	private function enabled_post_types(): array {
-		$enabled = (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, [] );
+		$enabled = (array) $this->settings_repository->get( SettingsDefaults::OPTION_POST_TYPES, array() );
 
-		if ( [] !== $enabled ) {
+		if ( array() !== $enabled ) {
 			return array_values( array_filter( $enabled, 'post_type_exists' ) );
 		}
 
-		$public = get_post_types( [ 'public' => true ] );
+		$public = get_post_types( array( 'public' => true ) );
 		return array_values( array_filter( $public, static fn ( string $t ): bool => 'attachment' !== $t ) );
 	}
 }

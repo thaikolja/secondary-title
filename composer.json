@@ -39,10 +39,7 @@
   "autoload":             {
     "psr-4": {
       "Thaikolja\\SecondaryTitle\\": "classes/"
-    },
-    "files": [
-      "includes/depreciation/functions.php"
-    ]
+    }
   },
   "autoload-dev":         {
     "psr-4": {

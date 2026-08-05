@@ -16,10 +16,14 @@
  *           transform more aggressively).
  *        d. Overwrite the live `secondary_title_<key>` with the
  *           migrated value.
- *   4. Set `secondary_title_db_version` to {@see self::TARGET_VERSION}.
- *
- * Post meta is NOT touched. `_secondary_title` post meta is
- * forward-compatible and is read/written by both v2 and v3.
+ *   4. Sanitize legacy post meta: v2 saved `_secondary_title`
+ *      HTML-escaped from the Classic Editor but raw (unsanitized)
+ *      from the block editor. Escaped values are decoded once at
+ *      render time and must not be rewritten here; raw values
+ *      containing actual markup are run through `wp_kses_post()`
+ *      once.
+ *   5. Seed any v3-only option that does not exist yet.
+ *   6. Set `secondary_title_db_version` to {@see self::TARGET_VERSION}.
  *
  * @package Thaikolja\SecondaryTitle
  */
@@ -28,6 +32,7 @@ declare( strict_types = 1 );
 
 namespace Thaikolja\SecondaryTitle\Lifecycle;
 
+use Thaikolja\SecondaryTitle\Plugin;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 
@@ -58,14 +63,14 @@ final class Upgrader {
 	 *
 	 * @var array<int, string>
 	 */
-	private const V2_OPTIONS = [
+	private const V2_OPTIONS = array(
 		'secondary_title_post_types',
 		'secondary_title_categories',
 		'secondary_title_post_ids',
 		'secondary_title_auto_show',
 		'secondary_title_title_format',
 		'secondary_title_only_show_in_main_post',
-	];
+	);
 
 	/**
 	 * @var SettingsRepository
@@ -92,7 +97,7 @@ final class Upgrader {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'plugins_loaded', [ $this, 'maybe_upgrade' ], 5 );
+		add_action( 'plugins_loaded', array( $this, 'maybe_upgrade' ), 5 );
 	}
 
 	/**
@@ -124,6 +129,10 @@ final class Upgrader {
 			$this->migrate_option( $key );
 		}
 
+		// Sanitize unsanitized legacy post meta (v2 block editor
+		// saved raw values; escaped values are decoded at render).
+		$this->sanitize_legacy_meta();
+
 		// Seed any v3-only option that does not exist yet.
 		$this->seed_defaults();
 		$this->repository->set( SettingsDefaults::OPTION_DB_VERSION, self::TARGET_VERSION );
@@ -135,7 +144,7 @@ final class Upgrader {
 	 * @return void
 	 */
 	private function migrate_network(): void {
-		$blog_ids = get_sites( [ 'fields' => 'ids' ] );
+		$blog_ids = get_sites( array( 'fields' => 'ids' ) );
 
 		foreach ( (array) $blog_ids as $blog_id ) {
 			switch_to_blog( (int) $blog_id );
@@ -191,6 +200,63 @@ final class Upgrader {
 	private function transform_value( string $key, mixed $value ): mixed {
 		unset( $key );
 		return $value;
+	}
+
+	/**
+	 * Sanitizes unsanitized legacy post meta in place.
+	 *
+	 * v2 saved `_secondary_title` HTML-escaped from the Classic
+	 * Editor, but RAW from the block editor (its `register_meta()`
+	 * call had no `sanitize_callback`), so legacy values may contain
+	 * actual markup that never went through any sanitizer.
+	 *
+	 * Values that contain HTML entities are skipped entirely: they
+	 * are v2-escaped text and are decoded once at render time by
+	 * the {@see \Thaikolja\SecondaryTitle\Renderer\Wrapper} — rewriting
+	 * them here would double-encode them. Only values that contain
+	 * a literal `<` (and no `&`) can be raw markup; those are run
+	 * through `wp_kses_post()` once.
+	 *
+	 * @return void
+	 */
+	private function sanitize_legacy_meta(): void {
+		global $wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s",
+				Plugin::META_KEY
+			)
+		);
+
+		if ( ! is_array( $rows ) || [] === $rows ) {
+			return;
+		}
+
+		foreach ( $rows as $row ) {
+			$value = (string) $row->meta_value;
+
+			if ( '' === $value ) {
+				continue;
+			}
+
+			// Escaped legacy values must never be rewritten: kses
+			// would double-encode them. The renderer decodes them.
+			if ( str_contains( $value, '&' ) ) {
+				continue;
+			}
+
+			// Only values with literal markup can be unsanitized.
+			if ( ! str_contains( $value, '<' ) ) {
+				continue;
+			}
+
+			$cleaned = wp_kses_post( $value );
+
+			if ( $cleaned !== $value ) {
+				update_metadata_by_mid( 'post', (int) $row->meta_id, $cleaned );
+			}
+		}
 	}
 
 	/**

@@ -60,7 +60,7 @@ final class Shortcode {
 	 * @return void
 	 */
 	public function register(): void {
-		add_shortcode( self::TAG, [ $this, 'render' ] );
+		add_shortcode( self::TAG, array( $this, 'render' ) );
 	}
 
 	/**
@@ -72,10 +72,10 @@ final class Shortcode {
 	 */
 	public function render( $atts ): string {
 		$atts = shortcode_atts(
-			[
+			array(
 				'post_id'    => 0,
 				'allow_html' => 'false',
-			],
+			),
 			(array) $atts,
 			self::TAG
 		);
@@ -94,6 +94,11 @@ final class Shortcode {
 		if ( '' === $raw ) {
 			return '';
 		}
+
+		// Stored values are entity-encoded (see Wrapper). Decode
+		// once before rendering so both output branches display
+		// the actual text.
+		$raw = html_entity_decode( $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
 		/**
 		 * For HTML rendering: the value is already sanitized via

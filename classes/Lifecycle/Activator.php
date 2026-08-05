@@ -3,8 +3,13 @@
  * Plugin activation handler.
  *
  * Called by {@see register_activation_hook()} in secondary-title.php.
- * Seeds the default options and bumps the database version to mark
- * the install as up-to-date.
+ * Seeds the default options on a fresh install.
+ *
+ * The database version is NOT touched here: the {@see Upgrader}
+ * owns the version flag and stamps it only after a migration pass
+ * has actually completed. Unconditionally stamping it in the
+ * activator would mark v2.x.x sites as "already migrated" without
+ * ever running the migration.
  *
  * @package Thaikolja\SecondaryTitle
  */
@@ -22,13 +27,6 @@ use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
  * @since 3.0.0
  */
 final class Activator {
-
-	/**
-	 * Target database version after a fresh install.
-	 *
-	 * @var int
-	 */
-	public const TARGET_DB_VERSION = 3;
 
 	/**
 	 * @var SettingsDefaults
@@ -70,6 +68,10 @@ final class Activator {
 	/**
 	 * Seeds the defaults on the current site.
 	 *
+	 * The database version flag is deliberately left alone: the
+	 * {@see Upgrader} stamps it after the migration has run, so a
+	 * v2.x.x upgrade is never marked as migrated prematurely.
+	 *
 	 * @return void
 	 */
 	private function activate_site(): void {
@@ -78,9 +80,6 @@ final class Activator {
 				$this->repository->set( $key, $default );
 			}
 		}
-
-		// Always mark the current DB version on fresh installs.
-		$this->repository->set( SettingsDefaults::OPTION_DB_VERSION, self::TARGET_DB_VERSION );
 	}
 
 	/**
@@ -89,7 +88,7 @@ final class Activator {
 	 * @return void
 	 */
 	private function activate_network(): void {
-		$blog_ids = get_sites( [ 'fields' => 'ids' ] );
+		$blog_ids = get_sites( array( 'fields' => 'ids' ) );
 
 		foreach ( (array) $blog_ids as $blog_id ) {
 			switch_to_blog( (int) $blog_id );

@@ -35,9 +35,16 @@
 		</exclude>
 	</coverage>
 	<php>
-		<env name="WP_TESTS_DIR" value="/tmp/wordpress-tests-lib"/>
-		<env name="WP_CORE_DIR" value="/tmp/wordpress"/>
-		<env name="WP_TEST_PLUGIN" value="secondary-title"/>
+		<!--
+			The WordPress test suite is NOT loaded by default: unit
+			tests must be runnable without WordPress (Brain Monkey
+			redefines WP functions like get_option(), which is only
+			possible before WordPress itself is included).
+
+			For the integration suite, provide the environment:
+			WP_TESTS_DIR and WP_CORE_DIR, then run the integration
+			testsuite (see AGENTS.md).
+		-->
 		<const name="WP_TESTS_MULTISITE" value="0"/>
 		<ini name="error_reporting" value="-1"/>
 		<ini name="display_errors" value="1"/>

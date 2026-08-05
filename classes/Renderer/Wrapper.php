@@ -62,6 +62,14 @@ final class Wrapper {
 	 * If $title is empty, an empty string is returned (no empty
 	 * wrappers are emitted).
 	 *
+	 * Stored values are entity-encoded: v2's Classic Editor saved
+	 * `esc_html()` output and v3's sanitizer runs `wp_kses_post()`,
+	 * which also encodes `&`. The title is therefore decoded once
+	 * here, at the output boundary, so existing and new content
+	 * display correctly. A single decode is safe: kses encodes
+	 * ampersands on save, so encoded markup like `&lt;script&gt;`
+	 * decodes to inert text, never to live tags.
+	 *
 	 * @param string $title The secondary title to wrap.
 	 *
 	 * @return string The wrapped HTML, or '' if $title is empty.
@@ -70,6 +78,8 @@ final class Wrapper {
 		if ( '' === $title ) {
 			return '';
 		}
+
+		$title = html_entity_decode( $title, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
 		$tag   = $this->resolve_tag();
 		$class = $this->resolve_class();
