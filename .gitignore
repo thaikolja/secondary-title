@@ -34,6 +34,9 @@ composer-error.log
 .phpunit.cache
 *.lcov
 
+# Release builds
+/dist/
+
 # OS generated
 .Spotlight-V100
 .Trashes

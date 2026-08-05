@@ -6,6 +6,7 @@
 |------|---------|
 | Build JS/CSS | `bun run build` |
 | Watch (dev) | `bun run start` |
+| Build release ZIP | `./build.sh` (or `bun run zip`) — outputs `dist/secondary-title-<version>.zip` |
 | PHPCS lint | `vendor/bin/phpcs` |
 | PHPStan | `vendor/bin/phpstan analyse` |
 | PHPUnit (unit only) | `vendor/bin/phpunit --testsuite Unit` |
