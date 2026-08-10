@@ -52,18 +52,16 @@ jobs:
               run: vendor/bin/phpunit --testsuite unit
 
             - name: Start MySQL
-              if: ${{ matrix.wp == 'latest' }}
               run: sudo systemctl start mysql
 
             - name: Prepare WordPress test library
-              if: ${{ matrix.wp == 'latest' }}
               run: |
-                  bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
+                  bash bin/install-wp-tests.sh wordpress_test root '' localhost ${{ matrix.wp == 'latest' && 'latest' || matrix.wp }}
               env:
                   WP_TESTS_DIR: ${{ runner.temp }}/wordpress-tests-lib
+                  WP_CORE_DIR: ${{ runner.temp }}/wordpress
 
             - name: PHPUnit (integration)
-              if: ${{ matrix.wp == 'latest' }}
               run: vendor/bin/phpunit --testsuite integration
               env:
                   WP_TESTS_DIR: ${{ runner.temp }}/wordpress-tests-lib

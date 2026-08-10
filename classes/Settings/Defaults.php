@@ -80,9 +80,49 @@ final class Defaults {
 	 */
 	public const OPTION_COLUMN_POSITION = 'secondary_title_column_position';
 
+	/**
+	 * Option key: what to output when a post has no secondary title.
+	 * Values: {@see self::EMPTY_HIDE} | {@see self::EMPTY_PRIMARY}.
+	 *
+	 * @var string
+	 */
+	public const OPTION_EMPTY_BEHAVIOUR = 'secondary_title_empty_behaviour';
+
+	/**
+	 * Option key: strip HTML tags at the render boundary.
+	 *
+	 * @var string
+	 */
+	public const OPTION_STRIP_HTML = 'secondary_title_strip_html';
+
+	/**
+	 * Option key: include secondary titles in the main WP search.
+	 *
+	 * @var string
+	 */
+	public const OPTION_SHOW_IN_SEARCH = 'secondary_title_show_in_search';
+
+	/**
+	 * Option key: merge secondary titles into RSS/Atom feed titles.
+	 *
+	 * @var string
+	 */
+	public const OPTION_SHOW_IN_RSS = 'secondary_title_show_in_rss';
+
+	/**
+	 * Option key: expose `_secondary_title` via the REST API.
+	 *
+	 * @var string
+	 */
+	public const OPTION_SHOW_IN_REST = 'secondary_title_show_in_rest';
+
 	// "On/Off" sentinel values.
 	public const ON  = 'on';
 	public const OFF = 'off';
+
+	// Empty-behaviour values.
+	public const EMPTY_HIDE    = 'hide';
+	public const EMPTY_PRIMARY = 'primary';
 
 	/**
 	 * Default title format.
@@ -116,6 +156,11 @@ final class Defaults {
 			self::OPTION_TITLE_FORMAT           => self::TITLE_FORMAT,
 			self::OPTION_ONLY_SHOW_IN_MAIN_POST => self::OFF,
 			self::OPTION_COLUMN_POSITION        => 'right',
+			self::OPTION_EMPTY_BEHAVIOUR        => self::EMPTY_HIDE,
+			self::OPTION_STRIP_HTML             => self::OFF,
+			self::OPTION_SHOW_IN_SEARCH         => self::OFF,
+			self::OPTION_SHOW_IN_RSS            => self::OFF,
+			self::OPTION_SHOW_IN_REST           => self::ON,
 			self::OPTION_DB_VERSION             => 0,
 		);
 	}

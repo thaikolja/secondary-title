@@ -73,9 +73,14 @@ final class Sanitizer {
 			Defaults::OPTION_AUTO_SHOW              => 'sanitize_on_off',
 			Defaults::OPTION_TITLE_FORMAT           => 'sanitize_title_format',
 			Defaults::OPTION_ONLY_SHOW_IN_MAIN_POST => 'sanitize_on_off',
-			Defaults::OPTION_COLUMN_POSITION       => 'sanitize_column_position',
+			Defaults::OPTION_COLUMN_POSITION        => 'sanitize_column_position',
+			Defaults::OPTION_EMPTY_BEHAVIOUR        => 'sanitize_empty_behaviour',
+			Defaults::OPTION_STRIP_HTML             => 'sanitize_on_off',
+			Defaults::OPTION_SHOW_IN_SEARCH         => 'sanitize_on_off',
+			Defaults::OPTION_SHOW_IN_RSS            => 'sanitize_on_off',
+			Defaults::OPTION_SHOW_IN_REST           => 'sanitize_on_off',
 			Defaults::OPTION_DB_VERSION             => 'sanitize_int',
-			default                                  => null,
+			default                                 => null,
 		};
 	}
 
@@ -191,5 +196,18 @@ final class Sanitizer {
 	 */
 	public function sanitize_column_position( mixed $value ): string {
 		return in_array( $value, array( 'left', 'right' ), true ) ? $value : 'right';
+	}
+
+	/**
+	 * Sanitizes the empty-title behaviour option.
+	 *
+	 * @param mixed $value Raw input.
+	 *
+	 * @return string Either 'hide' or 'primary'.
+	 */
+	public function sanitize_empty_behaviour( mixed $value ): string {
+		return in_array( $value, array( Defaults::EMPTY_HIDE, Defaults::EMPTY_PRIMARY ), true )
+			? (string) $value
+			: Defaults::EMPTY_HIDE;
 	}
 }

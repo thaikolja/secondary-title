@@ -44,6 +44,9 @@ use Thaikolja\SecondaryTitle\Renderer\Placeholder;
 use Thaikolja\SecondaryTitle\Renderer\Wrapper;
 use Thaikolja\SecondaryTitle\Renderer\TitleRenderer;
 use Thaikolja\SecondaryTitle\Renderer\Shortcode as ShortcodeRenderer;
+use Thaikolja\SecondaryTitle\Renderer\DisplayRules;
+use Thaikolja\SecondaryTitle\Renderer\Search as SearchRenderer;
+use Thaikolja\SecondaryTitle\Renderer\Feed as FeedRenderer;
 
 /**
  * The Plugin class.
@@ -234,6 +237,27 @@ final class Plugin {
 	public readonly ShortcodeRenderer $shortcode_renderer;
 
 	/**
+	 * Front-end display rules validator.
+	 *
+	 * @var DisplayRules
+	 */
+	public readonly DisplayRules $display_rules;
+
+	/**
+	 * Front-end search integration.
+	 *
+	 * @var SearchRenderer
+	 */
+	public readonly SearchRenderer $search_renderer;
+
+	/**
+	 * Feed (RSS/Atom) title integration.
+	 *
+	 * @var FeedRenderer
+	 */
+	public readonly FeedRenderer $feed_renderer;
+
+	/**
 	 * Admin asset enqueueing.
 	 *
 	 * @var AdminAssets
@@ -311,37 +335,40 @@ final class Plugin {
 	 * assignments below encodes the dependency graph.
 	 */
 	private function __construct() {
-		// 1. No-dep infrastructure
-		$this->twig        = new TwigEnv( SECONDARY_TITLE_PATH . 'pages' );
-		$this->placeholder = new Placeholder();
-		$this->wrapper     = new Wrapper();
-
-		// 2. Settings
+		// 1. Settings first so infrastructure can read options.
 		$this->settings_defaults   = new SettingsDefaults();
 		$this->settings_repository = new SettingsRepository( $this->settings_defaults );
 		$this->settings_sanitizer  = new SettingsSanitizer();
 		$this->settings_manager    = new SettingsManager( $this->settings_sanitizer );
-		$this->settings_page       = new SettingsPage( $this->settings_repository, $this->twig );
+
+		// 2. Infrastructure (Twig needs path; Wrapper may read strip-HTML).
+		$this->twig          = new TwigEnv( SECONDARY_TITLE_PATH . 'pages' );
+		$this->placeholder   = new Placeholder();
+		$this->wrapper       = new Wrapper( $this->settings_repository );
+		$this->settings_page = new SettingsPage( $this->settings_repository, $this->twig );
 
 		// 3. Meta
 		$this->meta_sanitizer  = new MetaSanitizer();
-		$this->meta_repository = new MetaRepository( $this->meta_sanitizer );
+		$this->meta_repository = new MetaRepository( $this->meta_sanitizer, $this->wrapper );
 
-		// 4. Renderer value objects
-		$this->format = new Format( $this->settings_repository );
+		// 4. Renderer value objects + display rules
+		$this->format        = new Format( $this->settings_repository );
+		$this->display_rules = new DisplayRules( $this->settings_repository );
 
 		// 5. Meta registry (depends on WP's register_meta, called on init)
-		$this->meta_registry = new MetaRegistry();
+		$this->meta_registry = new MetaRegistry( $this->settings_repository );
 
 		// 6. Editor
 		$this->classic_meta_box    = new ClassicMetaBox( $this->meta_repository, $this->settings_repository, $this->format, $this->wrapper );
 		$this->gutenberg_sidebar   = new GutenbergSidebar( $this->settings_repository );
-		$this->block_server_render = new BlockServerRender( $this->meta_repository, $this->format, $this->wrapper );
+		$this->block_server_render = new BlockServerRender( $this->meta_repository, $this->format, $this->wrapper, $this->settings_repository );
 		$this->block_registrar     = new BlockRegistrar( $this->block_server_render );
 
 		// 7. Renderer
-		$this->title_renderer     = new TitleRenderer( $this->settings_repository, $this->format, $this->wrapper, $this->meta_repository );
-		$this->shortcode_renderer = new ShortcodeRenderer( $this->meta_repository );
+		$this->title_renderer     = new TitleRenderer( $this->settings_repository, $this->format, $this->wrapper, $this->meta_repository, $this->display_rules );
+		$this->shortcode_renderer = new ShortcodeRenderer( $this->meta_repository, $this->settings_repository );
+		$this->search_renderer    = new SearchRenderer( $this->settings_repository );
+		$this->feed_renderer      = new FeedRenderer( $this->settings_repository, $this->format, $this->wrapper, $this->meta_repository, $this->display_rules );
 
 		// 8. Admin
 		$this->admin_assets        = new AdminAssets();
@@ -435,9 +462,11 @@ final class Plugin {
 		$this->gutenberg_sidebar->register();
 		$this->block_registrar->register();
 
-		// Renderer: the_title filter and the [secondary_title] shortcode.
+		// Renderer: the_title filter, shortcode, search, and feeds.
 		$this->title_renderer->register();
 		$this->shortcode_renderer->register();
+		$this->search_renderer->register();
+		$this->feed_renderer->register();
 
 		// Admin: assets, settings link, columns. Menu is reserved.
 		$this->admin_assets->register();

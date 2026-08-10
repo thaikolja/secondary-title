@@ -119,8 +119,8 @@
 			<span>{{ __('What to output when a post has no secondary title set.', 'secondary-title') }}</span>
 		</div>
 		<select id="st-field-empty-behaviour" name="secondary_title_empty_behaviour" class="st-select">
-			<option value="hide">{{ __('Hide (output nothing)', 'secondary-title') }}</option>
-			<option value="primary">{{ __('Fall back to primary title', 'secondary-title') }}</option>
+			<option value="hide" {{ settings['secondary_title_empty_behaviour']|default('hide') == 'hide' ? 'selected' : '' }}>{{ __('Hide (output nothing)', 'secondary-title') }}</option>
+			<option value="primary" {{ settings['secondary_title_empty_behaviour']|default('hide') == 'primary' ? 'selected' : '' }}>{{ __('Fall back to primary title', 'secondary-title') }}</option>
 		</select>
 	</div>
 

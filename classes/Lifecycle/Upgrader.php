@@ -133,6 +133,9 @@ final class Upgrader {
 			$this->migrate_option( $key );
 		}
 
+		// Map dropped/renamed v2 options onto their v3 successors.
+		$this->migrate_renamed_options();
+
 		// Sanitize unsanitized legacy post meta (v2 block editor
 		// saved raw values; escaped values are decoded at render).
 		$this->sanitize_legacy_meta();
@@ -140,6 +143,45 @@ final class Upgrader {
 		// Seed any v3-only option that does not exist yet.
 		$this->seed_defaults();
 		$this->repository->set( SettingsDefaults::OPTION_DB_VERSION, self::TARGET_VERSION );
+	}
+
+	/**
+	 * Copies known v2-only option keys onto their v3 equivalents when
+	 * the v3 key has not been stored yet.
+	 *
+	 * @return void
+	 */
+	private function migrate_renamed_options(): void {
+		$map = array(
+			// v2 include_in_search → v3 show_in_search.
+			'secondary_title_include_in_search' => SettingsDefaults::OPTION_SHOW_IN_SEARCH,
+			// v2 feed_auto_show → v3 show_in_rss.
+			'secondary_title_feed_auto_show'    => SettingsDefaults::OPTION_SHOW_IN_RSS,
+		);
+
+		foreach ( $map as $v2_key => $v3_key ) {
+			$v2_value = get_option( $v2_key, null );
+			if ( null === $v2_value || '' === $v2_value ) {
+				continue;
+			}
+
+			$backup_key = 'v2_' . $v2_key;
+			if ( false === get_option( $backup_key ) ) {
+				update_option( $backup_key, $v2_value, false );
+			}
+
+			// Only seed the v3 key when it has never been set.
+			if ( false === get_option( $v3_key ) ) {
+				$normalized = ( 'on' === $v2_value ) ? SettingsDefaults::ON : SettingsDefaults::OFF;
+				$this->repository->set( $v3_key, $normalized );
+			}
+		}
+
+		// Preserve v2 column position when present (not in V2_OPTIONS).
+		$column = get_option( SettingsDefaults::OPTION_COLUMN_POSITION, null );
+		if ( null !== $column && '' !== $column && false === get_option( 'v2_' . SettingsDefaults::OPTION_COLUMN_POSITION ) ) {
+			update_option( 'v2_' . SettingsDefaults::OPTION_COLUMN_POSITION, $column, false );
+		}
 	}
 
 	/**

@@ -28,15 +28,25 @@ final class Repository {
 	 * Sanitizer.
 	 *
 	 * @var Sanitizer
-	 */ private readonly Sanitizer $sanitizer;
+	 */
+	private readonly Sanitizer $sanitizer;
+
+	/**
+	 * Optional shared wrapper for wrapped reads.
+	 *
+	 * @var Wrapper|null
+	 */
+	private readonly ?Wrapper $wrapper;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param Sanitizer $sanitizer The sanitizer for incoming values.
+	 * @param Sanitizer    $sanitizer The sanitizer for incoming values.
+	 * @param Wrapper|null $wrapper  Optional shared output wrapper.
 	 */
-	public function __construct( Sanitizer $sanitizer ) {
+	public function __construct( Sanitizer $sanitizer, ?Wrapper $wrapper = null ) {
 		$this->sanitizer = $sanitizer;
+		$this->wrapper   = $wrapper;
 	}
 
 	/**
@@ -69,7 +79,12 @@ final class Repository {
 			return '';
 		}
 
-		return $wrap ? ( new Wrapper() )->wrap( $raw ) : $raw;
+		if ( ! $wrap ) {
+			return $raw;
+		}
+
+		$wrapper = $this->wrapper ?? new Wrapper();
+		return $wrapper->wrap( $raw );
 	}
 
 	/**

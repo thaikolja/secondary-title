@@ -24,6 +24,38 @@ if ( ! file_exists( $autoloader ) ) {
 require_once $autoloader;
 
 /**
+ * Minimal stubs for unit tests that reference WP core classes without
+ * loading the full WordPress test suite.
+ */
+if ( ! class_exists( 'WP_Post', false ) && false === getenv( 'WP_TESTS_DIR' ) ) {
+	/**
+	 * Lightweight stand-in for {@see WP_Post}.
+	 */
+	class WP_Post {
+		/**
+		 * Post ID.
+		 *
+		 * @var int
+		 */
+		public $ID = 0;
+
+		/**
+		 * Post title.
+		 *
+		 * @var string
+		 */
+		public $post_title = '';
+
+		/**
+		 * Post type.
+		 *
+		 * @var string
+		 */
+		public $post_type = 'post';
+	}
+}
+
+/**
  * Only load the WordPress test framework for the integration test
  * suite. Unit tests should be runnable without a WordPress
  * installation.

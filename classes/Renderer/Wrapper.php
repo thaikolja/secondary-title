@@ -17,6 +17,9 @@ declare( strict_types = 1 );
 
 namespace Thaikolja\SecondaryTitle\Renderer;
 
+use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
+use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
+
 /**
  * Output wrapper.
  *
@@ -58,6 +61,24 @@ final class Wrapper {
 	public const FILTER_CLASS = 'secondary_title_wrapper_class';
 
 	/**
+	 * Optional settings repository (for strip-HTML). Null keeps the
+	 * historical wrap-only behaviour used by unit tests that construct
+	 * Wrapper without DI.
+	 *
+	 * @var SettingsRepository|null
+	 */
+	private readonly ?SettingsRepository $settings_repository;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param SettingsRepository|null $settings_repository Optional settings.
+	 */
+	public function __construct( ?SettingsRepository $settings_repository = null ) {
+		$this->settings_repository = $settings_repository;
+	}
+
+	/**
 	 * Wraps $title in the configured tag + class and returns the
 	 * resulting HTML.
 	 *
@@ -83,6 +104,10 @@ final class Wrapper {
 
 		$title = html_entity_decode( $title, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
+		if ( $this->should_strip_html() ) {
+			$title = wp_strip_all_tags( $title );
+		}
+
 		$tag   = $this->resolve_tag();
 		$class = $this->resolve_class();
 
@@ -93,6 +118,19 @@ final class Wrapper {
 		}
 
 		return '<' . tag_escape( $tag ) . $attributes . '>' . $title . '</' . tag_escape( $tag ) . '>';
+	}
+
+	/**
+	 * Whether the strip-HTML setting is on.
+	 *
+	 * @return bool
+	 */
+	private function should_strip_html(): bool {
+		if ( null === $this->settings_repository ) {
+			return false;
+		}
+
+		return SettingsDefaults::ON === $this->settings_repository->get( SettingsDefaults::OPTION_STRIP_HTML );
 	}
 
 	/**

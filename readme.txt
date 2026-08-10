@@ -65,7 +65,10 @@ Yes. A proper meta box is added to the Classic Editor. The Gutenberg block edito
 * Classic Editor gets a proper meta box (no more jQuery injection).
 * All v2.x.x functions preserved as deprecated stubs.
 * Post meta key unchanged (`_secondary_title`). Zero data loss on upgrade.
-* Dropped: donation notice, AIOSEO/Yoast/Rank Math integration, search rewrite, permalink tag, feed-title formatting, bundled Font Awesome, voku/anti-xss dependency.
+* Display rules (post types / categories / post IDs) enforce auto-merge and the deprecated `use_settings` API (whitelist when non-empty).
+* New settings: empty-title behaviour, strip HTML on output, include in search, show in RSS, expose via REST.
+* Classic Editor saves limited HTML via the same `wp_kses_post` path as the block editor.
+* Dropped: donation notice, AIOSEO/Yoast/Rank Math integration, permalink `%secondary_title%` tag, bundled Font Awesome, voku/anti-xss dependency.
 
 = 2.2.0 =
 * See the full changelog at https://docs.kolja-nolte.com/secondary-title/

@@ -147,6 +147,21 @@ if [ "${SKIP_TESTS:-0}" != "1" ]; then
     else
         echo "WARNING: phpunit not installed; skipping unit-test gate"
     fi
+
+    # Integration suite needs the WordPress test harness.
+    WP_TESTS_DIR="${WP_TESTS_DIR:-/tmp/wordpress-tests-lib}"
+    WP_CORE_DIR="${WP_CORE_DIR:-/tmp/wordpress}"
+    if [ -f "$WP_TESTS_DIR/includes/bootstrap.php" ]; then
+        echo "==> Running integration tests"
+        WP_TESTS_DIR="$WP_TESTS_DIR" WP_CORE_DIR="$WP_CORE_DIR" \
+            "$PLUGIN_DIR/vendor/bin/phpunit" --testsuite integration
+    elif [ "${REQUIRE_INTEGRATION:-0}" = "1" ]; then
+        echo "ERROR: WP test harness not found at $WP_TESTS_DIR (REQUIRE_INTEGRATION=1)" >&2
+        exit 1
+    else
+        echo "NOTE: WP test harness not found at $WP_TESTS_DIR; skipping integration suite"
+        echo "      Install with: bash bin/install-wp-tests.sh wordpress_test <user> <pass> localhost latest"
+    fi
 fi
 
 if [ "${SKIP_LINT:-0}" != "1" ]; then

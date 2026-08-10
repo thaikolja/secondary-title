@@ -23,7 +23,8 @@ use WP_Post;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
 use Thaikolja\SecondaryTitle\Renderer\Format;
 use Thaikolja\SecondaryTitle\Renderer\Wrapper;
-use Thaikolja\SecondaryTitle\Plugin;
+use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
+use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 
 /**
  * Block server-side renderer.
@@ -36,35 +37,48 @@ final class ServerRender {
 	 * Meta repository.
 	 *
 	 * @var MetaRepository
-	 */ private readonly MetaRepository $meta_repository;
+	 */
+	private readonly MetaRepository $meta_repository;
 
 	/**
 	 * Format.
 	 *
 	 * @var Format
-	 */ private readonly Format $format;
+	 */
+	private readonly Format $format;
 
 	/**
 	 * Wrapper.
 	 *
 	 * @var Wrapper
-	 */ private readonly Wrapper $wrapper;
+	 */
+	private readonly Wrapper $wrapper;
+
+	/**
+	 * Settings repository.
+	 *
+	 * @var SettingsRepository
+	 */
+	private readonly SettingsRepository $settings_repository;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param MetaRepository $meta_repository Meta read/write.
-	 * @param Format         $format          Title format.
-	 * @param Wrapper        $wrapper         Output wrapper.
+	 * @param MetaRepository     $meta_repository     Meta read/write.
+	 * @param Format             $format              Title format.
+	 * @param Wrapper            $wrapper             Output wrapper.
+	 * @param SettingsRepository $settings_repository Settings access.
 	 */
 	public function __construct(
 		MetaRepository $meta_repository,
 		Format $format,
-		Wrapper $wrapper
+		Wrapper $wrapper,
+		SettingsRepository $settings_repository
 	) {
-		$this->meta_repository = $meta_repository;
-		$this->format          = $format;
-		$this->wrapper         = $wrapper;
+		$this->meta_repository     = $meta_repository;
+		$this->format              = $format;
+		$this->wrapper             = $wrapper;
+		$this->settings_repository = $settings_repository;
 	}
 
 	/**
@@ -98,7 +112,7 @@ final class ServerRender {
 		$secondary = $this->meta_repository->get_raw( $post_id );
 
 		if ( '' === $secondary ) {
-			return $this->empty_state();
+			return $this->empty_state( $post );
 		}
 
 		/**
@@ -117,15 +131,20 @@ final class ServerRender {
 	}
 
 	/**
-	 * Renders the empty-state placeholder shown when the post has
-	 * no secondary title.
+	 * Renders the empty-state output when the post has no secondary title.
+	 *
+	 * @param WP_Post $post The post.
 	 *
 	 * @return string
 	 */
-	private function empty_state(): string {
-		return sprintf(
-			'<p class="st-block-empty">%s</p>',
-			esc_html__( '(no secondary title set)', 'secondary-title' )
-		);
+	private function empty_state( WP_Post $post ): string {
+		$behaviour = (string) $this->settings_repository->get( SettingsDefaults::OPTION_EMPTY_BEHAVIOUR );
+
+		if ( SettingsDefaults::EMPTY_PRIMARY === $behaviour ) {
+			return esc_html( $post->post_title );
+		}
+
+		// hide (default): nothing on the front end; editor still benefits from a hint via empty string.
+		return '';
 	}
 }

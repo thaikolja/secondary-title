@@ -11,6 +11,8 @@
 | PHPStan | `vendor/bin/phpstan analyse` |
 | PHPUnit (unit only) | `vendor/bin/phpunit --testsuite unit` |
 | PHPUnit (integration) | `WP_TESTS_DIR=/tmp/wordpress-tests-lib WP_CORE_DIR=/tmp/wordpress vendor/bin/phpunit --testsuite integration` (needs the WP test suite + a `wordpress_test` DB). Note: the suite name is lowercase — `--testsuite Integration` silently runs zero tests. |
+| Install WP test harness | `bash bin/install-wp-tests.sh wordpress_test <user> <pass> localhost latest` |
+| Full pre-release gate | unit + integration + PHPCS + PHPStan + `./build.sh` (set `REQUIRE_INTEGRATION=1` to fail the zip if the harness is missing) |
 | Regenerate POT | `./tools/make-pot.sh` (extracts PHP, JS, and Twig strings into `languages/secondary-title.pot`) |
 
 `bun run build` runs `@wordpress/scripts` webpack with 3 entrypoints: `settings`, `editor`, `block`. Output lands in `assets/js/dist/` with `<entry>.asset.php` files for auto-dependency loading.
@@ -74,8 +76,11 @@ secondary-title/           # plugin root slug = 'secondary-title'
 - On uninstall, post meta is **preserved** — only options are deleted.
 
 ### Options & Settings
-- v2 option keys were kept 1:1 (e.g. `secondary_title_auto_show`). On upgrade, v2 values are backed up to `v2_secondary_title_*` keys, then overwritten with v3 defaults.
+- v2 option keys were kept 1:1 where they still exist (e.g. `secondary_title_auto_show`). On upgrade, known v2 values are backed up to `v2_secondary_title_*` keys and kept live; v3-only keys are seeded only when missing.
+- Renamed v2 → v3 mappings: `include_in_search` → `show_in_search`, `feed_auto_show` → `show_in_rss`.
+- Display rules (post types / categories / post IDs) are **whitelists when non-empty** and are enforced by `Renderer\DisplayRules` for auto-merge and `secondary_title_validate()`.
 - The WP Settings API applies `wp_unslash()` to incoming values. The sanitizer also calls it as defense-in-depth. Do not add extra `wp_unslash()` calls — the double-unslash bug in MetaBox.php was already fixed.
+- Classic Editor saves through `Meta\Sanitizer` only (no `sanitize_text_field()`), matching REST/block HTML support.
 
 ### I18n
 - `load_plugin_textdomain()` third argument must be a path **relative to `WP_PLUGIN_DIR`** (derived from `plugin_basename()`), not an absolute path.

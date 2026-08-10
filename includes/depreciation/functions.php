@@ -326,9 +326,8 @@ if ( ! function_exists( 'secondary_title_validate' ) ) {
 	 * @deprecated 3.0.0 No direct replacement. Display rules moved to the
 	 */
 	function secondary_title_validate( int $post_id ): bool {
-		_deprecated_function( __FUNCTION__, '3.0.0' );
-		unset( $post_id );
-		return true;
+		_deprecated_function( __FUNCTION__, '3.0.0', 'Thaikolja\\SecondaryTitle\\Renderer\\DisplayRules::allows()' );
+		return Plugin::instance()->display_rules->allows( $post_id );
 	}
 }
 

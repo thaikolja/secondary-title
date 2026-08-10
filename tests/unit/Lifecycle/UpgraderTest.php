@@ -220,6 +220,31 @@ final class UpgraderTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame( array(), $this->store['secondary_title_post_ids'] );
 		$this->assertSame( 'on', $this->store['secondary_title_auto_show'] );
 		$this->assertSame( 'off', $this->store['secondary_title_only_show_in_main_post'] );
+		$this->assertSame( 'hide', $this->store['secondary_title_empty_behaviour'] );
+		$this->assertSame( 'off', $this->store['secondary_title_strip_html'] );
+		$this->assertSame( 'off', $this->store['secondary_title_show_in_search'] );
+		$this->assertSame( 'off', $this->store['secondary_title_show_in_rss'] );
+		$this->assertSame( 'on', $this->store['secondary_title_show_in_rest'] );
+	}
+
+	/**
+	 * Tests that v2 search/feed options map onto v3 keys.
+	 *
+	 * @return void
+	 */
+	public function test_migrates_renamed_v2_options(): void {
+		$this->store = array(
+			'secondary_title_db_version'        => 0,
+			'secondary_title_include_in_search' => 'on',
+			'secondary_title_feed_auto_show'    => 'on',
+		);
+
+		$this->upgrader->maybe_upgrade();
+
+		$this->assertSame( 'on', $this->store['secondary_title_show_in_search'] );
+		$this->assertSame( 'on', $this->store['secondary_title_show_in_rss'] );
+		$this->assertSame( 'on', $this->store['v2_secondary_title_include_in_search'] );
+		$this->assertSame( 'on', $this->store['v2_secondary_title_feed_auto_show'] );
 	}
 
 	/**

@@ -8,10 +8,13 @@
  *
  * Skips:
  *   - The admin (so admin lists and the editor are unaffected).
- *   - Feeds, where the dedicated feed filter handles the merge.
  *   - When the current post has no secondary title.
+ *   - When display rules (post types / categories / post IDs) fail.
  *   - When the "Only show in main post" setting is on and the
  *     filter is called outside the main loop.
+ *
+ * Feed titles are handled separately by {@see Feed} when
+ * "Show in RSS feed" is enabled.
  *
  * @package Thaikolja\SecondaryTitle
  */
@@ -23,7 +26,6 @@ namespace Thaikolja\SecondaryTitle\Renderer;
 use Thaikolja\SecondaryTitle\Settings\Repository as SettingsRepository;
 use Thaikolja\SecondaryTitle\Settings\Defaults as SettingsDefaults;
 use Thaikolja\SecondaryTitle\Meta\Repository as MetaRepository;
-use Thaikolja\SecondaryTitle\Plugin;
 
 /**
  * Title renderer.
@@ -45,25 +47,36 @@ final class TitleRenderer {
 	 * Settings repository.
 	 *
 	 * @var SettingsRepository
-	 */ private readonly SettingsRepository $settings_repository;
+	 */
+	private readonly SettingsRepository $settings_repository;
 
 	/**
 	 * Format.
 	 *
 	 * @var Format
-	 */ private readonly Format $format;
+	 */
+	private readonly Format $format;
 
 	/**
 	 * Wrapper.
 	 *
 	 * @var Wrapper
-	 */ private readonly Wrapper $wrapper;
+	 */
+	private readonly Wrapper $wrapper;
 
 	/**
 	 * Meta repository.
 	 *
 	 * @var MetaRepository
-	 */ private readonly MetaRepository $meta_repository;
+	 */
+	private readonly MetaRepository $meta_repository;
+
+	/**
+	 * Display rules.
+	 *
+	 * @var DisplayRules
+	 */
+	private readonly DisplayRules $display_rules;
 
 	/**
 	 * Constructor.
@@ -72,17 +85,20 @@ final class TitleRenderer {
 	 * @param Format             $format              Title format.
 	 * @param Wrapper            $wrapper             Output wrapper.
 	 * @param MetaRepository     $meta_repository     Meta repository.
+	 * @param DisplayRules       $display_rules       Display restrictions.
 	 */
 	public function __construct(
 		SettingsRepository $settings_repository,
 		Format $format,
 		Wrapper $wrapper,
-		MetaRepository $meta_repository
+		MetaRepository $meta_repository,
+		DisplayRules $display_rules
 	) {
 		$this->settings_repository = $settings_repository;
 		$this->format              = $format;
 		$this->wrapper             = $wrapper;
 		$this->meta_repository     = $meta_repository;
+		$this->display_rules       = $display_rules;
 	}
 
 	/**
@@ -119,8 +135,13 @@ final class TitleRenderer {
 			return $title;
 		}
 
+		// Display rules (post types / categories / post IDs).
+		if ( ! $this->display_rules->allows( (int) $post->ID ) ) {
+			return $title;
+		}
+
 		// Skip if no secondary title.
-		$secondary_raw = $this->meta_repository->get_raw( $post->ID );
+		$secondary_raw = $this->meta_repository->get_raw( (int) $post->ID );
 		if ( '' === $secondary_raw ) {
 			return $title;
 		}
@@ -135,6 +156,6 @@ final class TitleRenderer {
 
 		// Wrap + render.
 		$secondary_wrapped = $this->wrapper->wrap( $secondary_raw );
-		return $this->format->render( $title, $secondary_wrapped, $post->ID );
+		return $this->format->render( $title, $secondary_wrapped, (int) $post->ID );
 	}
 }

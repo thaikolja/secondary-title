@@ -155,6 +155,12 @@ final class Page {
 				'post_types'             => Defaults::OPTION_POST_TYPES,
 				'categories'             => Defaults::OPTION_CATEGORIES,
 				'post_ids'               => Defaults::OPTION_POST_IDS,
+				'column_position'        => Defaults::OPTION_COLUMN_POSITION,
+				'empty_behaviour'        => Defaults::OPTION_EMPTY_BEHAVIOUR,
+				'strip_html'             => Defaults::OPTION_STRIP_HTML,
+				'show_in_search'         => Defaults::OPTION_SHOW_IN_SEARCH,
+				'show_in_rss'            => Defaults::OPTION_SHOW_IN_RSS,
+				'show_in_rest'           => Defaults::OPTION_SHOW_IN_REST,
 				'db_version'             => Defaults::OPTION_DB_VERSION,
 			),
 			// Things the template needs to render choices.

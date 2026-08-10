@@ -41,6 +41,11 @@ $option_keys = array(
 	'secondary_title_feed_title_format',
 	'secondary_title_include_in_search',
 	'secondary_title_show_donation_notice',
+	'secondary_title_empty_behaviour',
+	'secondary_title_strip_html',
+	'secondary_title_show_in_search',
+	'secondary_title_show_in_rss',
+	'secondary_title_show_in_rest',
 	'secondary_title_db_version',
 	// Forensic backups of the v2.x.x values, in case the user
 	// ever rolls back to the old plugin.

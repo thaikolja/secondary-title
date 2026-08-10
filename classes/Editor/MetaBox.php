@@ -230,8 +230,9 @@ final class MetaBox {
 			return;
 		}
 
-		// Save via the repository (sanitization — including wp_unslash — happens there).
-		$this->meta_repository->save( $post_id, sanitize_text_field( $raw_value ) );
+		// Route through Meta\Sanitizer (wp_kses_post) so limited HTML is
+		// preserved — same path as the block editor / REST API.
+		$this->meta_repository->save( $post_id, wp_unslash( $raw_value ) );
 	}
 
 	/**
