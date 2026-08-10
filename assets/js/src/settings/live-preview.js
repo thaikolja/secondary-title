@@ -33,8 +33,10 @@ export function initLiveFormatPreview( root ) {
 			const format = input.value || '';
 
 			// Read sample values from data attributes (set server-side).
-			const sampleTitle = preview.getAttribute( 'data-st-sample-title' ) || '';
-			const sampleSecondary = preview.getAttribute( 'data-st-sample-secondary' ) || '';
+			const sampleTitle =
+				preview.getAttribute( 'data-st-sample-title' ) || '';
+			const sampleSecondary =
+				preview.getAttribute( 'data-st-sample-secondary' ) || '';
 
 			// Escape sample values only — keep the format HTML intact
 			// so <span style="color:red"> etc. render visually in the
@@ -88,7 +90,7 @@ export function initLiveFormatPreview( root ) {
  * be safely assigned to innerHTML.
  *
  * @param {string} value
- * @returns {string}
+ * @return {string} The escaped value.
  */
 function escapeHtml( value ) {
 	return String( value )
@@ -104,7 +106,7 @@ function escapeHtml( value ) {
  * is not focused, appends the text to the end.
  *
  * @param {HTMLInputElement} input
- * @param {string} text
+ * @param {string}           text
  */
 function insertAtCursor( input, text ) {
 	const start = input.selectionStart ?? input.value.length;

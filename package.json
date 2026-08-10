@@ -1,22 +1,35 @@
 {
-  "name":            "secondary-title",
-  "version":         "3.0.0",
-  "private":         true,
-  "description":     "Add a secondary title to WordPress posts, pages, and custom post types.",
-  "license":         "GPL-2.0-or-later",
-  "engines":         {
-    "node": ">=18"
-  },
-  "scripts":         {
-    "build":           "wp-scripts build",
-    "start":           "wp-scripts start",
-    "format":          "wp-scripts format",
-    "lint:js":         "wp-scripts lint-js",
-    "lint:css":        "wp-scripts lint-style",
-    "packages-update": "wp-scripts packages-update",
-    "zip":             "bash build.sh"
-  },
-  "devDependencies": {
-    "@wordpress/scripts": "latest"
-  }
+	"name": "secondary-title",
+	"version": "3.0.0",
+	"private": true,
+	"description": "Add a secondary title to WordPress posts, pages, and custom post types.",
+	"license": "GPL-2.0-or-later",
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"build": "wp-scripts build",
+		"start": "wp-scripts start",
+		"format": "wp-scripts format",
+    "lint:js":         "wp-scripts lint-js assets/js/src",
+		"lint:css": "wp-scripts lint-style",
+		"packages-update": "wp-scripts packages-update",
+		"zip": "bash build.sh"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "latest"
+	},
+	"dependencies": {
+		"@wordpress/api-fetch": "latest",
+		"@wordpress/block-editor": "latest",
+		"@wordpress/blocks": "latest",
+		"@wordpress/components": "latest",
+		"@wordpress/data": "latest",
+		"@wordpress/edit-post": "latest",
+		"@wordpress/element": "latest",
+		"@wordpress/i18n": "latest",
+		"@wordpress/plugins": "latest",
+		"@wordpress/server-side-render": "latest",
+		"@wordpress/url": "latest"
+	}
 }

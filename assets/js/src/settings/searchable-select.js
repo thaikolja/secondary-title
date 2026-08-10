@@ -17,25 +17,29 @@ export function initSearchableSelects( root ) {
 	widgets.forEach( ( widget ) => {
 		const search = widget.querySelector( '[data-st-multi-select-search]' );
 		const items = widget.querySelectorAll( '[data-st-multi-select-item]' );
-		const toggle = widget.querySelector( '[data-st-multi-select-toggle]' );
 
 		if ( ! search || ! items.length ) {
 			return;
 		}
 
+		const toggle = widget.querySelector( '[data-st-multi-select-toggle]' );
 		const listEl = widget.querySelector( '.st-multi-select__list' );
 
 		const labels = [];
 		items.forEach( ( item ) => {
 			const label = item.querySelector( '.st-multi-select__label' );
-			labels.push( { item, label: label ? label.textContent.toLowerCase() : '' } );
+			labels.push( {
+				item,
+				label: label ? label.textContent.toLowerCase() : '',
+			} );
 		} );
 
 		const filter = () => {
 			const needle = search.value.trim().toLowerCase();
 			let visible = 0;
 			labels.forEach( ( entry ) => {
-				const match = '' === needle || entry.label.indexOf( needle ) !== -1;
+				const match =
+					'' === needle || entry.label.indexOf( needle ) !== -1;
 				entry.item.style.display = match ? '' : 'none';
 				if ( match ) {
 					visible++;
@@ -64,14 +68,18 @@ export function initSearchableSelects( root ) {
 				// Only toggle the visible (search-filtered) items.
 				const visibleCheckboxes = Array.from( items )
 					.filter( ( item ) => 'none' !== item.style.display )
-					.map( ( item ) => item.querySelector( 'input[type="checkbox"]' ) )
+					.map( ( item ) =>
+						item.querySelector( 'input[type="checkbox"]' )
+					)
 					.filter( Boolean );
 
 				if ( 0 === visibleCheckboxes.length ) {
 					return;
 				}
 
-				const allChecked = visibleCheckboxes.every( ( cb ) => cb.checked );
+				const allChecked = visibleCheckboxes.every(
+					( cb ) => cb.checked
+				);
 				visibleCheckboxes.forEach( ( cb ) => {
 					cb.checked = ! allChecked;
 				} );

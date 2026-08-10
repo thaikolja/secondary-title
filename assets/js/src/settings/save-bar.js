@@ -9,6 +9,7 @@ export function initSaveBar( root ) {
 	if ( reset ) {
 		reset.addEventListener( 'click', ( event ) => {
 			const message = reset.getAttribute( 'data-confirm' );
+			// eslint-disable-next-line no-alert -- reset confirmation dialog.
 			if ( message && ! window.confirm( message ) ) {
 				event.preventDefault();
 			}

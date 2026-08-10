@@ -8,7 +8,8 @@
  * (SidebarPanel) pre-populates window.SecondaryTitleBootstrap with
  * the current post's title + secondary title + the format.
  *
- * @wordpress/* dependencies are provided by @wordpress/scripts.
+ * WordPress packages are externalized at build time and provided
+ * by the block editor at runtime.
  */
 
 import { registerPlugin } from '@wordpress/plugins';

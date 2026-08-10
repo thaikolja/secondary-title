@@ -5,16 +5,20 @@
  */
 
 export function initTabs( root ) {
-	const tabs    = root.querySelectorAll( '.st-tab' );
-	const panels  = root.querySelectorAll( '.st-panel' );
+	const tabs = root.querySelectorAll( '.st-tab' );
+	const panels = root.querySelectorAll( '.st-panel' );
 
-	if ( ! tabs.length || ! panels.length ) { return; }
+	if ( ! tabs.length || ! panels.length ) {
+		return;
+	}
 
 	tabs.forEach( ( tab ) => {
 		tab.addEventListener( 'click', ( event ) => {
 			event.preventDefault();
 			const name = tab.getAttribute( 'data-tab' );
-			if ( ! name ) { return; }
+			if ( ! name ) {
+				return;
+			}
 
 			tabs.forEach( ( t ) => {
 				const active = t.getAttribute( 'data-tab' ) === name;

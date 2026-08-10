@@ -102,8 +102,8 @@ rsync -a \
     --exclude 'README.md' \
     --exclude 'bun.lock' \
     --exclude 'coverage/' \
-    --exclude 'dist/' \
-    --exclude 'docs/' \
+    --exclude '/dist/' \
+    --exclude '/docs/' \
     --exclude 'node_modules/' \
     --exclude 'package.json' \
     --exclude 'package-lock.json' \

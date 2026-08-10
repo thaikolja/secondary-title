@@ -1,6 +1,7 @@
 /**
  * Front-end styles for the /secondary-title block.
+ *
+ * The rendered markup carries the `.st-title` class (see
+ * Renderer\Wrapper); themes style it. This file is kept as the
+ * hook point for block-specific front-end styles.
  */
-.wp-block-secondary-title-secondary-title {
-
-}

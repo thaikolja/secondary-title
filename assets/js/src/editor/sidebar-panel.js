@@ -7,7 +7,13 @@
  *     title and the typed secondary title.
  */
 
-import { useState, useEffect, useMemo, useCallback, useRef } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	useMemo,
+	useCallback,
+	useRef,
+} from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { TextControl } from '@wordpress/components';
@@ -19,12 +25,24 @@ const META_KEY = '_secondary_title';
 const DEBOUNCE_MS = 300;
 
 export function SidebarPanel() {
-	const postId = useSelect( ( select ) => select( 'core/editor' ).getCurrentPostId(), [] );
-	const postTitle = useSelect( ( select ) => select( 'core/editor' ).getEditedPostAttribute( 'title' ), [] );
-	const postType = useSelect( ( select ) => select( 'core/editor' ).getCurrentPostType(), [] );
+	const postId = useSelect(
+		( select ) => select( 'core/editor' ).getCurrentPostId(),
+		[]
+	);
+	const postTitle = useSelect(
+		( select ) => select( 'core/editor' ).getEditedPostAttribute( 'title' ),
+		[]
+	);
+	const postType = useSelect(
+		( select ) => select( 'core/editor' ).getCurrentPostType(),
+		[]
+	);
 
 	const initial = useMemo( () => {
-		if ( typeof window === 'undefined' || ! window.SecondaryTitleBootstrap ) {
+		if (
+			typeof window === 'undefined' ||
+			! window.SecondaryTitleBootstrap
+		) {
 			return { secondary: '', format: '%secondary_title%: %title%' };
 		}
 		return window.SecondaryTitleBootstrap;
@@ -43,7 +61,9 @@ export function SidebarPanel() {
 			}
 
 			timerRef.current = setTimeout( () => {
-				const restBase = postType ? `wp/v2/${ postType }s` : 'wp/v2/posts';
+				const restBase = postType
+					? `wp/v2/${ postType }s`
+					: 'wp/v2/posts';
 
 				apiFetch( {
 					path: addQueryArgs( `/${ restBase }/${ postId }`, {} ),
@@ -82,20 +102,28 @@ export function SidebarPanel() {
 		>
 			<TextControl
 				label={ __( 'Secondary title', 'secondary-title' ) }
-				help={ __( 'The secondary title is shown next to the post title based on the title format.', 'secondary-title' ) }
+				help={ __(
+					'The secondary title is shown next to the post title based on the title format.',
+					'secondary-title'
+				) }
 				value={ secondary }
 				onChange={ setSecondary }
-				placeholder={ __( 'Enter secondary title here', 'secondary-title' ) }
+				placeholder={ __(
+					'Enter secondary title here',
+					'secondary-title'
+				) }
 			/>
 
 			<div className="st-format-field__preview" data-st-preview>
 				<header className="st-format-field__preview-head">
-					<span className="dashicons dashicons-visibility" aria-hidden="true"></span>
+					<span
+						className="dashicons dashicons-visibility"
+						aria-hidden="true"
+					></span>
 					<span>{ __( 'Preview', 'secondary-title' ) }</span>
 				</header>
 				<div
 					className="st-format-field__preview-body"
-					/* eslint-disable-next-line react/no-danger */
 					dangerouslySetInnerHTML={ { __html: preview } }
 				/>
 			</div>

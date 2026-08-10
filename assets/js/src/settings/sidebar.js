@@ -15,13 +15,14 @@ export function initSidebar( root ) {
 		return;
 	}
 
-	const select  = sidebar.querySelector( '[data-st-taxonomy-select]' );
-	const search  = sidebar.querySelector( '[data-st-sidebar-search]' );
-	const lists   = sidebar.querySelectorAll( '[data-st-term-list]' );
+	const select = sidebar.querySelector( '[data-st-taxonomy-select]' );
+	const lists = sidebar.querySelectorAll( '[data-st-term-list]' );
 
 	if ( ! select || ! lists.length ) {
 		return;
 	}
+
+	const search = sidebar.querySelector( '[data-st-sidebar-search]' );
 
 	/** Show only the list that matches the current taxonomy value. */
 	function switchTaxonomy() {
@@ -37,17 +38,24 @@ export function initSidebar( root ) {
 		}
 	}
 
-	/** Filter visible items in the active list. */
+	/**
+	 * Filter visible items in the active list.
+	 *
+	 * @param {string} needle The search term to filter by.
+	 */
 	function filterTerms( needle ) {
-		const active = sidebar.querySelector( '[data-st-term-list]:not([hidden])' );
+		const active = sidebar.querySelector(
+			'[data-st-term-list]:not([hidden])'
+		);
 		if ( ! active ) {
 			return;
 		}
 
 		const items = active.querySelectorAll( '.st-term-list__item' );
 		items.forEach( ( item ) => {
-			const label = ( item.getAttribute( 'data-label' ) || '' );
-			item.style.display = ( '' === needle || label.includes( needle ) ) ? '' : 'none';
+			const label = item.getAttribute( 'data-label' ) || '';
+			item.style.display =
+				'' === needle || label.includes( needle ) ? '' : 'none';
 		} );
 	}
 

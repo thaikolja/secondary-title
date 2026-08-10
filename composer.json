@@ -1,79 +1,79 @@
 {
-  "name":                 "thaikolja/secondary-title",
-  "description":          "Add a secondary title to WordPress posts, pages, and custom post types. Display it automatically, with a shortcode, or via a real Gutenberg block.",
-  "type":                 "wordpress-plugin",
-  "keywords":             [
-    "wordpress",
-    "plugin",
-    "secondary-title",
-    "title",
-    "secondary"
-  ],
-  "license":              "GPL-2.0-or-later",
-  "authors":              [
-    {
-      "name":     "Kolja Nolte",
-      "email":    "kolja.nolte@gmail.com",
-      "homepage": "https://www.kolja-nolte.com"
-    }
-  ],
-  "support":              {
-    "issues": "https://wordpress.org/support/plugin/secondary-title/",
-    "source": "https://docs.kolja-nolte.com/secondary-title"
-  },
-  "require":              {
-    "php":       ">=8.1",
-    "twig/twig": "^3.20"
-  },
-  "require-dev":          {
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpstan/extension-installer":          "^1.3",
-    "phpstan/phpstan":                      "^1.10",
-    "phpunit/phpunit":                      "^9.6",
-    "brain/monkey":                         "^2.6",
-    "yoast/phpunit-polyfills":              "^2.0",
-    "squizlabs/php_codesniffer":            "^3.7",
-    "wp-coding-standards/wpcs":             "^3.0",
-    "szepeviktor/phpstan-wordpress":        "^1.3"
-  },
-  "autoload":             {
-    "psr-4": {
-      "Thaikolja\\SecondaryTitle\\": "classes/"
-    }
-  },
-  "autoload-dev":         {
-    "psr-4": {
-      "Thaikolja\\SecondaryTitle\\Tests\\Unit\\":        "tests/unit/",
-      "Thaikolja\\SecondaryTitle\\Tests\\Integration\\": "tests/integration/"
-    }
-  },
-  "config":               {
-    "sort-packages": true,
-    "allow-plugins": {
-      "phpstan/extension-installer":                    true,
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
-  },
-  "scripts":              {
-    "test":             "phpunit",
-    "test:unit":        "phpunit --testsuite unit",
-    "test:integration": "phpunit --testsuite integration",
-    "cs":               "phpcs",
-    "cs:fix":           "phpcbf",
-    "stan":             "phpstan analyse",
-    "build":            "wp-scripts build",
-    "start":            "wp-scripts start"
-  },
-  "scripts-descriptions": {
-    "test":             "Run the full PHPUnit test suite.",
-    "test:unit":        "Run only the unit tests.",
-    "test:integration": "Run only the integration tests (requires the WP test suite).",
-    "cs":               "Run PHP_CodeSniffer (WPCS).",
-    "cs:fix":           "Run PHP_CodeSniffer with the fixer.",
-    "stan":             "Run PHPStan static analysis.",
-    "build":            "Build the production assets with @wordpress/scripts.",
-    "start":            "Start the @wordpress/scripts dev server with hot reload."
-  },
-  "minimum-stability":    "stable",
-  "prefer-stable":        true
+	"name": "thaikolja/secondary-title",
+	"description": "Add a secondary title to WordPress posts, pages, and custom post types. Display it automatically, with a shortcode, or via a real Gutenberg block.",
+	"type": "wordpress-plugin",
+	"keywords": [
+		"wordpress",
+		"plugin",
+		"secondary-title",
+		"title",
+		"secondary"
+	],
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Kolja Nolte",
+			"email": "kolja.nolte@gmail.com",
+			"homepage": "https://www.kolja-nolte.com"
+		}
+	],
+	"support": {
+		"issues": "https://wordpress.org/support/plugin/secondary-title/",
+		"source": "https://docs.kolja-nolte.com/secondary-title"
+	},
+	"require": {
+		"php": ">=8.1",
+		"twig/twig": "^3.20"
+	},
+	"require-dev": {
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpstan/extension-installer": "^1.3",
+		"phpstan/phpstan": "^1.10",
+		"phpunit/phpunit": "^9.6",
+		"brain/monkey": "^2.6",
+		"yoast/phpunit-polyfills": "^2.0",
+		"squizlabs/php_codesniffer": "^3.7",
+		"wp-coding-standards/wpcs": "^3.0",
+		"szepeviktor/phpstan-wordpress": "^1.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"Thaikolja\\SecondaryTitle\\": "classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Thaikolja\\SecondaryTitle\\Tests\\Unit\\": "tests/unit/",
+			"Thaikolja\\SecondaryTitle\\Tests\\Integration\\": "tests/integration/"
+		}
+	},
+	"config": {
+		"sort-packages": true,
+		"allow-plugins": {
+			"phpstan/extension-installer": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"scripts": {
+		"test": "phpunit",
+		"test:unit": "phpunit --testsuite unit",
+		"test:integration": "phpunit --testsuite integration",
+		"cs": "phpcs",
+		"cs:fix": "phpcbf",
+		"stan": "phpstan analyse",
+		"build": "wp-scripts build",
+		"start": "wp-scripts start"
+	},
+	"scripts-descriptions": {
+		"test": "Run the full PHPUnit test suite.",
+		"test:unit": "Run only the unit tests.",
+		"test:integration": "Run only the integration tests (requires the WP test suite).",
+		"cs": "Run PHP_CodeSniffer (WPCS).",
+		"cs:fix": "Run PHP_CodeSniffer with the fixer.",
+		"stan": "Run PHPStan static analysis.",
+		"build": "Build the production assets with @wordpress/scripts.",
+		"start": "Start the @wordpress/scripts dev server with hot reload."
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true
 }

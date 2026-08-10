@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    name: Build release ZIP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Install JS dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build release bundle
+        run: ./build.sh
+
+      - name: Upload ZIP to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          ZIP="dist/secondary-title-${VERSION#v}.zip"
+          if [ ! -f "$ZIP" ]; then
+            ZIP=$(ls dist/secondary-title-*.zip | head -1)
+          fi
+          gh release upload "$VERSION" "$ZIP" --clobber

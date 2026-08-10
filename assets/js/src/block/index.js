@@ -21,4 +21,6 @@ registerBlockType( metadata.name, {
 
 // Mark as translated for tooling.
 __( 'Secondary Title' );
-__( 'Renders the secondary title of the current post using the configured format.' );
+__(
+	'Renders the secondary title of the current post using the configured format.'
+);

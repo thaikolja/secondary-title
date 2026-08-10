@@ -1,94 +1,94 @@
 name: CI
 
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
+    push:
+        branches: [main, master]
+    pull_request:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  php:
-    name: PHP ${{ matrix.php }} · WP ${{ matrix.wp }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php: [ '8.1', '8.2', '8.3', '8.4' ]
-        wp: [ '6.5', 'latest' ]
-    steps:
-      - uses: actions/checkout@v4
+    php:
+        name: PHP ${{ matrix.php }} · WP ${{ matrix.wp }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ['8.1', '8.2', '8.3', '8.4']
+                wp: ['6.5', 'latest']
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: mbstring, intl
-          coverage: none
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: mbstring, intl
+                  coverage: none
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+            - name: Get composer cache directory
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
-          restore-keys: |
-            composer-${{ runner.os }}-${{ matrix.php }}-
+            - uses: actions/cache@v4
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: composer-${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                  restore-keys: |
+                      composer-${{ runner.os }}-${{ matrix.php }}-
 
-      - name: Install dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist
+            - name: Install dependencies
+              run: composer install --no-interaction --no-progress --prefer-dist
 
-      - name: PHPCS
-        run: vendor/bin/phpcs --report=summary
+            - name: PHPCS
+              run: vendor/bin/phpcs --report=summary
 
-      - name: PHPStan
-        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+            - name: PHPStan
+              run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
 
-      - name: PHPUnit (unit)
-        run: vendor/bin/phpunit --testsuite unit
+            - name: PHPUnit (unit)
+              run: vendor/bin/phpunit --testsuite unit
 
-      - name: Start MySQL
-        if: ${{ matrix.wp == 'latest' }}
-        run: sudo systemctl start mysql
+            - name: Start MySQL
+              if: ${{ matrix.wp == 'latest' }}
+              run: sudo systemctl start mysql
 
-      - name: Prepare WordPress test library
-        if: ${{ matrix.wp == 'latest' }}
-        run: |
-          bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
-        env:
-          WP_TESTS_DIR: ${{ runner.temp }}/wordpress-tests-lib
+            - name: Prepare WordPress test library
+              if: ${{ matrix.wp == 'latest' }}
+              run: |
+                  bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
+              env:
+                  WP_TESTS_DIR: ${{ runner.temp }}/wordpress-tests-lib
 
-      - name: PHPUnit (integration)
-        if: ${{ matrix.wp == 'latest' }}
-        run: vendor/bin/phpunit --testsuite integration
-        env:
-          WP_TESTS_DIR: ${{ runner.temp }}/wordpress-tests-lib
-          WP_CORE_DIR: ${{ runner.temp }}/wordpress
+            - name: PHPUnit (integration)
+              if: ${{ matrix.wp == 'latest' }}
+              run: vendor/bin/phpunit --testsuite integration
+              env:
+                  WP_TESTS_DIR: ${{ runner.temp }}/wordpress-tests-lib
+                  WP_CORE_DIR: ${{ runner.temp }}/wordpress
 
-  assets:
-    name: JS/CSS build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    assets:
+        name: JS/CSS build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Setup bun
-        uses: oven-sh/setup-bun@v2
+            - name: Setup bun
+              uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
 
-      - name: Lint JS
-        run: bun run lint:js
+            - name: Lint JS
+              run: bun run lint:js
 
-      - name: Lint CSS
-        run: bun run lint:css
+            - name: Lint CSS
+              run: bun run lint:css
 
-      - name: Build assets
-        run: bun run build
+            - name: Build assets
+              run: bun run build
 
-      - name: Verify dist is up to date
-        run: git diff --exit-code -- assets/js/dist/
+            - name: Verify dist is up to date
+              run: git diff --exit-code -- assets/js/dist/

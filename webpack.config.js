@@ -12,9 +12,18 @@ const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 module.exports = {
 	...defaultConfig,
 	entry: {
-		'settings/settings': path.resolve( __dirname, 'assets/js/src/settings/index.js' ),
-		'editor/editor':     path.resolve( __dirname, 'assets/js/src/editor/index.js' ),
-		'block/index':       path.resolve( __dirname, 'assets/js/src/block/index.js' ),
+		'settings/settings': path.resolve(
+			__dirname,
+			'assets/js/src/settings/index.js'
+		),
+		'editor/editor': path.resolve(
+			__dirname,
+			'assets/js/src/editor/index.js'
+		),
+		'block/index': path.resolve(
+			__dirname,
+			'assets/js/src/block/index.js'
+		),
 	},
 	output: {
 		path: path.resolve( __dirname, 'assets/js/dist' ),

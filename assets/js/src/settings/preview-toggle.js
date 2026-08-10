@@ -1,5 +1,7 @@
 /**
  * Toggles the format preview between light and dark mode.
+ *
+ * @param {Document} root The root document to scope queries.
  */
 export function initPreviewToggle( root ) {
 	const btn = root.querySelector( '[data-st-preview-toggle]' );
