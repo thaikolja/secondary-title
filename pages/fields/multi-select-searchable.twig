@@ -56,7 +56,8 @@
 		{% endfor %}
 	</ul>
 
-	<button type="button" class="st-multi-select__toggle" data-st-multi-select-toggle>
-		{{ __('Toggle all', 'secondary-title') }}
+	<button type="button" class="button button-small st-multi-select__toggle" data-st-multi-select-toggle>
+		{% include 'components/icon.twig' with { name: 'check', size: 16 } only %}
+		<span>{{ __('Toggle all', 'secondary-title') }}</span>
 	</button>
 </div>

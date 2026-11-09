@@ -118,16 +118,15 @@ final class Assets {
 	 * @return void
 	 */
 	private function enqueue_settings(): void {
-		// CSS.
+		$asset = $this->asset_data( self::SETTINGS_ASSET_PATH );
+
+		// CSS. Use the JS bundle hash so a rebuild busts the admin cache.
 		wp_enqueue_style(
 			self::CSS_HANDLE,
 			SECONDARY_TITLE_URL . self::SETTINGS_CSS_PATH,
 			array( 'wp-components' ),
-			Plugin::VERSION
+			$asset['version']
 		);
-
-		// JS (with asset file).
-		$asset = $this->asset_data( self::SETTINGS_ASSET_PATH );
 
 		wp_enqueue_script(
 			self::JS_SETTINGS_HANDLE,
@@ -153,11 +152,13 @@ final class Assets {
 	 * @return void
 	 */
 	private function enqueue_editor_styles(): void {
+		$asset = $this->asset_data( self::SETTINGS_ASSET_PATH );
+
 		wp_enqueue_style(
 			self::CSS_HANDLE,
 			SECONDARY_TITLE_URL . self::SETTINGS_CSS_PATH,
 			array(),
-			Plugin::VERSION
+			$asset['version']
 		);
 	}
 

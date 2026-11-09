@@ -44,6 +44,29 @@
 	color: var(--st-muted);
 }
 
+/* WordPress admin buttons: keep dashicons visible and vertically centered. */
+.wp-core-ui .st-wrap .button,
+.wp-core-ui .st-wrap .button-primary,
+.wp-core-ui .st-wrap .button-secondary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	vertical-align: middle;
+}
+
+.wp-core-ui .st-wrap .button .dashicons {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	margin: 0;
+	color: currentColor;
+}
+
 .st-wrap .dashicons-heart {
 	color: #dc3232;
 }
@@ -266,40 +289,11 @@
 	justify-content: flex-start;
 }
 
-.st-preview-toggle {
+.st-preview-actions {
 	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	gap: 4px;
+	gap: 6px;
 	margin-left: auto;
-	padding: 4px 10px;
-	min-width: 64px;
-	font-size: 12px;
-	font-weight: 500;
-	color: #787c82;
-	background: #f0f0f1;
-	border: 1px solid #dcdcde;
-	border-radius: 3px;
-	cursor: pointer;
-	transition: color 0.1s, background 0.1s, border-color 0.1s;
-	white-space: nowrap;
-	box-sizing: border-box;
-}
-
-.st-preview-toggle:hover {
-	color: var(--st-text);
-	background: #e2e4e7;
-	border-color: #c3c4c7;
-}
-
-.st-preview-toggle--on {
-	color: var(--st-blue);
-	background: #f0f6fc;
-	border-color: var(--st-blue);
-}
-
-.st-preview-toggle--on .dashicons {
-	color: var(--st-blue);
 }
 
 .st-chip-row--presets {
@@ -1041,6 +1035,19 @@
 	font-size: 11.5px;
 	color: #50575e;
 	font-weight: 500;
+	min-width: 1.8em;
+}
+
+.st-toggle__on {
+	display: none;
+}
+
+.st-toggle input:checked ~ .st-toggle__labels .st-toggle__off {
+	display: none;
+}
+
+.st-toggle input:checked ~ .st-toggle__labels .st-toggle__on {
+	display: inline;
 }
 
 /* ── Inputs ── */
@@ -1127,15 +1134,9 @@
 }
 
 .st-multi-select__toggle {
-	display: inline-block;
-	margin-top: 4px;
-	font-size: 11px;
-	color: var(--st-blue);
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 0;
-	text-decoration: underline;
+	align-self: flex-start;
+	margin-top: 8px;
+	justify-content: flex-start;
 }
 
 /* ── Separator ── */

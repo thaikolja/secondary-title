@@ -1,4 +1,4 @@
-<?php return array('dependencies' => array(), 'version' => 'f0a4ccffbe9ce7544d57');
+<?php return array('dependencies' => array(), 'version' => 'ba27861a003bc4bc91e9');
 /*
  * Copyright (C) 2026-2026 by Kolja Nolte
  * https://www.kolja-nolte.com
@@ -13,5 +13,3 @@
  * @author Kolja Nolte <kolja.nolte@gmail.com>
  * @date 2024-2026
  */
-
-

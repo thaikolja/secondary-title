@@ -65,8 +65,14 @@
 		{% block card_body %}
 			<p>{{ __('Built by hand — no AI-generated code. Every line written, reviewed, and tested manually.', 'secondary-title') }}</p>
 			<div class="st-cta-group">
-				<a href="https://wordpress.org/support/plugin/secondary-title/" class="st-cta" target="_blank" rel="noopener noreferrer">{{ __('Get support', 'secondary-title') }}</a>
-				<a href="https://www.paypal.me/thaikolja/10" class="st-cta st-cta--gold" target="_blank" rel="noopener noreferrer">{{ __('Donate via PayPal', 'secondary-title') }}</a>
+				<a href="https://wordpress.org/support/plugin/secondary-title/" class="button" target="_blank" rel="noopener noreferrer">
+					{% include 'components/icon.twig' with { name: 'question', size: 16 } only %}
+					<span>{{ __('Get support', 'secondary-title') }}</span>
+				</a>
+				<a href="https://www.paypal.me/thaikolja/10" class="button button-primary" target="_blank" rel="noopener noreferrer">
+					{% include 'components/icon.twig' with { name: 'money', size: 16 } only %}
+					<span>{{ __('Donate via PayPal', 'secondary-title') }}</span>
+				</a>
 			</div>
 		{% endblock %}
 	{% endembed %}

@@ -66,6 +66,17 @@ export function initLiveFormatPreview( root ) {
 
 		input.addEventListener( 'input', update );
 
+		const scope = input.closest( '.st-hero-card' ) || root;
+		const clearBtn = scope.querySelector( '[data-st-preview-clear]' );
+		if ( clearBtn ) {
+			clearBtn.addEventListener( 'click', ( event ) => {
+				event.preventDefault();
+				input.value = '';
+				update();
+				input.focus();
+			} );
+		}
+
 		// Click-to-insert for the placeholder chips.
 		const chips = root.querySelectorAll( '[data-st-placeholder]' );
 		chips.forEach( ( chip ) => {
