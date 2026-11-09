@@ -72,7 +72,10 @@ final class Registry {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( self::HOOK, array( $this, 'register_meta' ) );
+		// After post types are registered (they use init priority 10
+		// or lower) so the public-REST hide filters can be attached
+		// per type.
+		add_action( self::HOOK, array( $this, 'register_meta' ), 20 );
 	}
 
 	/**
@@ -81,13 +84,16 @@ final class Registry {
 	 * @return void
 	 */
 	public function register_meta(): void {
-		$show_in_rest = SettingsDefaults::ON === $this->settings_repository->get( SettingsDefaults::OPTION_SHOW_IN_REST );
-
 		/**
 		 * `auth_callback` returns true when the current user is
 		 * allowed to edit the post the meta is attached to. The
 		 * single-underscore prefix on the key hides the meta from
 		 * the standard "Custom Fields" UI in the post editor.
+		 *
+		 * `show_in_rest` stays on even when "Expose via REST API"
+		 * is off. The block editor can only persist this meta
+		 * through the post REST endpoint. Public responses are
+		 * stripped in {@see self::hide_from_public_rest()} instead.
 		 */
 		register_meta(
 			'post',
@@ -96,13 +102,11 @@ final class Registry {
 				'object_subtype'    => '', // Applies to every post type.
 				'type'              => 'string',
 				'single'            => true,
-				'show_in_rest'      => $show_in_rest
-					? array(
-						'schema' => array(
-							'type' => 'string',
-						),
-					)
-					: false,
+				'show_in_rest'      => array(
+					'schema' => array(
+						'type' => 'string',
+					),
+				),
 				'sanitize_callback' => static function ( $value ): string {
 					// Route through the full MetaSanitizer which applies
 					// wp_kses_post() — same path as the Classic Editor save.
@@ -114,5 +118,47 @@ final class Registry {
 				},
 			)
 		);
+
+		if ( SettingsDefaults::ON === $this->settings_repository->get( SettingsDefaults::OPTION_SHOW_IN_REST ) ) {
+			return;
+		}
+
+		foreach ( get_post_types() as $post_type ) {
+			add_filter( 'rest_prepare_' . $post_type, array( $this, 'hide_from_public_rest' ), 10, 3 );
+		}
+	}
+
+	/**
+	 * Removes the secondary title from public REST responses when
+	 * "Expose via REST API" is off.
+	 *
+	 * Edit context is left intact so the block editor can read and
+	 * save the value.
+	 *
+	 * @param mixed $response REST response.
+	 * @param mixed $post     Prepared object. Unused.
+	 * @param mixed $request  REST request.
+	 *
+	 * @return mixed
+	 */
+	public function hide_from_public_rest( $response, $post, $request ) {
+		unset( $post );
+
+		if ( ! $response instanceof \WP_REST_Response || ! $request instanceof \WP_REST_Request ) {
+			return $response;
+		}
+
+		if ( 'edit' === $request->get_param( 'context' ) ) {
+			return $response;
+		}
+
+		$data = $response->get_data();
+
+		if ( is_array( $data ) && isset( $data['meta'][ Plugin::META_KEY ] ) ) {
+			unset( $data['meta'][ Plugin::META_KEY ] );
+			$response->set_data( $data );
+		}
+
+		return $response;
 	}
 }

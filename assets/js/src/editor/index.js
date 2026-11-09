@@ -21,7 +21,8 @@
  *
  * The actual React component lives in ./sidebar-panel.js. PHP
  * (SidebarPanel) pre-populates window.SecondaryTitleBootstrap with
- * the current post's title + secondary title + the format.
+ * the title format. The secondary title itself is read from the
+ * post entity meta.
  *
  * WordPress packages are externalized at build time and provided
  * by the block editor at runtime.

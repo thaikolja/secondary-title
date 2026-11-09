@@ -38,8 +38,8 @@ foreach ( $lines as $line ) {
 exit( 1 );
 ')"
 if [ -z "$VERSION" ]; then
-    echo "ERROR: could not parse the plugin version from secondary-title.php" >&2
-    exit 1
+	echo "ERROR: could not parse the plugin version from secondary-title.php" >&2
+	exit 1
 fi
 
 OUT_DIR="$PLUGIN_DIR/dist"
@@ -51,25 +51,25 @@ echo "==> Building secondary-title $VERSION"
 # Tool checks
 # ----------------------------------------------------------------------
 for tool in php composer zip bun rsync; do
-    if ! command -v "$tool" >/dev/null 2>&1; then
-        echo "ERROR: required tool '$tool' not found" >&2
-        exit 1
-    fi
+	if ! command -v "$tool" >/dev/null 2>&1; then
+		echo "ERROR: required tool '$tool' not found" >&2
+		exit 1
+	fi
 done
 
 # ----------------------------------------------------------------------
 # Warn when the working tree is dirty (you might ship uncommitted code).
 # ----------------------------------------------------------------------
 if [ -d .git ] && [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-    echo "NOTE: working tree has uncommitted changes; the ZIP will contain them."
+	echo "NOTE: working tree has uncommitted changes; the ZIP will contain them."
 fi
 
 # ----------------------------------------------------------------------
 # 1. Build the JS/CSS bundles in place (committed assets regenerate).
 # ----------------------------------------------------------------------
 if [ ! -d node_modules ]; then
-    echo "==> Installing JS dependencies (bun install)"
-    bun install
+	echo "==> Installing JS dependencies (bun install)"
+	bun install
 fi
 echo "==> Building assets (wp-scripts build)"
 bun run build
@@ -82,56 +82,56 @@ STAGE="$WORK/secondary-title"
 mkdir -p "$STAGE"
 
 cleanup() {
-    if [ -n "${WORK:-}" ] && [ -d "$WORK" ]; then
-        rm -rf "$WORK"
-    fi
+	if [ -n "${WORK:-}" ] && [ -d "$WORK" ]; then
+		rm -rf "$WORK"
+	fi
 }
 trap cleanup EXIT
 
 echo "==> Staging plugin files"
 rsync -a \
-    --exclude '.git/' \
-    --exclude '.github/' \
-    --exclude '.DS_Store' \
-    --exclude '.distignore' \
-    --exclude '.editorconfig' \
-    --exclude '.gitignore' \
-    --exclude '.phpunit.cache/' \
-    --exclude '.phpunit.result.cache' \
-    --exclude 'AGENTS.md' \
-    --exclude 'README.md' \
-    --exclude 'bun.lock' \
-    --exclude 'coverage/' \
-    --exclude '/dist/' \
-    --exclude '/docs/' \
-    --exclude 'node_modules/' \
-    --exclude 'package.json' \
-    --exclude 'package-lock.json' \
-    --exclude 'phpcs.xml.dist' \
-    --exclude 'phpstan-bootstrap.php' \
-    --exclude 'phpstan.neon.dist' \
-    --exclude 'phpunit.xml.dist' \
-    --exclude 'tests/' \
-    --exclude 'tools/' \
-    --exclude 'vendor/' \
-    --exclude 'webpack.config.js' \
-    --exclude 'assets/css/src/' \
-    --exclude 'assets/js/src/' \
-    --exclude 'build.sh' \
-    ./ "$STAGE/"
+	--exclude '.git/' \
+	--exclude '.github/' \
+	--exclude '.DS_Store' \
+	--exclude '.distignore' \
+	--exclude '.editorconfig' \
+	--exclude '.gitignore' \
+	--exclude '.phpunit.cache/' \
+	--exclude '.phpunit.result.cache' \
+	--exclude 'AGENTS.md' \
+	--exclude 'README.md' \
+	--exclude 'bun.lock' \
+	--exclude 'coverage/' \
+	--exclude '/dist/' \
+	--exclude '/docs/' \
+	--exclude 'node_modules/' \
+	--exclude 'package.json' \
+	--exclude 'package-lock.json' \
+	--exclude 'phpcs.xml.dist' \
+	--exclude 'phpstan-bootstrap.php' \
+	--exclude 'phpstan.neon.dist' \
+	--exclude 'phpunit.xml.dist' \
+	--exclude 'tests/' \
+	--exclude 'tools/' \
+	--exclude 'vendor/' \
+	--exclude 'webpack.config.js' \
+	--exclude 'assets/css/src/' \
+	--exclude 'assets/js/src/' \
+	--exclude 'build.sh' \
+	./ "$STAGE/"
 
 # ----------------------------------------------------------------------
 # 3. Production composer dependencies (twig only, no dev tooling).
 # ----------------------------------------------------------------------
 echo "==> Installing production composer dependencies"
 (
-    cd "$STAGE"
-    # Give the production autoloader a unique class name so the boot
-    # smoke test can load the dev autoloader (PHPUnit) side by side
-    # without "Cannot redeclare class ComposerAutoloaderInit...".
-    # composer.json is dev metadata and is removed from the ZIP below.
-    composer config autoloader-suffix secondary_title_prod
-    composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+	cd "$STAGE"
+	# Give the production autoloader a unique class name so the boot
+	# smoke test can load the dev autoloader (PHPUnit) side by side
+	# without "Cannot redeclare class ComposerAutoloaderInit...".
+	# composer.json is dev metadata and is removed from the ZIP below.
+	composer config autoloader-suffix secondary_title_prod
+	composer install --no-dev --no-interaction --no-progress --optimize-autoloader
 )
 
 # The staged composer files are dev metadata; keep them out of the ZIP.
@@ -141,53 +141,53 @@ rm -f "$STAGE/composer.json" "$STAGE/composer.lock"
 # 4. Verification gates.
 # ----------------------------------------------------------------------
 if [ "${SKIP_TESTS:-0}" != "1" ]; then
-    echo "==> Running unit tests"
-    if [ -x "$PLUGIN_DIR/vendor/bin/phpunit" ]; then
-        "$PLUGIN_DIR/vendor/bin/phpunit" --testsuite unit
-    else
-        echo "WARNING: phpunit not installed; skipping unit-test gate"
-    fi
+	echo "==> Running unit tests"
+	if [ -x "$PLUGIN_DIR/vendor/bin/phpunit" ]; then
+		"$PLUGIN_DIR/vendor/bin/phpunit" --testsuite unit
+	else
+		echo "WARNING: phpunit not installed; skipping unit-test gate"
+	fi
 
-    # Integration suite needs the WordPress test harness.
-    WP_TESTS_DIR="${WP_TESTS_DIR:-/tmp/wordpress-tests-lib}"
-    WP_CORE_DIR="${WP_CORE_DIR:-/tmp/wordpress}"
-    if [ -f "$WP_TESTS_DIR/includes/bootstrap.php" ]; then
-        echo "==> Running integration tests"
-        WP_TESTS_DIR="$WP_TESTS_DIR" WP_CORE_DIR="$WP_CORE_DIR" \
-            "$PLUGIN_DIR/vendor/bin/phpunit" --testsuite integration
-    elif [ "${REQUIRE_INTEGRATION:-0}" = "1" ]; then
-        echo "ERROR: WP test harness not found at $WP_TESTS_DIR (REQUIRE_INTEGRATION=1)" >&2
-        exit 1
-    else
-        echo "NOTE: WP test harness not found at $WP_TESTS_DIR; skipping integration suite"
-        echo "      Install with: bash bin/install-wp-tests.sh wordpress_test <user> <pass> localhost latest"
-    fi
+	# Integration suite needs the WordPress test harness.
+	WP_TESTS_DIR="${WP_TESTS_DIR:-/tmp/wordpress-tests-lib}"
+	WP_CORE_DIR="${WP_CORE_DIR:-/tmp/wordpress}"
+	if [ -f "$WP_TESTS_DIR/includes/bootstrap.php" ]; then
+		echo "==> Running integration tests"
+		WP_TESTS_DIR="$WP_TESTS_DIR" WP_CORE_DIR="$WP_CORE_DIR" \
+			"$PLUGIN_DIR/vendor/bin/phpunit" --testsuite integration
+	elif [ "${REQUIRE_INTEGRATION:-0}" = "1" ]; then
+		echo "ERROR: WP test harness not found at $WP_TESTS_DIR (REQUIRE_INTEGRATION=1)" >&2
+		exit 1
+	else
+		echo "NOTE: WP test harness not found at $WP_TESTS_DIR; skipping integration suite"
+		echo "      Install with: bash bin/install-wp-tests.sh wordpress_test <user> <pass> localhost latest"
+	fi
 fi
 
 if [ "${SKIP_LINT:-0}" != "1" ]; then
-    if [ -x "$PLUGIN_DIR/vendor/bin/phpstan" ]; then
-        echo "==> PHPStan (fails the build on errors)"
-        "$PLUGIN_DIR/vendor/bin/phpstan" analyse --no-progress --memory-limit=1G
-    fi
-    if [ -x "$PLUGIN_DIR/vendor/bin/phpcs" ]; then
-        echo "==> PHPCS (fails the build on errors)"
-        "$PLUGIN_DIR/vendor/bin/phpcs" --report=summary
-    fi
+	if [ -x "$PLUGIN_DIR/vendor/bin/phpstan" ]; then
+		echo "==> PHPStan (fails the build on errors)"
+		"$PLUGIN_DIR/vendor/bin/phpstan" analyse --no-progress --memory-limit=1G
+	fi
+	if [ -x "$PLUGIN_DIR/vendor/bin/phpcs" ]; then
+		echo "==> PHPCS (fails the build on errors)"
+		"$PLUGIN_DIR/vendor/bin/phpcs" --report=summary
+	fi
 fi
 
 echo "==> Syntax-checking staged PHP files"
 LINT_ERR="$(find "$STAGE" -name '*.php' -print0 | xargs -0 -n1 php -l 2>&1 | grep -v 'No syntax errors' || true)"
 if [ -n "$LINT_ERR" ]; then
-    echo "ERROR: staged plugin contains PHP files with syntax errors:" >&2
-    echo "$LINT_ERR" >&2
-    exit 1
+	echo "ERROR: staged plugin contains PHP files with syntax errors:" >&2
+	echo "$LINT_ERR" >&2
+	exit 1
 fi
 
 if [ "${SKIP_SMOKE:-0}" != "1" ]; then
-    if [ -f /tmp/wordpress-tests-lib/includes/bootstrap.php ]; then
-        echo "==> Booting the staged plugin under the WordPress test harness"
-        SMOKE="$(mktemp /tmp/secondary-title-smoke.XXXXXX.php)"
-        cat > "$SMOKE" <<PHP
+	if [ -f /tmp/wordpress-tests-lib/includes/bootstrap.php ]; then
+		echo "==> Booting the staged plugin under the WordPress test harness"
+		SMOKE="$(mktemp /tmp/secondary-title-smoke.XXXXXX.php)"
+		cat >"$SMOKE" <<PHP
 <?php
 // The WP test harness requires PHPUnit and the PHPUnit Polyfills at
 // bootstrap. Load the source (dev) autoloader for those, then let
@@ -211,16 +211,16 @@ require '/tmp/wordpress-tests-lib/includes/bootstrap.php';
 \$plugin = \Thaikolja\SecondaryTitle\Plugin::instance();
 echo 'boot ok; twig=' . get_class( \$plugin->twig ) . PHP_EOL;
 PHP
-        SMOKE_OUT="$(php -d error_reporting=-1 "$SMOKE" 2>&1 || true)"
-        rm -f "$SMOKE"
-        echo "$SMOKE_OUT"
-        if ! echo "$SMOKE_OUT" | grep -q 'boot ok'; then
-            echo "ERROR: the staged plugin failed to boot under WordPress" >&2
-            exit 1
-        fi
-    else
-        echo "NOTE: WP test harness not found at /tmp/wordpress-tests-lib; skipping boot smoke test"
-    fi
+		SMOKE_OUT="$(php -d error_reporting=-1 "$SMOKE" 2>&1 || true)"
+		rm -f "$SMOKE"
+		echo "$SMOKE_OUT"
+		if ! echo "$SMOKE_OUT" | grep -q 'boot ok'; then
+			echo "ERROR: the staged plugin failed to boot under WordPress" >&2
+			exit 1
+		fi
+	else
+		echo "NOTE: WP test harness not found at /tmp/wordpress-tests-lib; skipping boot smoke test"
+	fi
 fi
 
 # ----------------------------------------------------------------------
@@ -231,8 +231,8 @@ rm -f "$OUT_FILE"
 
 echo "==> Creating $OUT_FILE"
 (
-    cd "$WORK"
-    zip -rq "$OUT_FILE" secondary-title
+	cd "$WORK"
+	zip -rq "$OUT_FILE" secondary-title
 )
 
 echo "==> Done: $OUT_FILE ($(du -h "$OUT_FILE" | cut -f1))"

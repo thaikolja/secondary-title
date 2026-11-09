@@ -102,9 +102,10 @@ final class SidebarPanel {
 	}
 
 	/**
-	 * Prints an inline script that pushes the current secondary
-	 * title, title, and the format template into a global the JS
-	 * reads to bootstrap the sidebar panel.
+	 * Prints an inline script that pushes the title format (and the
+	 * current secondary title, for debugging) into a global. The
+	 * sidebar reads `format` from that global. The secondary title
+	 * value itself comes from the post entity meta.
 	 *
 	 * Only runs when the block editor is active, avoiding a
 	 * wasted query on Classic Editor post screens.

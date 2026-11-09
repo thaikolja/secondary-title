@@ -20,30 +20,23 @@
  *   - The secondary title input (text field).
  *   - A live preview of the rendered format with the current post's
  *     title and the typed secondary title.
+ *
+ * The value is stored on the post entity (`meta._secondary_title`)
+ * so it is saved with Update / Publish. The format string comes from
+ * `window.SecondaryTitleBootstrap.format`.
  */
 
-import {
-	useState,
-	useEffect,
-	useMemo,
-	useCallback,
-	useRef,
-} from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useMemo } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { useEntityProp } from '@wordpress/core-data';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
 
 const META_KEY = '_secondary_title';
-const DEBOUNCE_MS = 300;
+const DEFAULT_FORMAT = '%secondary_title%: %title%';
 
 export function SidebarPanel() {
-	const postId = useSelect(
-		( select ) => select( 'core/editor' ).getCurrentPostId(),
-		[]
-	);
 	const postTitle = useSelect(
 		( select ) => select( 'core/editor' ).getEditedPostAttribute( 'title' ),
 		[]
@@ -53,56 +46,32 @@ export function SidebarPanel() {
 		[]
 	);
 
-	const initial = useMemo( () => {
-		if (
-			typeof window === 'undefined' ||
-			! window.SecondaryTitleBootstrap
-		) {
-			return { secondary: '', format: '%secondary_title%: %title%' };
-		}
-		return window.SecondaryTitleBootstrap;
-	}, [] );
-
-	const [ secondary, setSecondary ] = useState( initial.secondary );
-	const [ format ] = useState( initial.format );
-	const { editPost } = useDispatch( 'core/editor' );
-
-	const timerRef = useRef( null );
-
-	const persist = useCallback(
-		( value ) => {
-			if ( timerRef.current ) {
-				clearTimeout( timerRef.current );
-			}
-
-			timerRef.current = setTimeout( () => {
-				const restBase = postType
-					? `wp/v2/${ postType }s`
-					: 'wp/v2/posts';
-
-				apiFetch( {
-					path: addQueryArgs( `/${ restBase }/${ postId }`, {} ),
-					method: 'PUT',
-					data: { meta: { [ META_KEY ]: value } },
-				} ).catch( () => {
-					// Fallback for post types without meta REST support.
-					editPost( { meta: { [ META_KEY ]: value } } );
-				} );
-			}, DEBOUNCE_MS );
-		},
-		[ postId, postType, editPost ]
+	const [ meta, setMeta ] = useEntityProp(
+		'postType',
+		postType || 'post',
+		'meta'
 	);
 
-	// Sync initial value into the editor meta on mount (once).
-	useEffect( () => {
-		editPost( { meta: { [ META_KEY ]: initial.secondary } } );
-		// Only run on mount — ignore deps changes.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	const format = useMemo( () => {
+		if (
+			typeof window === 'undefined' ||
+			! window.SecondaryTitleBootstrap ||
+			! window.SecondaryTitleBootstrap.format
+		) {
+			return DEFAULT_FORMAT;
+		}
+		return window.SecondaryTitleBootstrap.format;
 	}, [] );
 
-	useEffect( () => {
-		persist( secondary );
-	}, [ secondary, persist ] );
+	const secondary =
+		meta && typeof meta[ META_KEY ] === 'string' ? meta[ META_KEY ] : '';
+
+	const onChange = ( value ) => {
+		setMeta( {
+			...( meta || {} ),
+			[ META_KEY ]: value,
+		} );
+	};
 
 	const preview = useMemo( () => {
 		return ( format || '' )
@@ -122,7 +91,7 @@ export function SidebarPanel() {
 					'secondary-title'
 				) }
 				value={ secondary }
-				onChange={ setSecondary }
+				onChange={ onChange }
 				placeholder={ __(
 					'Enter secondary title here',
 					'secondary-title'

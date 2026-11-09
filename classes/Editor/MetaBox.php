@@ -114,6 +114,13 @@ final class MetaBox {
 	 * @return void
 	 */
 	public function add_meta_box(): void {
+		// The block editor has its own sidebar field. Registering this
+		// box there submits an empty `secondary_post_title` on Update
+		// and deletes the value the sidebar just stored.
+		if ( $this->is_block_editor() ) {
+			return;
+		}
+
 		$enabled = $this->enabled_post_types();
 
 		if ( array() === $enabled ) {
@@ -252,5 +259,18 @@ final class MetaBox {
 		// Empty = all public post types except attachments.
 		$public = get_post_types( array( 'public' => true ) );
 		return array_values( array_filter( $public, static fn ( string $t ): bool => 'attachment' !== $t ) );
+	}
+
+	/**
+	 * Returns true when the current screen is the block editor.
+	 *
+	 * @return bool
+	 */
+	private function is_block_editor(): bool {
+		global $current_screen;
+
+		return $current_screen instanceof \WP_Screen
+			&& method_exists( $current_screen, 'is_block_editor' )
+			&& $current_screen->is_block_editor();
 	}
 }
